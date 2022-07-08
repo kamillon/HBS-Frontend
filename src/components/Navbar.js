@@ -1,15 +1,24 @@
-import React, { Fragment, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { Fragment, useState, useContext } from 'react';
+import { Link, Navigate, NavLink } from 'react-router-dom';
+import { AuthContext, useAuth } from "../context/AuthContext"
 
 const Navbar = () => {
-    const [navigate, setNavigate] = useState(false);
+    const { contextState, setContextState } = useContext(AuthContext);
+    // const [navigate, setNavigate] = useState(false);
+    const {access, logoutUser} = useAuth()
 
-    const isAuthenticated = localStorage.getItem('isAuthenticated')
+    // const token = localStorage.getItem('access');
+    
+    // const logout_user = () => {
+    //     // localStorage.removeItem('access')
+    //     // localStorage.removeItem('refresh')
+    //     // localStorage.removeItem('isAuthenticated')
+    //     // localStorage.removeItem('user')
+    //     localStorage.clear();
 
-    const logout_user = () => {
-        localStorage.clear();
-        setNavigate(true);
-    };
+    //     setNavigate(true);
+        
+    // };
 
     const guestLinks = () => (
         <Fragment>
@@ -24,7 +33,7 @@ const Navbar = () => {
 
     const authLinks = () => (
         <li className='nav-item'>
-            <a className='nav-link' href='/' onClick={logout_user}>Logout</a>
+            <a className='nav-link' href='/' onClick={logoutUser}>Logout</a>
         </li>
     );
 
@@ -48,14 +57,18 @@ const Navbar = () => {
                         <li className='nav-item active'>
                             <Link className='nav-link' to='/'>Home <span className='sr-only'>(current)</span></Link>
                         </li>
-                        {isAuthenticated ? authLinks() : guestLinks()}
+                        {/* {localStorage.getItem('isAuthenticated') ? authLinks() : guestLinks()} */}
+                        {access ? authLinks() : guestLinks()}
                     </ul>
                 </div>
             </nav>
-            {navigate ? <Navigate to='/' /> : <Fragment></Fragment>}
+            {/* {navigate ? <Navigate to='/' /> : <Fragment></Fragment>} */}
+
+            {/* {!auth.user && (
+                <NavLink to='/login'>Login</NavLink>
+            )} */}
         </Fragment>
     );
 };
-
 
 export default Navbar;

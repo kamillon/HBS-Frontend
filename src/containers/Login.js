@@ -1,11 +1,42 @@
-import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, {useState, useContext, useEffect } from 'react';
+import { Link, Navigate , useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext, useAuth } from "../context/AuthContext"
+import { checkAuthenticated, load_user } from '../actions/Auth';
 
 
-const Login = ({ initialState }) => {
 
-    const [list, setList] = React.useState(initialState);
+// const loginUser = async (credentials) => {
+//     const config = {
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     };
+
+//     const body = JSON.stringify(credentials);
+//     try{
+//         return await axios.post('http://127.0.0.1:8000/auth/jwt/create/', body, config)
+        
+//     } 
+//     catch(error) {
+//         console.log(error)
+//    }
+
+// };
+
+
+
+
+const Login = () => {
+
+    // const context = useContext(ThingsContext);
+    // const { contextState, setContextState } = useContext(AuthContext);
+    const {loginUser} = useAuth()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const redirectPath = location.state?.path || '/'
+
+    // const [list, setList] = useState(initialState);
     
     const [formData, setFormData] = useState({
         email: '',
@@ -18,39 +49,61 @@ const Login = ({ initialState }) => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
+        loginUser({email, password})
+        // const res = await loginUser({email, password})
+        // localStorage.setItem('access', res.data.access);
+        // localStorage.setItem('refresh', res.data.refresh);
+        // localStorage.setItem('isAuthenticated', true)
+        // // setContextState({...contextState, isAuthenticated: true})
+        // // setList({...list, 'isAuthenticated': true})
+        // // auth.login2(res.data.access)
+        // console.log(res.data)
+
+
+        // checkAuthenticated();
+        // load_user();
+        // console.log("wyrenderowano")
+        // navigate('redirectPath', {replace:true})
+
+
+    //     const config = {
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     };
     
-        const body = JSON.stringify({ email, password });
+    //     const body = JSON.stringify({ email, password });
 
 
-        try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/jwt/create/', body, config)
+    //     try {
+    //         const res = await axios.post('http://127.0.0.1:8000/auth/jwt/create/', body, config)
 
             
-            localStorage.setItem('access', res.data.access);
-            localStorage.setItem('refresh', res.data.refresh);
-            localStorage.setItem('isAuthenticated', true)
-            setList({...list, 'isAuthenticated': true})
-            console.log(res.data)
+    //         localStorage.setItem('access', res.data.access);
+    //         localStorage.setItem('refresh', res.data.refresh);
+    //         localStorage.setItem('isAuthenticated', true)
+    //         // setContextState({...contextState, isAuthenticated: true})
+    //         // setList({...list, 'isAuthenticated': true})
+    //         console.log(res.data)
+    //         auth.setUser({access: res.data.access})
+    //         // navigate(redirectPath, {replace:true})
             
-        } 
-        catch(error) {
-            console.log(error)
-       }
+    //     } 
+    //     catch(error) {
+    //         console.log(error)
+    //    }
 
     };
 
+    // console.log(JSON.parse(localStorage.getItem('user')).is_employee)
 
 
-    if (localStorage.getItem('isAuthenticated')) {
-        return <Navigate to='/' />
-    }
-    // if (list.isAuthenticated) {
+
+    // if (localStorage.getItem('isAuthenticated')) {
+    //     return <Navigate to='/' />
+    // }
+
+    // if (contextState.isAuthenticated) {
     //     return <Navigate to='/' />
     // }
 
