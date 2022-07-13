@@ -1,6 +1,5 @@
 import React, {useContext, useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import { checkAuthenticated, loadUser } from '../actions/Auth';
 import { AuthContext, useAuth } from "../context/AuthContext"
 
 
@@ -16,8 +15,9 @@ const Home = () => {
     // })
 
 
-    const {currentUser} = useAuth()
+    const {currentUser, isAuthenticated} = useAuth()
     console.log(currentUser)
+    console.log(isAuthenticated)
  
     return(
         <div className='container'>

@@ -5,7 +5,7 @@ import { AuthContext, useAuth } from "../context/AuthContext"
 const Navbar = () => {
     const { contextState, setContextState } = useContext(AuthContext);
     // const [navigate, setNavigate] = useState(false);
-    const {access, logoutUser} = useAuth()
+    const {access, logoutUser, userRole} = useAuth()
 
     // const token = localStorage.getItem('access');
     
@@ -32,9 +32,14 @@ const Navbar = () => {
     );
 
     const authLinks = () => (
-        <li className='nav-item'>
-            <a className='nav-link' href='/' onClick={logoutUser}>Logout</a>
-        </li>
+        <Fragment>
+            <li className='nav-item'>
+                <Link className='nav-link' to={`/${userRole}/`}>Dashboard</Link>
+            </li>
+            <li className='nav-item'>
+                <a className='nav-link' href='/' onClick={logoutUser}>Logout</a>
+            </li>
+        </Fragment>
     );
 
     return (

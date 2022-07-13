@@ -1,8 +1,7 @@
 import React, {useState, useContext, useEffect } from 'react';
 import { Link, Navigate , useNavigate, useLocation} from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext, useAuth } from "../context/AuthContext"
-import { checkAuthenticated, load_user } from '../actions/Auth';
+import axios from 'axios';
 
 
 

@@ -1,0 +1,7 @@
+#sidebar-wrapper {
+    background-color:#d6e0ef;
+    padding-top: 0.5rem;
+    font-size:14px;
+    flex: 1 0 auto;
+    width: 200px;
+}

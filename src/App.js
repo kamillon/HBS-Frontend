@@ -12,9 +12,20 @@ import HomePage from './pages/HomePage'
 import ErrorPage from './pages/ErrorPage';
 import {AuthProvider} from './context/AuthContext';
 import { Layout } from './components/Layout'
-import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
+import AdminDashboard from './pages/Admin/AdminDashboard';
 import { RequireAuth } from './components/RequireAuth';
-import PrivateRoute from './utils/PrivateRoute'
+import Unauthorized from './pages/Unauthorized';
+import EmployeeDashboard from './pages/Employee/EmployeeDashboard';
+import UserDashboard from './pages/User/UserDashboard';
+import ManagerDashboard from './pages/Manager/ManagerDashboard';
+import ManageUsers from './pages/Admin/ManageUsers';
+
+const ROLES = {
+  "user": "user",
+  "admin": "admin",
+  "employee": "employee",
+  "manager": "manager"
+}
 
 
 function App() {
@@ -31,9 +42,30 @@ function App() {
               <Route exact path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm/>} />
               <Route exact path='/activate/:uid/:token' element={<Activate/>} />
               <Route exact path='/home' element={<HomePage/>} />
-              <Route exact path='/admin/dashboard' element={<RequireAuth><AdminDashboard/></RequireAuth>} />
-              {/* <Route exact path='/admin/dashboard' element={<PrivateRoute><AdminDashboard/></PrivateRoute>} /> */}
+              <Route exact path='/unauthorized' element={<Unauthorized/>} />
+              {/* <Route exact path='/admin/dashboard' element={<RequireAuth><AdminDashboard/></RequireAuth>} /> */}
 
+              <Route element={<RequireAuth allowedRole={ROLES.user}/>}>
+                <Route exact path='/user/' element={<UserDashboard/>} />
+              </Route>
+
+              <Route element={<RequireAuth allowedRole={ROLES.admin}/>}>
+                <Route exact path='/admin/' element={<AdminDashboard/>} />
+                <Route path='/admin/users/' element={<ManageUsers/>} />
+
+              </Route>
+
+              <Route element={<RequireAuth allowedRole={ROLES.employee}/>}>
+                <Route exact path='/employee/' element={<EmployeeDashboard/>} />
+              </Route>
+
+              <Route element={<RequireAuth allowedRole={ROLES.manager}/>}>
+                <Route exact path='/manager/' element={<ManagerDashboard/>} />
+              </Route>
+
+              {/* <Route element={<RequireAuth/>}>
+                <Route exact path='/admin/dashboard' element={<AdminDashboard/>} />
+              </Route> */}
               <Route path='*' element={<ErrorPage/>} />
           </Routes>
         </AuthProvider>

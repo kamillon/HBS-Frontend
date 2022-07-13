@@ -3,6 +3,25 @@ import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Signup = () => {
+
+    const options = [
+        {value: '', text: '--Choose an option--'},
+        {value: 'admin', text: 'admin'},
+        {value: 'user', text: 'klient'},
+        {value: 'employee', text: 'pracownik'},
+        {value: 'manager', text: 'właściciel salonu'},
+    ];
+
+     
+
+    // const [selected, setSelected] = useState(options[0].value);
+
+    // const handleChange = event => {
+    //     console.log(event.target.value);
+    //     setSelected(event.target.value);
+    // };
+
+
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
@@ -15,9 +34,10 @@ const Signup = () => {
         password: '',
         re_password: '',
         phone: '',
+        role: '',
     });
 
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData;
+    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone, role } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
 
@@ -32,12 +52,13 @@ const Signup = () => {
             };
         
             const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
-                email, password, re_password, phone });
-        
+                email, password, re_password, phone, role });
+
             try {
                 const res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
     
                 console.log(res.data)
+               
                 
             } 
             catch(error) {
@@ -136,6 +157,19 @@ const Signup = () => {
                         >is_employee
                     </label>
                 </div>
+                <div className="form-group">
+                    <label className="FormControlSelect">Typ użytkownika</label>
+                    <select className="form-control" name='role' value={role} onChange={e => onChange(e)}>
+                    {options.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.text}
+                        </option>
+                    ))}
+                    </select>
+                </div>
+
+                              
+
                 <div className='form-group'>
                     <input
                         className='form-control'
