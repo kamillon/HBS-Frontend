@@ -99,33 +99,27 @@ export const AuthProvider = ({ children }) => {
 
     
     const checkAuthenticated = async () => {
-        if (access) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }; 
-    
-            const body = JSON.stringify({ token: access });
-    
-            try {
-                const res = await axios.post('http://127.0.0.1:8000/auth/jwt/verify/', body, config)
-    
-                if (res.data.code !== 'token_not_valid') {
-                    setIsAuthenticated(true)
-                    localStorage.setItem('isAuthenticated', true)
-                } else {
-                    console.log(res.data)
-                    logoutUser()
-                }
-            } catch (err) {
-                console.log(err)
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }; 
+
+        const body = JSON.stringify({ token: access });
+
+        try {
+            const res = await axios.post('http://127.0.0.1:8000/auth/jwt/verify/', body, config)
+
+            if (res.data.code !== 'token_not_valid') {
+                setIsAuthenticated(true)
+                localStorage.setItem('isAuthenticated', true)
+            } else {
+                console.log(res.data)
                 logoutUser()
             }
-    
-        } else {
-            console.log("blad")
+        } catch (err) {
+            console.log(err)
             logoutUser()
         }
     };
@@ -211,8 +205,10 @@ export const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        checkAuthenticated()
-        console.log("CHECK CHECK CHECK")
+        if(access){
+            checkAuthenticated()
+            console.log("CHECK CHECK CHECK")
+        }
     },[access]);
 
     useEffect(() => {

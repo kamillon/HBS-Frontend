@@ -2,11 +2,14 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
+import { useNavigate } from 'react-router-dom';
 
 const ManageUsers = () => {
 
+    const navigate = useNavigate()
     const { access } = useAuth()
     const [data, setData] = useState([]);
+    const [removed, setRemoved] = useState(false);
 
     useEffect(() => {
         const listUsers = async () => {
@@ -37,10 +40,44 @@ const ManageUsers = () => {
 
 
         listUsers()
-    }, [])
+    }, [access])
 
 
 
+    const onDelete = async (id) => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+
+            try {
+                const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
+                console.log(res.data)
+                setRemoved(true)
+
+            } catch (err) {
+                console.log(err)
+            }
+        } else {
+            console.log("Blad")
+        }
+    };
+
+    // if (removed) {
+    //     window.location.reload(false);
+    // }
+
+    
+   
+    useEffect(() => {
+        if (removed) {
+            window.location.reload(false);
+        }
+    },[removed])
 
     //     return(
     //         <div className='container'>
@@ -66,24 +103,54 @@ const ManageUsers = () => {
     return (
         <div className='container'>
             <h1>ManageUsers</h1>
+            <button
+                onClick={() => navigate('/admin/users/add/')}
+                style={{ marginTop: '50px' }}
+                type='button'
+                className='btn btn-primary'
+            >
+                Add user
+            </button>
+
+
             <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Is active?</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((item) => (
-                            <tr key={item.id}>
-                                <th scope="row">1</th>
-                                <td>{item.username}</td>
-                                <td>{item.first_name}</td>
-                                <td>{item.role}</td>
-                            </tr>
-                        ))
+                        <tr key={item.id}>
+                            <td>{item.username}</td>
+                            <td>{item.first_name}</td>
+                            <td>{item.last_name}</td>
+                            {/* <td>{item.is_active.toString()}</td> */}
+                            <td>{item.is_active ? "active" : "disabled"}</td>
+                            <td>{item.role}</td>
+                            <td>
+                                <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={() => navigate(`/admin/users/edit/${item.id}`)}
+                                >
+                                    EDIT
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={() => onDelete(item.id)}
+                                >
+                                    DELETE
+                                </button>
+                            </td>
+                        </tr>
+                    ))
                     }
                 </tbody>
             </table>

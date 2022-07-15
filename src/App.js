@@ -19,6 +19,8 @@ import EmployeeDashboard from './pages/Employee/EmployeeDashboard';
 import UserDashboard from './pages/User/UserDashboard';
 import ManagerDashboard from './pages/Manager/ManagerDashboard';
 import ManageUsers from './pages/Admin/ManageUsers';
+import AddUser from './pages/Admin/AddUser';
+import EditUser from './pages/Admin/EditUser';
 
 const ROLES = {
   "user": "user",
@@ -35,7 +37,7 @@ function App() {
       <AuthProvider>
         <Navbar/>
           <Routes>
-              <Route exact index path='/' element={<Home/>} />
+              <Route exact path='/' element={<Home/>} />
               <Route exact path='/login' element={<Login/>} />
               <Route exact path='/signup' element={<SignUp/>} />
               <Route exact path='/reset-password' element={<ResetPassword/>} />
@@ -52,6 +54,8 @@ function App() {
               <Route element={<RequireAuth allowedRole={ROLES.admin}/>}>
                 <Route exact path='/admin/' element={<AdminDashboard/>} />
                 <Route path='/admin/users/' element={<ManageUsers/>} />
+                <Route path='/admin/users/add/' element={<AddUser/>} />
+                <Route path='/admin/users/edit/:uid' element={<EditUser/>} />
 
               </Route>
 
