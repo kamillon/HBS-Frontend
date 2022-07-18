@@ -70,11 +70,11 @@ const AddUser = () => {
     },[accountCreated])
 
     return (
-        <div className='container mt-5'>
+        <div className='container mt-5 d-flex align-items-center justify-content-center'>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
             <h1>Sign Up</h1>
             <p>Create your Account</p>
-            <form onSubmit={e => onSubmit(e)}>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -85,7 +85,7 @@ const AddUser = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -97,7 +97,7 @@ const AddUser = () => {
                     />
                 </div>
 
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='email'
@@ -109,7 +109,7 @@ const AddUser = () => {
                     />
                 </div>
                 
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -121,7 +121,7 @@ const AddUser = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary' type='submit'>Utworz</button>
+                <button className='btn btn-primary me-1' type='submit'>Utworz</button>
                 <button className='btn btn-danger' onClick={() => navigate('/admin/users/')}>Anuluj</button>
             </form>
         </div>

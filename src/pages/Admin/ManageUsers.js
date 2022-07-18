@@ -136,7 +136,7 @@ const ManageUsers = () => {
                             <td>
                                 <button
                                     type="button"
-                                    className="btn btn-primary"
+                                    className="btn btn-primary me-1"
                                     onClick={() => navigate(`/admin/users/edit/${item.id}`)}
                                 >
                                     EDIT

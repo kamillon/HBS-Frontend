@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import './SignUp.css';
 
 const Signup = () => {
 
@@ -78,11 +79,11 @@ const Signup = () => {
     }
 
     return (
-        <div className='container mt-5'>
-            <h1>Sign Up</h1>
-            <p>Create your Account</p>
-            <form onSubmit={e => onSubmit(e)}>
-                <div className='form-group'>
+        <div className='min-vh-100 color-overlay2 d-flex justify-content-center align-items-center'>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
+                <h1>Sign In</h1>
+                <p>Sign into your Account</p>
+                <div className='mb-3 mt-5'>
                     <input
                         className='form-control'
                         type='text'
@@ -93,7 +94,7 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -104,7 +105,7 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -115,7 +116,7 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <div className="form-group form-check">
+                <div className="mb-3 form-check">
                     <input 
                         type="checkbox" 
                         className="form-check-input" 
@@ -129,7 +130,7 @@ const Signup = () => {
                         >is_staff
                     </label>
                 </div>
-                <div className="form-group form-check">
+                <div className="mb-3 form-check">
                     <input 
                         type="checkbox" 
                         className="form-check-input" 
@@ -143,7 +144,7 @@ const Signup = () => {
                         >is_superuser
                     </label>
                 </div>
-                <div className="form-group form-check">
+                <div className="mb-3 form-check">
                     <input 
                         type="checkbox" 
                         className="form-check-input" 
@@ -157,7 +158,7 @@ const Signup = () => {
                         >is_employee
                     </label>
                 </div>
-                <div className="form-group">
+                <div className="mb-3">
                     <label className="FormControlSelect">Typ użytkownika</label>
                     <select className="form-control" name='role' value={role} onChange={e => onChange(e)}>
                     {options.map(option => (
@@ -170,7 +171,7 @@ const Signup = () => {
 
                               
 
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='email'
@@ -181,7 +182,7 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='password'
@@ -193,7 +194,7 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='password'
@@ -205,7 +206,7 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -217,11 +218,14 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary' type='submit'>Register</button>
+                <div className='text-center mt-4'>
+                    <button className='btn btn-primary w-100' type='submit'>Register</button>
+                    <p className='mt-3'>
+                        <Link to='/login' style={{ textDecoration: 'none' }}>Already have an account?</Link>
+                        
+                    </p>
+                </div>
             </form>
-            <p className='mt-3'>
-                Already have an account? <Link to='/login'>Sign In</Link>
-            </p>
         </div>
     );
 };

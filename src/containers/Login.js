@@ -1,45 +1,19 @@
-import React, {useState, useContext, useEffect } from 'react';
-import { Link, Navigate , useNavigate, useLocation} from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext, useAuth } from "../context/AuthContext"
 import axios from 'axios';
-
-
-
-// const loginUser = async (credentials) => {
-//     const config = {
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     };
-
-//     const body = JSON.stringify(credentials);
-//     try{
-//         return await axios.post('http://127.0.0.1:8000/auth/jwt/create/', body, config)
-        
-//     } 
-//     catch(error) {
-//         console.log(error)
-//    }
-
-// };
-
-
-
+import './Login.css';
 
 const Login = () => {
-
-    // const context = useContext(ThingsContext);
-    // const { contextState, setContextState } = useContext(AuthContext);
-    const {loginUser} = useAuth()
+    const { loginUser } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     const redirectPath = location.state?.path || '/'
 
-    // const [list, setList] = useState(initialState);
-    
+
     const [formData, setFormData] = useState({
         email: '',
-        password: '' 
+        password: ''
     });
 
     const { email, password } = formData;
@@ -48,70 +22,16 @@ const Login = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        loginUser({email, password})
-        // const res = await loginUser({email, password})
-        // localStorage.setItem('access', res.data.access);
-        // localStorage.setItem('refresh', res.data.refresh);
-        // localStorage.setItem('isAuthenticated', true)
-        // // setContextState({...contextState, isAuthenticated: true})
-        // // setList({...list, 'isAuthenticated': true})
-        // // auth.login2(res.data.access)
-        // console.log(res.data)
-
-
-        // checkAuthenticated();
-        // load_user();
-        // console.log("wyrenderowano")
-        // navigate('redirectPath', {replace:true})
-
-
-    //     const config = {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     };
-    
-    //     const body = JSON.stringify({ email, password });
-
-
-    //     try {
-    //         const res = await axios.post('http://127.0.0.1:8000/auth/jwt/create/', body, config)
-
-            
-    //         localStorage.setItem('access', res.data.access);
-    //         localStorage.setItem('refresh', res.data.refresh);
-    //         localStorage.setItem('isAuthenticated', true)
-    //         // setContextState({...contextState, isAuthenticated: true})
-    //         // setList({...list, 'isAuthenticated': true})
-    //         console.log(res.data)
-    //         auth.setUser({access: res.data.access})
-    //         // navigate(redirectPath, {replace:true})
-            
-    //     } 
-    //     catch(error) {
-    //         console.log(error)
-    //    }
-
+        loginUser({ email, password })
     };
 
-    // console.log(JSON.parse(localStorage.getItem('user')).is_employee)
-
-
-
-    // if (localStorage.getItem('isAuthenticated')) {
-    //     return <Navigate to='/' />
-    // }
-
-    // if (contextState.isAuthenticated) {
-    //     return <Navigate to='/' />
-    // }
-
     return (
-        <div className='container mt-5'>
-            <h1>Sign In</h1>
-            <p>Sign into your Account</p>
-            <form onSubmit={e => onSubmit(e)}>
-                <div className='form-group'>
+        <div className='min-vh-100 color-overlay d-flex justify-content-center align-items-center'>
+        {/* <div className='d-flex align-items-center justify-content-center'> */}
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded login-form' onSubmit={e => onSubmit(e)}>
+                <h1>Sign In</h1>
+                <p>Sign into your Account</p>
+                <div className="mt-5 mb-3">
                     <input
                         className='form-control'
                         type='email'
@@ -122,7 +42,7 @@ const Login = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className="mb-3">
                     <input
                         className='form-control'
                         type='password'
@@ -134,14 +54,16 @@ const Login = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary' type='submit'>Login</button>
+                <p className='mt-3'>
+                    <Link to='/reset-password' style={{ textDecoration: 'none' }}>Forgot your Password?</Link>
+                </p>
+                <div className='text-center mt-4'>
+                    <button className='btn btn-primary w-100' type='submit'>Login</button>
+                    <p className='mt-3'>
+                        <Link to='/signup' style={{ textDecoration: 'none' }}>Already have an account?</Link>
+                    </p>
+                </div>
             </form>
-            <p className='mt-3'>
-                Don't have an account? <Link to='/signup'>Sign Up</Link>
-            </p>
-            <p className='mt-3'>
-                Forgot your Password? <Link to='/reset-password'>Reset Password</Link>
-            </p>
         </div>
     );
 };

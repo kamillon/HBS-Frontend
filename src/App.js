@@ -8,6 +8,7 @@ import Activate from './containers/Activate';
 import ResetPassword from './containers/ResetPassword';
 import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage'
 import ErrorPage from './pages/ErrorPage';
 import {AuthProvider} from './context/AuthContext';
@@ -72,6 +73,7 @@ function App() {
               </Route> */}
               <Route path='*' element={<ErrorPage/>} />
           </Routes>
+          <Footer/>
         </AuthProvider>
     </BrowserRouter>
   </Layout>

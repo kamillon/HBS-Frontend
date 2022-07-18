@@ -63,7 +63,7 @@ const EditUser = () => {
             }
         };
 
-        if(uid) {
+        if (uid) {
             getUser()
         }
     }, [uid, access])
@@ -71,11 +71,11 @@ const EditUser = () => {
 
 
     const options = [
-        {value: '', text: '--Choose an option--'},
-        {value: 'admin', text: 'admin'},
-        {value: 'user', text: 'klient'},
-        {value: 'employee', text: 'pracownik'},
-        {value: 'manager', text: 'właściciel salonu'},
+        { value: '', text: '--Choose an option--' },
+        { value: 'admin', text: 'admin' },
+        { value: 'user', text: 'klient' },
+        { value: 'employee', text: 'pracownik' },
+        { value: 'manager', text: 'właściciel salonu' },
     ];
 
 
@@ -100,7 +100,7 @@ const EditUser = () => {
     // const onChange = e => setData({ ...data, [e.target.name]: e.target.value ?? e.target.checked });
 
     function onChange(event) {
-        const {name, value, type, checked} = event.target
+        const { name, value, type, checked } = event.target
         setData(prevFormData => {
             return {
                 ...prevFormData,
@@ -146,15 +146,15 @@ const EditUser = () => {
         if (accountUpdated) {
             navigate('/admin/users/')
         }
-    },[accountUpdated])
+    }, [accountUpdated])
 
 
     return (
-        <div className='container mt-5'>
-            <h1>Sign Up</h1>
-            <p>Create your Account</p>
-            <form onSubmit={e => onSubmit(e)}>
-                <div className='form-group'>
+        <div className='container mt-5 d-flex align-items-center justify-content-center'>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
+                <h1>Sign Up</h1>
+                <p>Create your Account</p>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -165,7 +165,7 @@ const EditUser = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -176,7 +176,7 @@ const EditUser = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -187,7 +187,7 @@ const EditUser = () => {
                         required
                     />
                 </div>
-                <div className="form-group form-check">
+                <div className="mb-3 form-check">
                     <input
                         type="checkbox"
                         className="form-check-input"
@@ -202,7 +202,7 @@ const EditUser = () => {
                     >is_staff
                     </label>
                 </div>
-                <div className="form-group form-check">
+                <div className="mb-3 form-check">
                     <input
                         type="checkbox"
                         className="form-check-input"
@@ -218,7 +218,7 @@ const EditUser = () => {
                     >is_superuser
                     </label>
                 </div>
-                <div className="form-group form-check">
+                <div className="mb-3 form-check">
                     <input
                         type="checkbox"
                         className="form-check-input"
@@ -233,7 +233,7 @@ const EditUser = () => {
                     >is_employee
                     </label>
                 </div>
-                <div className="form-group">
+                <div className="mb-3">
                     <label className="FormControlSelect">Typ użytkownika</label>
                     <select className="form-control" name='role' value={role} onChange={e => onChange(e)}>
                         {options.map(option => (
@@ -246,7 +246,7 @@ const EditUser = () => {
 
 
 
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='email'
@@ -257,7 +257,7 @@ const EditUser = () => {
                         required
                     />
                 </div>
-                <div className='form-group'>
+                <div className='mb-3'>
                     <input
                         className='form-control'
                         type='text'
@@ -269,7 +269,7 @@ const EditUser = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary' type='submit'>Edutuj</button>
+                <button className='btn btn-primary me-1' type='submit'>Edutuj</button>
                 <button className='btn btn-danger' onClick={() => navigate('/admin/users/')}>Anuluj</button>
             </form>
         </div>
