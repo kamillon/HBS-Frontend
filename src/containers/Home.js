@@ -43,30 +43,36 @@ const Home = () => {
 
             <section className='py-5 bg-dark'>
                 <div className='container'>
-                    <div className='row'>
-                        <div className='col-4 d-flex justify-content-center'>
-                            <div className="card" style={{ width: "12rem" }}>
-                                <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="card-img-top" alt="..." />
-                                <div className="card-body text-center">
-                                    <h4>Fryzjerstwo</h4>
+                    <div className='row g-4'>
+                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                            <Link to='/hairdresser' style={{ textDecoration: 'none', color: 'black' }}>
+                                <div className="card" style={{ width: "12rem" }}>
+                                    <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="card-img-top" alt="..." />
+                                    <div className="card-body text-center">
+                                        <h4>Fryzjerstwo</h4>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
-                        <div className='col-4 d-flex justify-content-center'>
-                            <div className="card" style={{ width: "12rem" }}>
-                                <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="card-img-top" alt="..." />
-                                <div className="card-body text-center">
-                                    <h4>Barber</h4>
+                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                            <Link to='/barber' style={{ textDecoration: 'none', color: 'black' }}>
+                                <div className="card" style={{ width: "12rem" }}>
+                                    <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="card-img-top" alt="..." />
+                                    <div className="card-body text-center">
+                                        <h4>Barber</h4>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
-                        <div className='col-4 col d-flex justify-content-center'>
-                            <div className="card" style={{ width: "12rem" }}>
-                                <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="card-img-top" alt="..." />
-                                <div className="card-body text-center">
-                                    <h4>Kosmetologia</h4>
+                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                            <Link to='/beauty-salon' style={{ textDecoration: 'none', color: 'black' }}>
+                                <div className="card" style={{ width: "12rem" }}>
+                                    <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="card-img-top" alt="..." />
+                                    <div className="card-body text-center">
+                                        <h4>Kosmetologia</h4>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -94,42 +100,42 @@ const Home = () => {
                 <div className='container'>
                     <h2 className='text-center mb-4'>Znajdź specjalistę według miasta</h2>
                     <div className='row py-5'>
-                        <div className='col-4 d-flex justify-content-center'>
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link " href="#">Warszawa</a>
+                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                            <ul className="nav flex-column">
+                                <li className="nav-item">
+                                    <a className="nav-link " href="#">Warszawa</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Kraków</a>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#">Kraków</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Poznań</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className='col-4 d-flex justify-content-center'>
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link " href="#">Warszawa</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Kraków</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Poznań</a>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#">Poznań</a>
                                 </li>
                             </ul>
                         </div>
-                        <div className='col-4 d-flex justify-content-center'>
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link " href="#">Warszawa</a>
+                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                            <ul className="nav flex-column">
+                                <li className="nav-item">
+                                    <a className="nav-link " href="#">Warszawa</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Kraków</a>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#">Kraków</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Poznań</a>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#">Poznań</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                            <ul className="nav flex-column">
+                                <li className="nav-item">
+                                    <a className="nav-link " href="#">Warszawa</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#">Kraków</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" href="#">Poznań</a>
                                 </li>
                             </ul>
                         </div>

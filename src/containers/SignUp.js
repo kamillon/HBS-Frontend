@@ -5,13 +5,13 @@ import './SignUp.css';
 
 const Signup = () => {
 
-    const options = [
-        {value: '', text: '--Choose an option--'},
-        {value: 'admin', text: 'admin'},
-        {value: 'user', text: 'klient'},
-        {value: 'employee', text: 'pracownik'},
-        {value: 'manager', text: 'właściciel salonu'},
-    ];
+    // const options = [
+    //     {value: '', text: '--Choose an option--'},
+    //     {value: 'admin', text: 'admin'},
+    //     {value: 'user', text: 'klient'},
+    //     {value: 'employee', text: 'pracownik'},
+    //     {value: 'manager', text: 'właściciel salonu'},
+    // ];
 
      
 
@@ -35,7 +35,7 @@ const Signup = () => {
         password: '',
         re_password: '',
         phone: '',
-        role: '',
+        role: 'user',
     });
 
     const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone, role } = formData;
@@ -116,7 +116,7 @@ const Signup = () => {
                         required
                     />
                 </div>
-                <div className="mb-3 form-check">
+                {/* <div className="mb-3 form-check">
                     <input 
                         type="checkbox" 
                         className="form-check-input" 
@@ -129,8 +129,8 @@ const Signup = () => {
                         className="form-check-label" 
                         >is_staff
                     </label>
-                </div>
-                <div className="mb-3 form-check">
+                </div> */}
+                {/* <div className="mb-3 form-check">
                     <input 
                         type="checkbox" 
                         className="form-check-input" 
@@ -143,8 +143,8 @@ const Signup = () => {
                         className="form-check-label" 
                         >is_superuser
                     </label>
-                </div>
-                <div className="mb-3 form-check">
+                </div> */}
+                {/* <div className="mb-3 form-check">
                     <input 
                         type="checkbox" 
                         className="form-check-input" 
@@ -157,8 +157,8 @@ const Signup = () => {
                         className="form-check-label" 
                         >is_employee
                     </label>
-                </div>
-                <div className="mb-3">
+                </div> */}
+                {/* <div className="mb-3">
                     <label className="FormControlSelect">Typ użytkownika</label>
                     <select className="form-control" name='role' value={role} onChange={e => onChange(e)}>
                     {options.map(option => (
@@ -167,7 +167,7 @@ const Signup = () => {
                         </option>
                     ))}
                     </select>
-                </div>
+                </div> */}
 
                               
 

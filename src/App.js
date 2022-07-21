@@ -22,6 +22,10 @@ import ManagerDashboard from './pages/Manager/ManagerDashboard';
 import ManageUsers from './pages/Admin/ManageUsers';
 import AddUser from './pages/Admin/AddUser';
 import EditUser from './pages/Admin/EditUser';
+import Hairdresser from './pages/Hairdresser';
+import Barber from './pages/Barber';
+import BeautySalon from './pages/BeautySalon';
+import HairSalonDetail from './pages/HairSalonDetail';
 
 const ROLES = {
   "user": "user",
@@ -45,6 +49,10 @@ function App() {
               <Route exact path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm/>} />
               <Route exact path='/activate/:uid/:token' element={<Activate/>} />
               <Route exact path='/home' element={<HomePage/>} />
+              <Route exact path='/hairdresser' element={<Hairdresser/>} />
+              <Route path='hairdresser/:id' element={<HairSalonDetail/>} />
+              <Route exact path='/barber' element={<Barber/>} />
+              <Route exact path='/beauty-salon' element={<BeautySalon/>} />
               <Route exact path='/unauthorized' element={<Unauthorized/>} />
               {/* <Route exact path='/admin/dashboard' element={<RequireAuth><AdminDashboard/></RequireAuth>} /> */}
 

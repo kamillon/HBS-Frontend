@@ -22,32 +22,39 @@ const Navbar = () => {
 
     const guestLinks = () => (
         <Fragment>
-            <li className='nav-item'>
-                <Link className='nav-link' to='/login'>Login</Link>
-            </li>
-            <li className='nav-item'>
-                <Link className='nav-link' to='/signup'>Sign Up</Link>
-            </li>
+            <ul className="navbar-nav navbar-right">
+                <li className='nav-item'>
+                    <Link className='nav-link' to='/login'>Login</Link>
+                </li>
+                {/* <li className='nav-item'>
+                    <Link className='nav-link' to='/signup'>Sign Up</Link>
+                </li> */}
+            </ul>
         </Fragment>
     );
 
     const authLinks = () => (
         <Fragment>
-            <li className='nav-item'>
-                <Link className='nav-link' to={`/${userRole}/`}>Dashboard</Link>
-            </li>
-            <li className='nav-item'>
-                <a className='nav-link' href='/' onClick={logoutUser}>Logout</a>
-            </li>
+            <ul className="navbar-nav navbar-right">
+                <li className='nav-item'>
+                    <Link className='nav-link' to={`/${userRole}/`}>Dashboard</Link>
+                </li>
+                <li className='nav-item'>
+                    {/* <button type="button" className="btn btn-light" onClick={logoutUser}>
+                        Logout
+                    </button> */}
+                    <a className='nav-link' href='/' onClick={logoutUser}>Logout</a>
+                </li>
+            </ul>
         </Fragment>
     );
 
     return (
         <Fragment>
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-3">
-                <div className="container-fluid">
-                {/* <div className="container"> */}
-                    <Link className='navbar-brand' to='/'>Auth System</Link>
+                {/* <div className="container-fluid"> */}
+                <div className="container">
+                    <Link className='navbar-brand' to='/'>IBOOKING</Link>
                     <button
                         className='navbar-toggler'
                         type='button'
@@ -67,17 +74,19 @@ const Navbar = () => {
                                 <Link className='nav-link' to='/'>Home</Link>
                             </li>
                             <li className='nav-item'>
-                                <Link className='nav-link' to='/'>Fryzjer</Link>
+                                <Link className='nav-link' to='/hairdresser'>Fryzjer</Link>
                             </li>
                             <li className='nav-item'>
-                                <Link className='nav-link' to='/'>Barber</Link>
+                                <Link className='nav-link' to='/barber'>Barber</Link>
                             </li>
                             <li className='nav-item'>
-                                <Link className='nav-link' to='/'>Salon kosmetyczny</Link>
+                                <Link className='nav-link' to='/beauty-salon'>Salon kosmetyczny</Link>
                             </li>
                             {/* {localStorage.getItem('isAuthenticated') ? authLinks() : guestLinks()} */}
-                            {access ? authLinks() : guestLinks()}
+                            {/* {access ? authLinks() : guestLinks()} */}
                         </ul>
+                        {access ? authLinks() : guestLinks()}
+                        
                     </div>
                 </div>
             </nav>
