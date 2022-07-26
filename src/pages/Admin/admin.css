@@ -1,7 +1,40 @@
+html,
+body,
+#root {
+    height: 100%;
+}
+
+
+
 #sidebar-wrapper {
-    background-color:#d6e0ef;
+    background-color: #d6e0ef;
     padding-top: 0.5rem;
-    font-size:14px;
+    font-size: 14px;
     flex: 1 0 auto;
     width: 200px;
 }
+
+/* --------- ManageUsers.js ------------- */
+
+.content-wrap {
+    height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+    .content-wrap {
+        height: auto;
+    }
+}
+
+
+.main-content {
+    height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+    .main-content {
+        height: auto;
+    }
+}
+
+/* --------- end ManageUsers.js ------------- */

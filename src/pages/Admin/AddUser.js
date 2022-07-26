@@ -8,7 +8,7 @@ const AddUser = () => {
 
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
-        username: 'manager4',
+        username: 'manager123',
         first_name: '',
         last_name: '',
         is_staff: true,
@@ -72,8 +72,8 @@ const AddUser = () => {
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
             <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
-            <h1>Sign Up</h1>
-            <p>Create your Account</p>
+            <h1 className='mb-5'>Utwórz konto</h1>
+            {/* <p>Create your Account</p> */}
                 <div className='mb-3'>
                     <input
                         className='form-control'
@@ -121,7 +121,7 @@ const AddUser = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary me-1' type='submit'>Utworz</button>
+                <button className='btn btn-primary me-1' type='submit'>Utwórz</button>
                 <button className='btn btn-danger' onClick={() => navigate('/admin/users/')}>Anuluj</button>
             </form>
         </div>

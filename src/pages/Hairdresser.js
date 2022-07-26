@@ -46,9 +46,11 @@ const Hairdresser = () => {
             <div className='container py-5'>
                 <div className='row'>
                     <div className='col-md'>
-                        <a href='#'>
+                        {/* <a href='#'> */}
+                        <Link to='/'>
                             <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="..." />
-                        </a>
+                        </Link>
+                        {/* </a> */}
                     </div>
                     <div className='col-md'>
                         <h2>Learn The basic</h2>

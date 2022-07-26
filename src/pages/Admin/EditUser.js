@@ -269,7 +269,7 @@ const EditUser = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary me-1' type='submit'>Edutuj</button>
+                <button className='btn btn-primary me-1' type='submit'>Edytuj</button>
                 <button className='btn btn-danger' onClick={() => navigate('/admin/users/')}>Anuluj</button>
             </form>
         </div>
