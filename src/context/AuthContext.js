@@ -173,7 +173,7 @@ export const AuthProvider = ({ children }) => {
         logoutUser: logoutUser,
         currentUser: currentUser,
         isAuthenticated: isAuthenticated,
-        userRole, userRole,
+        userRole: userRole,
     }
 
     // ##############
@@ -218,14 +218,37 @@ export const AuthProvider = ({ children }) => {
         }
     },[isAuthenticated]);
 
+
+    
+
     // ###############
     
+    // return (
+    //     <AuthContext.Provider value={contextData}>
+    //         {/* {(loading && access) ? null : children} */}
+    //         {/* {currentUser && children} */}
+    //         {/* {children} */}
+    //         {/* {(!access) ? children : (access && currentUser) ? children : null} */}
+    //     </AuthContext.Provider>
+    // )
+
+
+    if (access && currentUser){
     return (
         <AuthContext.Provider value={contextData}>
-            {/* {(loading && access) ? null : children} */}
             {children}
         </AuthContext.Provider>
     )
+    }
+    else if (!access){
+        return (
+            <AuthContext.Provider value={contextData}>
+                {children}
+        </AuthContext.Provider>
+        )
+    }
+
+    
 }
 
 export const useAuth = () => {

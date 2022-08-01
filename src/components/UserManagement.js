@@ -11,38 +11,58 @@ import Sidebar from './Sidebar';
 const UserManagement = () => {
 
     const navigate = useNavigate()
-    const { access } = useAuth()
+    const { access, userRole } = useAuth()
     const [data, setData] = useState([]);
     const [removed, setRemoved] = useState(false);
 
-    useEffect(() => {
-        const listUsers = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
+    const [show, setShow] = useState(false)
+    const handleShow = () => setShow(true)
+    const handleClose = () => setShow(false)
+    // const [selectedItem, setSelectedItem] = useState()
 
-                try {
-                    const res = await axios.get('http://127.0.0.1:8000/auth/users/', config);
+    const [userData, setUserData] = useState({})
 
-                    setData(res.data)
-                    console.log(res.data)
 
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
+    const listUsers = async () => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                let url = ''
+                if(userRole === 'admin'){
+                    url = `http://127.0.0.1:8000/auth/users/`
+                }
+                else if(userRole === 'manager'){
+                    url = `http://127.0.0.1:8000/pracownik/`
+                }
+
+                const res = await axios.get(url, config);
+
+
+                // const res = await axios.get('http://127.0.0.1:8000/auth/users/', config);
+
+                setData(res.data)
+                console.log(res.data)
+
+            } catch (err) {
                 setData(null)
-                console.log("Blad")
+                console.log(err)
             }
-        };
+        } else {
+            setData(null)
+            console.log("Blad")
+        }
+    };
 
+   
 
+    useEffect(() => {
         listUsers()
     }, [access])
 
@@ -83,33 +103,9 @@ const UserManagement = () => {
         }
     }, [removed])
 
-    //     return(
-    //         <div className='container'>
-    //             <h1>ManageUsers</h1>
-    //             {/* <div className="col">
-    //                 <h1>Mi Casa</h1>
-    //                 {data.map(home => <div>{home.username}</div>)}
-    //             </div> */}
-    //             <ul>
-    //                 {data.map((item) => (
-    //                     <div key={item.id}>
-    //                         <a>{item.username}</a>
-    //                         <a href=''>Edit</a>
-    //                         <hr/>
-    //                     </div>
-    //                 ))}
-    //             </ul>
-    //         </div>
-    // )};
 
 
 
-    const [show, setShow] = useState(false)
-    const handleShow = () => setShow(true)
-    const handleClose = () => setShow(false)
-    // const [selectedItem, setSelectedItem] = useState()
-
-    const [userData, setUserData] = useState({})
 
 
 
@@ -117,7 +113,7 @@ const UserManagement = () => {
         <div className='container'>
             <h2>Zarządzaj użytkownikami</h2>
             <button
-                onClick={() => navigate('/admin/users/add/')}
+                onClick={() => navigate(`/${userRole}/users/add/`)}
                 type='button'
                 className='btn btn-primary mt-5 mb-3'
             >
@@ -153,7 +149,7 @@ const UserManagement = () => {
                                         type="button"
                                         className="btn btn-primary me-1"
                                         style={{width: '80px'}}
-                                        onClick={() => navigate(`/admin/users/edit/${item.id}`)}
+                                        onClick={() => navigate(`/${userRole}/users/edit/${item.id}`)}
                                     >
                                         EDYTUJ
                                     </button>

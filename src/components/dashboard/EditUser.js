@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext"
 
 const EditUser = () => {
 
-    const { access } = useAuth()
+    const { access, userRole } = useAuth()
     const navigate = useNavigate()
     const { uid } = useParams()
 
@@ -48,7 +48,26 @@ const EditUser = () => {
                 };
 
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/auth/users/${uid}/`, config);
+
+
+                    let url = ''
+                    if(userRole === 'admin'){
+                        url = `http://127.0.0.1:8000/auth/users/${uid}/`
+                    }
+                    else if(userRole === 'manager'){
+                        url = `http://127.0.0.1:8000/pracownik/${uid}/`
+                    }
+
+                    const res = await axios.get(url, config);
+
+
+                    // let res = ''
+                    // if(userRole == 'admin'){
+                    //     res = await axios.get(`http://127.0.0.1:8000/auth/users/${uid}/`, config);
+                    // }
+                    // else if(userRole == 'manager'){
+                    //     res = await axios.get(`http://127.0.0.1:8000/pracownik/${uid}/`, config);
+                    // }
 
                     setData(res.data)
                     console.log(res.data)
@@ -66,7 +85,7 @@ const EditUser = () => {
         if (uid) {
             getUser()
         }
-    }, [uid, access])
+    }, [uid, access, userRole])
 
 
 
@@ -108,6 +127,7 @@ const EditUser = () => {
             }
         })
     }
+    
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -128,7 +148,23 @@ const EditUser = () => {
             });
 
             try {
-                const res = await axios.put(`http://127.0.0.1:8000/auth/users/${uid}/`, body, config);
+                let url = ''
+                if(userRole === 'admin'){
+                    url = `http://127.0.0.1:8000/auth/users/${uid}/`
+                }
+                else if(userRole === 'manager'){
+                    url = `http://127.0.0.1:8000/pracownik/${uid}/`
+                }
+
+                const res = await axios.put(url, body, config);
+
+                // let res = ''
+                // if(userRole == 'admin'){
+                //     res = await axios.put(`http://127.0.0.1:8000/auth/users/${uid}/`, body, config);
+                // }
+                // else if(userRole == 'manager'){
+                //     res = await axios.put(`http://127.0.0.1:8000/pracownik/${uid}/`, body, config);
+                // }
 
                 console.log(res.data)
                 setAccountUpdated(true);
@@ -144,10 +180,17 @@ const EditUser = () => {
 
     useEffect(() => {
         if (accountUpdated) {
-            navigate('/admin/users/')
+            navigate(`/${userRole}/users/`)
         }
     }, [accountUpdated])
 
+
+    // const optionsDependingOnUserRole = () => {
+    //     if(userRole == 'admin'){
+    //         return()
+    //     }
+
+    // }
 
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
@@ -187,63 +230,68 @@ const EditUser = () => {
                         required
                     />
                 </div>
-                <div className="mb-3 form-check">
-                    <input
-                        type="checkbox"
-                        className="form-check-input"
-                        name="is_staff"
-                        // value={is_staff}
-                        checked={data.is_staff}
-                        onChange={e => onChange(e)}
 
-                    />
-                    <label
-                        className="form-check-label"
-                    >is_staff
-                    </label>
-                </div>
-                <div className="mb-3 form-check">
-                    <input
-                        type="checkbox"
-                        className="form-check-input"
-                        name="is_superuser"
-                        // value={is_superuser}
-                        // defaultChecked={data.is_superuser === "true"}
-                        checked={data.is_superuser}
-                        onChange={e => onChange(e)}
 
-                    />
-                    <label
-                        className="form-check-label"
-                    >is_superuser
-                    </label>
-                </div>
-                <div className="mb-3 form-check">
-                    <input
-                        type="checkbox"
-                        className="form-check-input"
-                        name="is_employee"
-                        // value={is_employee}
-                        checked={data.is_employee}
-                        onChange={e => onChange(e)}
+                {userRole === 'admin' ? 
+                    <div>
+                        <div className="mb-3 form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name="is_staff"
+                                // value={is_staff}
+                                checked={data.is_staff}
+                                onChange={e => onChange(e)}
 
-                    />
-                    <label
-                        className="form-check-label"
-                    >is_employee
-                    </label>
-                </div>
-                <div className="mb-3">
-                    <label className="FormControlSelect">Typ użytkownika</label>
-                    <select className="form-control" name='role' value={role} onChange={e => onChange(e)}>
-                        {options.map(option => (
-                            <option key={option.value} value={option.value}>
-                                {option.text}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                            />
+                            <label
+                                className="form-check-label"
+                            >is_staff
+                            </label>
+                        </div>
+                        <div className="mb-3 form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name="is_superuser"
+                                // value={is_superuser}
+                                // defaultChecked={data.is_superuser === "true"}
+                                checked={data.is_superuser}
+                                onChange={e => onChange(e)}
 
+                            />
+                            <label
+                                className="form-check-label"
+                            >is_superuser
+                            </label>
+                        </div>
+                        <div className="mb-3 form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name="is_employee"
+                                // value={is_employee}
+                                checked={data.is_employee}
+                                onChange={e => onChange(e)}
+
+                            />
+                            <label
+                                className="form-check-label"
+                            >is_employee
+                            </label>
+                        </div>
+                        <div className="mb-3">
+                            <label className="FormControlSelect">Typ użytkownika</label>
+                            <select className="form-control" name='role' value={role} onChange={e => onChange(e)}>
+                                {options.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.text}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div> : <></>
+                }
 
 
                 <div className='mb-3'>
@@ -270,7 +318,7 @@ const EditUser = () => {
                     />
                 </div>
                 <button className='btn btn-primary me-1' type='submit'>Edytuj</button>
-                <button className='btn btn-danger' onClick={() => navigate('/admin/users/')}>Anuluj</button>
+                <button className='btn btn-danger' onClick={() => navigate(`/${userRole}/users/`)}>Anuluj</button>
             </form>
         </div>
     );

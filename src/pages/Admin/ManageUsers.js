@@ -13,77 +13,83 @@ import './admin.css';
 const ManageUsers = () => {
 
     const navigate = useNavigate()
-    const { access } = useAuth()
-    const [data, setData] = useState([]);
-    const [removed, setRemoved] = useState(false);
+    const { access, currentUser, userRole } = useAuth()
+    // const [data, setData] = useState([]);
+    // const [removed, setRemoved] = useState(false);
 
-    useEffect(() => {
-        const listUsers = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
+    // ###########################################33
 
-                try {
-                    const res = await axios.get('http://127.0.0.1:8000/auth/users/', config);
+    // useEffect(() => {
+    //     const listUsers = async () => {
+    //         if (access) {
+    //             const config = {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': `JWT ${access}`,
+    //                     'Accept': 'application/json'
+    //                 }
+    //             };
 
-                    setData(res.data)
-                    console.log(res.data)
+    //             try {
+    //                 const res = await axios.get('http://127.0.0.1:8000/auth/users/', config);
 
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
-                }
-            } else {
-                setData(null)
-                console.log("Blad")
-            }
-        };
+    //                 setData(res.data)
+    //                 console.log(res.data)
 
-
-        listUsers()
-    }, [access])
+    //             } catch (err) {
+    //                 setData(null)
+    //                 console.log(err)
+    //             }
+    //         } else {
+    //             setData(null)
+    //             console.log("Blad")
+    //         }
+    //     };
 
 
-
-    const onDelete = async (id) => {
-        if (access) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
-                console.log(res.data)
-                setRemoved(true)
-
-            } catch (err) {
-                console.log(err)
-            }
-        } else {
-            console.log("Blad")
-        }
-    };
-
-    // if (removed) {
-    //     window.location.reload(false);
-    // }
+    //     listUsers()
+    // }, [access])
 
 
 
-    useEffect(() => {
-        if (removed) {
-            window.location.reload(false);
-        }
-    }, [removed])
+    // const onDelete = async (id) => {
+    //     if (access) {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `JWT ${access}`,
+    //                 'Accept': 'application/json'
+    //             }
+    //         };
+
+    //         try {
+    //             const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
+    //             console.log(res.data)
+    //             setRemoved(true)
+
+    //         } catch (err) {
+    //             console.log(err)
+    //         }
+    //     } else {
+    //         console.log("Blad")
+    //     }
+    // };
+
+
+    
+    // // if (removed) {
+    // //     window.location.reload(false);
+    // // }
+
+
+
+    // useEffect(() => {
+    //     if (removed) {
+    //         window.location.reload(false);
+    //     }
+    // }, [removed])
+
+    // ###############################################
 
     //     return(
     //         <div className='container'>
@@ -106,15 +112,16 @@ const ManageUsers = () => {
 
 
 
-    const [show, setShow] = useState(false)
-    const handleShow = () => setShow(true)
-    const handleClose = () => setShow(false)
+    // const [show, setShow] = useState(false)
+    // const handleShow = () => setShow(true)
+    // const handleClose = () => setShow(false)
     // const [selectedItem, setSelectedItem] = useState()
 
-    const [userData, setUserData] = useState({})
+    // const [userData, setUserData] = useState({})
 
 
-
+//  ###################################################################################################
+    
     //     return (
     //         <div className='container'>
     //             <h1>ManageUsers</h1>
@@ -207,24 +214,24 @@ const ManageUsers = () => {
     //     )
     // };
 
-
+    // ###################################################################################################
 
 
     return (
         <div className="content-wrap container-fluid" id="main">
-            <div className="main-content row row-offcanvas row-offcanvas-left">
-                <Sidebar />
+            <div className="main-content row row-offcanvas row-offcanvas-left full-screen">
+                <Sidebar role={userRole}/>
 
-                <div className="col main p-5">
+                <div className="col-auto col-md-9 col-lg-10 main p-5">
 
-                    <div>
-                    <p className="lead d-none d-sm-block">
-                        Add Employee Details and Records
-                    </p>
-                    <h2>Witaj, Jan !</h2>
+                    <div className='container'>
+                        <p className="lead d-none d-sm-block">
+                            Add Employee Details and Records
+                        </p>
+                        <h2>Witaj, {currentUser?.first_name} !</h2>
                     </div>
 
-                    <div className="row">
+                    <div>
                         {/* <div className="col-sm-6 col-md-12 py-2"> */}
                         <UserManagement />
                   

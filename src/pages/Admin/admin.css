@@ -38,3 +38,7 @@ body,
 }
 
 /* --------- end ManageUsers.js ------------- */
+
+.full-screen {
+    min-height: calc(100vh - 128px)
+}

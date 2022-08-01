@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from "../../context/AuthContext"
 
 const AddUser = () => {
 
     const navigate = useNavigate()
+    const { access, userRole } = useAuth()
 
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
-        username: 'manager123',
+        username: 'manager1231111',
         first_name: '',
         last_name: '',
         is_staff: true,
@@ -18,10 +20,10 @@ const AddUser = () => {
         password: 'zaq1@WSX',
         re_password: 'zaq1@WSX',
         phone: '',
-        role: 'manager',
+        // role: 'manager',
     });
 
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone, role } = formData;
+    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
 
@@ -32,15 +34,43 @@ const AddUser = () => {
             if (password === re_password) {
                 const config = {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `JWT ${access}`,
+                        'Accept': 'application/json',
                     }
                 };
+
+                let role = ''
+                if(userRole === 'admin'){
+                    role = 'manager'
+                }
+                else if(userRole === 'manager'){
+                    role = 'employee'
+                }
             
                 const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
                     email, password, re_password, phone, role });
 
                 try {
-                    const res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
+
+                    let url = ''
+                    if(userRole === 'admin'){
+                        url = `http://127.0.0.1:8000/auth/users/`
+                    }
+                    else if(userRole === 'manager'){
+                        url = `http://127.0.0.1:8000/pracownik/`
+                    }
+
+                    const res = await axios.post(url, body, config);
+
+
+                    // let res = ''
+                    // if(userRole == 'admin'){
+                    //     res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
+                    // }
+                    // else if(userRole == 'manager'){
+                    //     res = await axios.post(`http://127.0.0.1:8000/pracownik/`, body, config);
+                    // }
         
                     console.log(res.data)
                     setAccountCreated(true);
@@ -65,7 +95,7 @@ const AddUser = () => {
 
     useEffect(() => {
         if (accountCreated) {
-            navigate('/admin/users/')
+            navigate(`/${userRole}/users/`)
         }
     },[accountCreated])
 
@@ -122,7 +152,7 @@ const AddUser = () => {
                     />
                 </div>
                 <button className='btn btn-primary me-1' type='submit'>Utwórz</button>
-                <button className='btn btn-danger' onClick={() => navigate('/admin/users/')}>Anuluj</button>
+                <button className='btn btn-danger' onClick={() => navigate(`/${userRole}/users/`)}>Anuluj</button>
             </form>
         </div>
     );

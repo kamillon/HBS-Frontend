@@ -20,12 +20,18 @@ import EmployeeDashboard from './pages/Employee/EmployeeDashboard';
 import UserDashboard from './pages/User/UserDashboard';
 import ManagerDashboard from './pages/Manager/ManagerDashboard';
 import ManageUsers from './pages/Admin/ManageUsers';
-import AddUser from './pages/Admin/AddUser';
-import EditUser from './pages/Admin/EditUser';
+import AddUser from './components/dashboard/AddUser';
+import EditUser from './components/dashboard/EditUser';
 import Hairdresser from './pages/Hairdresser';
 import Barber from './pages/Barber';
 import BeautySalon from './pages/BeautySalon';
 import HairSalonDetail from './pages/HairSalonDetail';
+import ManageEmployee from './pages/Manager/ManageEmployee';
+import Salons from './components/dashboard/Salons';
+import AddSalon from './components/dashboard/AddSalon';
+import EditSalon from './components/dashboard/EditSalon';
+import AccountSettings from './components/dashboard/AccountSettings';
+import ChangeEmailConfirm from './components/dashboard/ChangeEmailConfirm';
 
 const ROLES = {
   "user": "user",
@@ -54,10 +60,12 @@ function App() {
               <Route exact path='/barber' element={<Barber/>} />
               <Route exact path='/beauty-salon' element={<BeautySalon/>} />
               <Route exact path='/unauthorized' element={<Unauthorized/>} />
+              <Route exact path='/email/reset/confirm/:uid/:token' element={<ChangeEmailConfirm/>} />
               {/* <Route exact path='/admin/dashboard' element={<RequireAuth><AdminDashboard/></RequireAuth>} /> */}
 
               <Route element={<RequireAuth allowedRole={ROLES.user}/>}>
                 <Route exact path='/user/' element={<UserDashboard/>} />
+                <Route path='/user/account-settings/' element={<AccountSettings/>} />
               </Route>
 
               <Route element={<RequireAuth allowedRole={ROLES.admin}/>}>
@@ -65,15 +73,27 @@ function App() {
                 <Route path='/admin/users/' element={<ManageUsers/>} />
                 <Route path='/admin/users/add/' element={<AddUser/>} />
                 <Route path='/admin/users/edit/:uid' element={<EditUser/>} />
+                <Route path='/admin/salons/' element={<Salons/>} />
+                <Route path='/admin/salons/add/' element={<AddSalon/>} />
+                <Route path='/admin/salons/edit/:uid' element={<EditSalon/>} />
+                <Route path='/admin/account-settings/' element={<AccountSettings/>} />
 
               </Route>
 
               <Route element={<RequireAuth allowedRole={ROLES.employee}/>}>
                 <Route exact path='/employee/' element={<EmployeeDashboard/>} />
+                <Route path='/employee/account-settings/' element={<AccountSettings/>} />
               </Route>
 
               <Route element={<RequireAuth allowedRole={ROLES.manager}/>}>
                 <Route exact path='/manager/' element={<ManagerDashboard/>} />
+                <Route path='/manager/users/' element={<ManageEmployee/>} />
+                <Route path='/manager/users/add/' element={<AddUser/>} />
+                <Route path='/manager/users/edit/:uid' element={<EditUser/>} />
+                <Route path='/manager/salons/' element={<Salons/>} />
+                {/* <Route path='/manager/salons/add/' element={<AddSalon/>} /> */}
+                <Route path='/manager/salons/edit/:uid' element={<EditSalon/>} />
+                <Route path='/manager/account-settings/' element={<AccountSettings/>} />
               </Route>
 
               {/* <Route element={<RequireAuth/>}>
