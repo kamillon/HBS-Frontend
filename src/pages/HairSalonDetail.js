@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import HairdressingSalonList from '../components/HairdressingSalonList';
 import ListServices from '../components/ListServices';
-
 
 const HairSalonDetail = (props) => {
     const navigate = useNavigate()
@@ -13,7 +11,6 @@ const HairSalonDetail = (props) => {
 
     useEffect(() => {
         const listServices = async () => {
-
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,13 +30,8 @@ const HairSalonDetail = (props) => {
             }
         };
 
-
         listServices()
     }, [])
-
-
-
-
 
     return (
         <div>
@@ -47,8 +39,10 @@ const HairSalonDetail = (props) => {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md'
-                        style={{backgroundImage: `url('https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
-                        height: '60vh'}}>
+                            style={{
+                                backgroundImage: `url('https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
+                                height: '60vh'
+                            }}>
                             {/* <Link to='/'>
                                 <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="..." />
                             </Link> */}
@@ -147,7 +141,6 @@ const HairSalonDetail = (props) => {
                                             </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td className='w-50'>
                                             <div>
@@ -160,7 +153,6 @@ const HairSalonDetail = (props) => {
                                             </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td className='w-50'>
                                             <div>
@@ -173,7 +165,6 @@ const HairSalonDetail = (props) => {
                                             </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td className='w-50'>
                                             <div>
@@ -186,7 +177,6 @@ const HairSalonDetail = (props) => {
                                             </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td className='w-50'>
                                             <div>
@@ -199,7 +189,6 @@ const HairSalonDetail = (props) => {
                                             </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td className='w-50'>
                                             <div>
@@ -212,7 +201,6 @@ const HairSalonDetail = (props) => {
                                             </div>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td className='w-50'>
                                             <div>
@@ -230,8 +218,6 @@ const HairSalonDetail = (props) => {
                         </div>
                     </div>
 
-
-
                     {/* {data.map((item) => (
                     <ListServices 
                     key={item.id} 
@@ -242,8 +228,6 @@ const HairSalonDetail = (props) => {
                     cena={item.cena}
                     />
                 ))} */}
-
-
 
                 </div>
             </div>

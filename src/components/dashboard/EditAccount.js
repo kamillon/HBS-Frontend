@@ -123,9 +123,9 @@ const EditAccount = () => {
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
             <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
-                <h3>General Information</h3>
+                <h3>Informacje podstawowe</h3>
                 {/* <p>Create your Account</p> */}
-                <p>Witaj, {currentUser.first_name} {currentUser.last_name} !</p>
+                {/* <p>Witaj, {currentUser.first_name} {currentUser.last_name} !</p> */}
                 <div className='mb-3'>
                     <input
                         className='form-control'

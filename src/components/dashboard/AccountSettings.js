@@ -71,7 +71,7 @@ const AccountSettings = () => {
 
                     <div className="row">
                         <div className="col-md-8">
-                            <h2>Account Settings</h2>
+                            <h2>Ustawienia konta</h2>
                             {/* <p>Witaj, {currentUser.first_name} {currentUser.last_name} !</p> */}
                             <EditAccount/>
                         </div>

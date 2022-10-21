@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import wykrzyknik from '../../images/wykrzyknik.png';
 
 const ChangePassword = ({dataUser}) => {
 
@@ -12,6 +15,10 @@ const ChangePassword = ({dataUser}) => {
     const [accountUpdated, setAccountUpdated] = useState(false);
 
     const { email } = dataUser;
+
+    const [show, setShow] = useState(false)
+    const handleShow = () => setShow(true)
+    const handleClose = () => setShow(false)
 
     // useEffect(() => {
     //     const getUser = async () => {
@@ -80,11 +87,44 @@ const ChangePassword = ({dataUser}) => {
 
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form'>
                 <h3>Zmień hasło</h3>
-                <p>Możesz zmienić swoje hasło, my wyślemy</p>
-                <button className='btn btn-primary me-1' type='submit'>Zmień hasło</button>
+                <p>Zmień hasło do swojego konta</p>
+                {/* <button className='btn btn-primary me-1' type='submit'>Zmień hasło</button> */}
+                <button
+                    type="button"
+                    className="btn btn-primary me-1"
+                    onClick={() => {
+                        handleShow();
+                    }}
+                >
+                    Zmień hasło
+                </button>
             </form>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Zmiana hasła</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className='text-center'>
+                        {/* <img src={wykrzyknik} style={{width: "15%"}} alt="" /> */}
+                        <h4>Jesteś pewny?</h4>
+                        <p>Czy na pewno chesz zmienić hasło?</p>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Anuluj
+                    </Button>
+                    <Button variant="danger"
+                        onClick={(e) => {
+                            onSubmit(e)
+                            handleClose()
+                        }}>
+                        Zmień
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const AddUser = () => {
 
@@ -23,65 +25,101 @@ const AddUser = () => {
         // role: 'manager',
     });
 
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData;
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
+    const [errors, setErrors] = useState({})
+
+
+    // const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData;
+
+    // const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
+   
+    const onChange = e =>{
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value ?? e.target.checked
+
+        })
+        
+        if(!!errors[e.target.name]){
+            setErrors({
+                ...errors,
+                [e.target.name]: null
+            })
+        }
+    }
+
+
+    const validateForm = () => {
+        const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData
+        const newErrors = {}
+        
+        if(!first_name || first_name === '') newErrors.first_name = 'Nieprawidłowa nazwa'
+
+        return newErrors
+    }
 
     const onSubmit = async e => {
         e.preventDefault();
-
-        if (localStorage.getItem('isAuthenticated')) {
-            if (password === re_password) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json',
-                    }
-                };
-
-                let role = ''
-                if(userRole === 'admin'){
-                    role = 'manager'
-                }
-                else if(userRole === 'manager'){
-                    role = 'employee'
-                }
-            
-                const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
-                    email, password, re_password, phone, role });
-
-                try {
-
-                    let url = ''
-                    if(userRole === 'admin'){
-                        url = `http://127.0.0.1:8000/auth/users/`
-                    }
-                    else if(userRole === 'manager'){
-                        url = `http://127.0.0.1:8000/pracownik/`
-                    }
-
-                    const res = await axios.post(url, body, config);
-
-
-                    // let res = ''
-                    // if(userRole == 'admin'){
-                    //     res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
-                    // }
-                    // else if(userRole == 'manager'){
-                    //     res = await axios.post(`http://127.0.0.1:8000/pracownik/`, body, config);
-                    // }
-        
-                    console.log(res.data)
-                    setAccountCreated(true);
-                    
-                } 
-                catch(error) {
-                    console.log(error)
-                }
-
-            }
+        const formErrors = validateForm()
+        if(Object.keys(formErrors).length > 0){
+            setErrors(formErrors)
         }
+        else{
+            console.log('form submitted')
+        }
+
+        // if (localStorage.getItem('isAuthenticated')) {
+        //     if (password === re_password) {
+        //         const config = {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `JWT ${access}`,
+        //                 'Accept': 'application/json',
+        //             }
+        //         };
+
+        //         let role = ''
+        //         if(userRole === 'admin'){
+        //             role = 'manager'
+        //         }
+        //         else if(userRole === 'manager'){
+        //             role = 'employee'
+        //         }
+            
+        //         const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
+        //             email, password, re_password, phone, role });
+
+        //         try {
+
+        //             let url = ''
+        //             if(userRole === 'admin'){
+        //                 url = `http://127.0.0.1:8000/auth/users/`
+        //             }
+        //             else if(userRole === 'manager'){
+        //                 url = `http://127.0.0.1:8000/pracownik/`
+        //             }
+
+        //             const res = await axios.post(url, body, config);
+
+
+        //             // let res = ''
+        //             // if(userRole == 'admin'){
+        //             //     res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
+        //             // }
+        //             // else if(userRole == 'manager'){
+        //             //     res = await axios.post(`http://127.0.0.1:8000/pracownik/`, body, config);
+        //             // }
+        
+        //             console.log(res.data)
+        //             setAccountCreated(true);
+                    
+        //         } 
+        //         catch(error) {
+        //             console.log(error)
+        //         }
+
+        //     }
+        // }
     };
 
 
@@ -99,62 +137,91 @@ const AddUser = () => {
         }
     },[accountCreated])
 
-    return (
+    return(
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
-            <h1 className='mb-5'>Utwórz konto</h1>
-            {/* <p>Create your Account</p> */}
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='First Name*'
-                        name='first_name'
-                        value={first_name}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Last Name*'
-                        name='last_name'
-                        value={last_name}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
 
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='email'
-                        placeholder='Email*'
-                        name='email'
-                        value={email}
-                        onChange={e => onChange(e)}
-                        required
+
+            <Form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
+                <h1 className='mb-5'>Utwórz konto</h1>
+                <Form.Group className="mb-3" controlId="inputFirstName">
+                    <Form.Label>Imię*</Form.Label>
+                    <Form.Control 
+                    type="text" 
+                    placeholder="Imię*"
+                    className='form-control'
+                    name='first_name'
+                    value={formData.first_name}
+                    onChange={e => onChange(e)}
+                    isInvalid={!!errors.first_name}
+                    // required
                     />
-                </div>
+                    <Form.Control.Feedback type='invalid'>
+                        {errors.first_name}
+                    </Form.Control.Feedback>
+                </Form.Group>
+                {/* <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Imię*</Form.Label>
+                    <Form.Control 
+                  
+                    />
+                </Form.Group> */}
+
+
+                <Form.Group className="mb-3" controlId="inputLastName">
+                    <Form.Label>Nazwisko*</Form.Label>
+                    <Form.Control 
+                    className='form-control'
+                    // id='inputLastName'
+                    type='text'
+                    placeholder='Nazwisko*'
+                    name='last_name'
+                    value={formData.last_name}
+                    onChange={e => onChange(e)}
+                    />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="inputEmail">
+                    <Form.Label>Email*</Form.Label>
+                    <Form.Control 
+                  className='form-control'
+                    // id='inputEmail'
+                    type='email'
+                    placeholder='Email*'
+                    name='email'
+                    value={formData.email}
+                    onChange={e => onChange(e)}
+                    />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="inputPhone">
+                    <Form.Label>Telefon*</Form.Label>
+                    <Form.Control 
+                    className='form-control'
+                    // id='inputPhone'
+                    type='text'
+                    placeholder='Telefon*'
+                    name='phone'
+                    maxLength='9'
+                    value={formData.phone}
+                    onChange={e => onChange(e)}
+                  
+                    />
+                </Form.Group>
+           
+
+                <Button variant="primary me-1" type="submit">
+                    Submit
+                </Button>
+                <Button variant="danger" onClick={() => navigate(`/${userRole}/users/`)}>
+                    Anuluj
+                </Button>
                 
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Phone*'
-                        name='phone'
-                        maxLength='9'
-                        value={phone}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-                <button className='btn btn-primary me-1' type='submit'>Utwórz</button>
-                <button className='btn btn-danger' onClick={() => navigate(`/${userRole}/users/`)}>Anuluj</button>
-            </form>
+
+
+
+            </Form>
         </div>
+
     );
 };
 
