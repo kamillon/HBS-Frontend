@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CardComponent from '../components/CardComponent';
 
-const Hairdresser = () => {
+const HairSalon = () => {
 
     const navigate = useNavigate()
     const [data, setData] = useState([]);
@@ -74,4 +74,4 @@ const Hairdresser = () => {
     )
 };
 
-export default Hairdresser;
+export default HairSalon;

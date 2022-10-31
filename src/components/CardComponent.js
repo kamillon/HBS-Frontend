@@ -23,7 +23,7 @@ const CardComponent = (props) => {
                         <button
                             type='button'
                             className="btn btn-primary"
-                            onClick={() => navigate(`/hairdresser/${props.id}`)}
+                            onClick={() => navigate(`/hairsalon/${props.id}`)}
                         >
                             Wybierz
                         </button>

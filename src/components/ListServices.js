@@ -38,7 +38,7 @@ const ListServices = (props) => {
                                     <button
                                         type="button"
                                         className="btn btn-primary me-1"
-                                        onClick={() => navigate(`/hairdresser/${salonId}/umow/${props.id}/`)}
+                                        onClick={() => navigate(`/hairsalon/${salonId}/umow/${props.id}/`)}
                                     >
                                         UMÓW
                                     </button>
@@ -53,7 +53,7 @@ const ListServices = (props) => {
                             <button
                                 type="button"
                                 className="btn btn-primary me-1"
-                                onClick={() => navigate(`/hairdresser/${salonId}/umow/${props.id}/`)}
+                                onClick={() => navigate(`/hairsalon/${salonId}/umow/${props.id}/`)}
                             >
                                 UMÓW
                             </button>

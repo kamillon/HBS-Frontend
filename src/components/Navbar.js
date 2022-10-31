@@ -74,13 +74,10 @@ const Navbar = () => {
                                 <Link className='nav-link' to='/'>Home</Link>
                             </li>
                             <li className='nav-item'>
-                                <Link className='nav-link' to='/hairdresser'>Fryzjer</Link>
+                                <Link className='nav-link' to='/hairsalon'>Fryzjer</Link>
                             </li>
                             <li className='nav-item'>
                                 <Link className='nav-link' to='/barber'>Barber</Link>
-                            </li>
-                            <li className='nav-item'>
-                                <Link className='nav-link' to='/beauty-salon'>Salon kosmetyczny</Link>
                             </li>
                             {/* {localStorage.getItem('isAuthenticated') ? authLinks() : guestLinks()} */}
                             {/* {access ? authLinks() : guestLinks()} */}

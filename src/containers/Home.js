@@ -7,7 +7,6 @@ import booking from '../images/booking.svg';
 import building from '../images/building.svg';
 import fryzjerIcon from '../images/fryzjer1.png';
 import barberIcon from '../images/barber1.png';
-import beautySalonIcon from '../images/beauty1.png';
 
 
 
@@ -108,7 +107,7 @@ const Home = () => {
                 <div className='container'>
                     <div className='row g-4'>
                         <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
-                            <Link to='/hairdresser' style={{ textDecoration: 'none', color: 'black' }}>
+                            <Link to='/hairsalon' style={{ textDecoration: 'none', color: 'black' }}>
                                 <div className="card border-0 bg-light" style={{ width: "12rem" }}>
                                     <img src={fryzjerIcon} className="card-img-top p-4" alt="..." />
                                     <div className="card-body text-center">
@@ -128,15 +127,16 @@ const Home = () => {
                             </Link>
                         </div>
                         <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
-                            <Link to='/beauty-salon' style={{ textDecoration: 'none', color: 'black' }}>
+                            <Link to='/barber' style={{ textDecoration: 'none', color: 'black' }}>
                                 <div className="card border-0 bg-light" style={{ width: "12rem" }}>
-                                    <img src={beautySalonIcon} className="card-img-top p-4" alt="..." />
+                                    <img src={barberIcon} className="card-img-top p-4" alt="..." />
                                     <div className="card-body text-center">
-                                        <h4>Kosmetologia</h4>
+                                        <h4>Barber</h4>
                                     </div>
                                 </div>
                             </Link>
                         </div>
+                       
                     </div>
                 </div>
             </section>
