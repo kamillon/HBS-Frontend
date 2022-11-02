@@ -18,7 +18,7 @@ const ListServices = (props) => {
     }
     
     return (
-        <div className='container '>
+        <div>
            <table className="table table-hover">
                 <tbody>
                     <tr key={props.id}>
@@ -34,11 +34,17 @@ const ListServices = (props) => {
                                     <p className="fw-bold mb-1">{props.cena} zł</p>
                                     <p className="text-muted mb-0">{convertMinsToTime(props.czas)}</p>
                                 </div>
-                                <div className="col-md-6">
+                                <div className="col-md-6 mt-2 mt-md-0">
                                     <button
                                         type="button"
-                                        className="btn btn-primary me-1"
-                                        onClick={() => navigate(`/hairsalon/${salonId}/booking`,{serviceId: props.id})}
+                                        className="btn btn-primary"
+                                        onClick={() => navigate(`/hairsalon/${salonId}/booking`,{state:{
+                                            serviceId: props.id,
+                                            nazwa_uslugi: props.nazwa_uslugi,
+                                            opis: props.opis,
+                                            cena: props.cena,
+                                            czas: props.czas
+                                        }})}
                                     >
                                         UMÓW
                                     </button>

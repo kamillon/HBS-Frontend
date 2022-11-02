@@ -9,7 +9,6 @@ import ResetPassword from './containers/ResetPassword';
 import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage'
 import ErrorPage from './pages/ErrorPage';
 import {AuthProvider} from './context/AuthContext';
 import { Layout } from './components/Layout'
@@ -54,7 +53,6 @@ function App() {
               <Route exact path='/reset-password' element={<ResetPassword/>} />
               <Route exact path='/password/reset/confirm/:uid/:token' element={<ResetPasswordConfirm/>} />
               <Route exact path='/activate/:uid/:token' element={<Activate/>} />
-              <Route exact path='/home' element={<HomePage/>} />
               <Route exact path='/hairsalon' element={<HairSalon/>} />
               <Route path='hairsalon/:salonId' element={<HairSalonDetail/>} />
               <Route path='hairsalon/:salonId/booking' element={<Booking/>} />

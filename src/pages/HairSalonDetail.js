@@ -7,7 +7,8 @@ import ListServices from '../components/ListServices';
 const HairSalonDetail = (props) => {
     const navigate = useNavigate()
     const { salonId } = useParams()
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([])
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         const listServices = async () => {
@@ -32,6 +33,13 @@ const HairSalonDetail = (props) => {
 
         listServices()
     }, [])
+    
+    const filteredServices = data.filter(service => parseInt(service.salonID) === parseInt(salonId))
+    const searchFilteredServices = filteredServices.filter(item => (
+        search.toLowerCase() === ''
+        ? item
+        : item.nazwa_uslugi.toLowerCase().includes(search)
+    ))
 
     return (
         <div>
@@ -59,10 +67,28 @@ const HairSalonDetail = (props) => {
             <div className='container'>
                 <div className='row'>
                     <div className="col-md-8">
-                        <h5 className='ms-5 mb-3'>
-                            USŁUGI
-                        </h5>
-                        {data.filter(service => parseInt(service.salonID) === parseInt(salonId)).map((item) => (
+                        <div className='row'>
+                            <div className='col-md-6'>
+                                <h5 className='ms-4 mb-3'>
+                                    USŁUGI
+                                </h5>
+                            </div>
+
+
+                            <div className='col-md-6 mb-4'>
+                                <div className='search-bar'>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Wyszukaj usługę"
+                                        onChange={(e) => setSearch(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {searchFilteredServices.length 
+                        ? searchFilteredServices.map((item) => (
                             <ListServices
                                 key={item.id}
                                 id={item.id}
@@ -71,7 +97,10 @@ const HairSalonDetail = (props) => {
                                 czas={item.czas}
                                 cena={item.cena}
                             />
-                        ))}
+                        ))
+                        :
+                        <p className='ms-4 mb-3'>Nie znaleziono usług</p>
+                    }
 
                     </div>
                     <div className="col-md-4 bg-light">
