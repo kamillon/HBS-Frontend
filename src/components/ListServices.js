@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const ListServices = (props) => {
     const navigate = useNavigate()
-    const {salonId} = useParams()
+    const { salonId } = useParams()
 
     const convertMinsToTime = (mins) => {
         let hours = Math.floor(mins / 60);
@@ -38,7 +38,7 @@ const ListServices = (props) => {
                                     <button
                                         type="button"
                                         className="btn btn-primary me-1"
-                                        onClick={() => navigate(`/hairsalon/${salonId}/umow/${props.id}/`)}
+                                        onClick={() => navigate(`/hairsalon/${salonId}/booking`,{serviceId: props.id})}
                                     >
                                         UMÓW
                                     </button>
@@ -53,7 +53,7 @@ const ListServices = (props) => {
                             <button
                                 type="button"
                                 className="btn btn-primary me-1"
-                                onClick={() => navigate(`/hairsalon/${salonId}/umow/${props.id}/`)}
+                                onClick={() => navigate(`/hairsalon/${salonId}/booking/${props.id}/`)}
                             >
                                 UMÓW
                             </button>

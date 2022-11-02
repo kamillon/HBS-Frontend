@@ -31,6 +31,7 @@ import AddSalon from './components/dashboard/AddSalon';
 import EditSalon from './components/dashboard/EditSalon';
 import AccountSettings from './components/dashboard/AccountSettings';
 import ChangeEmailConfirm from './components/dashboard/ChangeEmailConfirm';
+import Booking from './pages/Booking';
 
 const ROLES = {
   "user": "user",
@@ -55,7 +56,8 @@ function App() {
               <Route exact path='/activate/:uid/:token' element={<Activate/>} />
               <Route exact path='/home' element={<HomePage/>} />
               <Route exact path='/hairsalon' element={<HairSalon/>} />
-              <Route path='hairsalon/:id' element={<HairSalonDetail/>} />
+              <Route path='hairsalon/:salonId' element={<HairSalonDetail/>} />
+              <Route path='hairsalon/:salonId/booking' element={<Booking/>} />
               <Route exact path='/barber' element={<Barber/>} />
               <Route exact path='/unauthorized' element={<Unauthorized/>} />
               <Route exact path='/email/reset/confirm/:uid/:token' element={<ChangeEmailConfirm/>} />

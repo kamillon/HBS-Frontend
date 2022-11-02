@@ -62,7 +62,7 @@ const HairSalonDetail = (props) => {
                         <h5 className='ms-5 mb-3'>
                             USŁUGI
                         </h5>
-                        {data.map((item) => (
+                        {data.filter(service => parseInt(service.salonID) === parseInt(salonId)).map((item) => (
                             <ListServices
                                 key={item.id}
                                 id={item.id}

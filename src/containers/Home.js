@@ -105,8 +105,8 @@ const Home = () => {
 
             <section className='py-5 bg-light'>
                 <div className='container'>
-                    <div className='row g-4'>
-                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                    <div className='row'>
+                        <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
                             <Link to='/hairsalon' style={{ textDecoration: 'none', color: 'black' }}>
                                 <div className="card border-0 bg-light" style={{ width: "12rem" }}>
                                     <img src={fryzjerIcon} className="card-img-top p-4" alt="..." />
@@ -116,7 +116,7 @@ const Home = () => {
                                 </div>
                             </Link>
                         </div>
-                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
+                        <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
                             <Link to='/barber' style={{ textDecoration: 'none', color: 'black' }}>
                                 <div className="card border-0 bg-light" style={{ width: "12rem" }}>
                                     <img src={barberIcon} className="card-img-top p-4" alt="..." />
@@ -125,18 +125,7 @@ const Home = () => {
                                     </div>
                                 </div>
                             </Link>
-                        </div>
-                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
-                            <Link to='/barber' style={{ textDecoration: 'none', color: 'black' }}>
-                                <div className="card border-0 bg-light" style={{ width: "12rem" }}>
-                                    <img src={barberIcon} className="card-img-top p-4" alt="..." />
-                                    <div className="card-body text-center">
-                                        <h4>Barber</h4>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-                       
+                        </div>  
                     </div>
                 </div>
             </section>

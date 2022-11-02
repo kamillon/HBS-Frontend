@@ -11,7 +11,7 @@ const HairSalon = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        const listUsers = async () => {
+        const listSalons = async () => {
 
             const config = {
                 headers: {
@@ -33,7 +33,7 @@ const HairSalon = () => {
         };
 
 
-        listUsers()
+        listSalons()
     }, [])
 
     return (
@@ -43,7 +43,7 @@ const HairSalon = () => {
                     <div className='row'>
                         <div className='col-md'>
                             <Link to='/'>
-                                <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="..." />
+                                <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="" />
                             </Link>
                         </div>
                         <div className='col-md'>
@@ -56,9 +56,9 @@ const HairSalon = () => {
                 </div>
             </section>
             <div className='container'>
-                <div className='row'>
+                <div className='row pt-5'>
                     {data.map((item) => (
-                        <div className='col-sm-6 col-md-4 col-lg-3 d-flex align-self-stretch' key={item.id} >
+                        <div className='col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch' key={item.id} >
                             <CardComponent
                                 id={item.id}
                                 title={item.nazwa}

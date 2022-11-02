@@ -70,12 +70,12 @@ const AccountSettings = () => {
                     </div> */}
 
                     <div className="row">
-                        <div className="col-md-8">
+                        <div className="col-lg-8">
                             <h2>Ustawienia konta</h2>
                             {/* <p>Witaj, {currentUser.first_name} {currentUser.last_name} !</p> */}
                             <EditAccount/>
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-lg-4">
                             <ChangePassword dataUser={data}/>
                             <ChangeEmail dataUser={data}/>
                         </div>

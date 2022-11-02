@@ -10,7 +10,7 @@ const CardComponent = (props) => {
 
     return (
         <>
-            <div className="card shadow-sm my-5 mx-2">
+            <div className="card shadow-sm my-5 mx-2" onClick={() => navigate(`/hairsalon/${props.id}`)} style={{ cursor: "pointer" }}>
                 <img
                     src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png"
                     className="card-img-top card-img"
