@@ -12,7 +12,7 @@ const AddUser = () => {
 
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
-        username: 'manager1231112',
+        username: 'salon_owner1231112',
         first_name: '',
         last_name: '',
         is_staff: true,
@@ -22,7 +22,7 @@ const AddUser = () => {
         password: 'zaq1@WSX',
         re_password: 'zaq1@WSX',
         phone: '',
-        // role: 'manager',
+        // role: 'salon_owner',
     });
 
 
@@ -80,9 +80,9 @@ const AddUser = () => {
 
                 let role = ''
                 if(userRole === 'admin'){
-                    role = 'manager'
+                    role = 'salon_owner'
                 }
-                else if(userRole === 'manager'){
+                else if(userRole === 'salon_owner'){
                     role = 'employee'
                 }
             

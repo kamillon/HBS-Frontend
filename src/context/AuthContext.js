@@ -15,9 +15,13 @@ export const AuthProvider = ({ children }) => {
     // const [user, setUser] = useState(() => localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null)
     // const [currentUser, setCurrentUser] = useState(() => localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')) : null)
     const [currentUser, setCurrentUser] = useState(null)
-    const [userRole, setUserRole] = useState(() => localStorage.getItem('userRole') ? JSON.parse(localStorage.getItem('userRole')) : null)
+    // const [userRole, setUserRole] = useState(() => localStorage.getItem('userRole') ? JSON.parse(localStorage.getItem('userRole')) : null)
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('isAuthenticated') ? JSON.parse(localStorage.getItem('isAuthenticated')) : false)
+
+
+    const [userRole, setUserRole] = useState(null)
+
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -58,12 +62,12 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(null)
         setLoading(true)
         setIsAuthenticated(false)
-        setUserRole(null)
+        // setUserRole(null)
         localStorage.removeItem('access')
         localStorage.removeItem('refresh')
         localStorage.removeItem('currentUser')
         localStorage.removeItem('isAuthenticated')
-        localStorage.removeItem('userRole')
+        // localStorage.removeItem('userRole')
         localStorage.clear();
         navigate('/', {replace:true})
         
@@ -140,22 +144,25 @@ export const AuthProvider = ({ children }) => {
                 const res = await axios.get('http://127.0.0.1:8000/auth/users/me/', config);
         
                 // localStorage.setItem('currentUser', JSON.stringify(res.data));
-                localStorage.setItem('userRole', JSON.stringify(res.data.role));
-                setUserRole(res.data.role)
+                // localStorage.setItem('userRole', JSON.stringify(res.data.role));
+                // setUserRole(res.data.role)
                 setCurrentUser(res.data)
+                setUserRole(res.data.role)
                 // console.log(res.data)
             } catch (err) {
                 // localStorage.removeItem('currentUser')
-                localStorage.removeItem('userRole')
-                setUserRole(null)
+                // localStorage.removeItem('userRole')
+                // setUserRole(null)
                 setCurrentUser(null)
+                setUserRole(null)
                 // console.log(err)
             }
         } else {
             // localStorage.removeItem('currentUser')
-            localStorage.removeItem('userRole')
-            setUserRole(null)
+            // localStorage.removeItem('userRole')
+            // setUserRole(null)
             setCurrentUser(null)
+            setUserRole(null)
             // console.log("Blad")
         }
     };

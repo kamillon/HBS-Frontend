@@ -50,13 +50,15 @@ const EditUser = () => {
                 try {
 
 
-                    let url = ''
-                    if(userRole === 'admin'){
-                        url = `http://127.0.0.1:8000/auth/users/${uid}/`
-                    }
-                    else if(userRole === 'manager'){
-                        url = `http://127.0.0.1:8000/pracownik/${uid}/`
-                    }
+                    // let url = ''
+                    // if(userRole === 'admin'){
+                    //     url = `http://127.0.0.1:8000/auth/users/${uid}/`
+                    // }
+                    // else if(userRole === 'salon_owner'){
+                    //     url = `http://127.0.0.1:8000/pracownik/${uid}/`
+                    // }
+
+                    const url = `http://127.0.0.1:8000/auth/users/${uid}/`
 
                     const res = await axios.get(url, config);
 
@@ -65,7 +67,7 @@ const EditUser = () => {
                     // if(userRole == 'admin'){
                     //     res = await axios.get(`http://127.0.0.1:8000/auth/users/${uid}/`, config);
                     // }
-                    // else if(userRole == 'manager'){
+                    // else if(userRole == 'salon_owner'){
                     //     res = await axios.get(`http://127.0.0.1:8000/pracownik/${uid}/`, config);
                     // }
 
@@ -92,9 +94,9 @@ const EditUser = () => {
     const options = [
         { value: '', text: '--Choose an option--' },
         { value: 'admin', text: 'admin' },
-        { value: 'user', text: 'klient' },
+        { value: 'customer', text: 'klient' },
         { value: 'employee', text: 'pracownik' },
-        { value: 'manager', text: 'właściciel salonu' },
+        { value: 'salon_owner', text: 'właściciel salonu' },
     ];
 
 
@@ -148,13 +150,15 @@ const EditUser = () => {
             });
 
             try {
-                let url = ''
-                if(userRole === 'admin'){
-                    url = `http://127.0.0.1:8000/auth/users/${uid}/`
-                }
-                else if(userRole === 'manager'){
-                    url = `http://127.0.0.1:8000/pracownik/${uid}/`
-                }
+                // let url = ''
+                // if(userRole === 'admin'){
+                //     url = `http://127.0.0.1:8000/auth/users/${uid}/`
+                // }
+                // else if(userRole === 'salon_owner'){
+                //     url = `http://127.0.0.1:8000/pracownik/${uid}/`
+                // }
+
+                const url = `http://127.0.0.1:8000/auth/users/${uid}/`
 
                 const res = await axios.put(url, body, config);
 
@@ -162,7 +166,7 @@ const EditUser = () => {
                 // if(userRole == 'admin'){
                 //     res = await axios.put(`http://127.0.0.1:8000/auth/users/${uid}/`, body, config);
                 // }
-                // else if(userRole == 'manager'){
+                // else if(userRole == 'salon_owner'){
                 //     res = await axios.put(`http://127.0.0.1:8000/pracownik/${uid}/`, body, config);
                 // }
 

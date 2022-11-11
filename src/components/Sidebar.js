@@ -63,7 +63,7 @@ const Sidebar = (props) => {
                         </li>
                     </div>
                 )
-            case "manager":
+            case "salon_owner":
                 return (
                     <div>
                         <li className="nav-item mb-2">
@@ -163,7 +163,7 @@ const Sidebar = (props) => {
                         </li>
                     </div>
                 )
-            case "user":
+            case "customer":
                 return (
                     <div>
                         <li className="nav-item mb-2">

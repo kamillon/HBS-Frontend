@@ -8,9 +8,9 @@ const Signup = () => {
     // const options = [
     //     {value: '', text: '--Choose an option--'},
     //     {value: 'admin', text: 'admin'},
-    //     {value: 'user', text: 'klient'},
+    //     {value: 'customer', text: 'klient'},
     //     {value: 'employee', text: 'pracownik'},
-    //     {value: 'manager', text: 'właściciel salonu'},
+    //     {value: 'salon_owner', text: 'właściciel salonu'},
     // ];
 
      

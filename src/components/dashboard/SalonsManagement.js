@@ -105,7 +105,7 @@ const SalonsManagement = () => {
     if(userRole === 'admin'){
         dataToBeMapped = data
     }
-    else if(userRole === 'manager'){
+    else if(userRole === 'salon_owner'){
         dataToBeMapped = filteredData
     }
       

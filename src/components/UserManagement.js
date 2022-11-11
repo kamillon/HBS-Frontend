@@ -34,13 +34,16 @@ const UserManagement = () => {
             };
 
             try {
-                let url = ''
-                if(userRole === 'admin'){
-                    url = `http://127.0.0.1:8000/auth/users/`
-                }
-                else if(userRole === 'manager'){
-                    url = `http://127.0.0.1:8000/pracownik/`
-                }
+                // let url = ''
+
+                // if(userRole === 'admin'){
+                //     url = `http://127.0.0.1:8000/auth/users/`
+                // }
+                // else if(userRole === 'salon_owner'){
+                //     url = `http://127.0.0.1:8000/pracownik/`
+                // }
+
+                const url = `http://127.0.0.1:8000/auth/users/`
 
                 const res = await axios.get(url, config);
 
