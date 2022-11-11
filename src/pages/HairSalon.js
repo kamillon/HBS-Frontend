@@ -56,19 +56,23 @@ const HairSalon = () => {
                 </div>
             </section>
             <div className='container'>
+            {data.length <= 0 ? (<h4 className='pt-3'>Nie znaleziono salonów</h4>) : (
                 <div className='row pt-5'>
+
                     {data.map((item) => (
                         <div className='col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch' key={item.id} >
                             <CardComponent
                                 id={item.id}
-                                title={item.nazwa}
-                                ulica={item.ulica}
-                                nr_budynku={item.nr_budynku}
-                                miejscowosc={item.miejscowosc}
+                                title={item.name}
+                                ulica={item.street}
+                                nr_budynku={item.house_number}
+                                miejscowosc={item.city}
                             />
                         </div>
                     ))}
+                    
                 </div>
+                )}
             </div>
         </div>
     )

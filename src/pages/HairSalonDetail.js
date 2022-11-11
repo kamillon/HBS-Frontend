@@ -20,7 +20,7 @@ const HairSalonDetail = (props) => {
             };
 
             try {
-                const res = await axios.get('http://127.0.0.1:8000/usluga/', config);
+                const res = await axios.get('http://127.0.0.1:8000/service/', config);
 
                 setData(res.data)
                 console.log(res.data)
@@ -38,7 +38,7 @@ const HairSalonDetail = (props) => {
     const searchFilteredServices = filteredServices.filter(item => (
         search.toLowerCase() === ''
         ? item
-        : item.nazwa_uslugi.toLowerCase().includes(search)
+        : item.name.toLowerCase().includes(search)
     ))
 
     return (
@@ -92,10 +92,10 @@ const HairSalonDetail = (props) => {
                             <ListServices
                                 key={item.id}
                                 id={item.id}
-                                nazwa_uslugi={item.nazwa_uslugi}
-                                opis={item.opis}
-                                czas={item.czas}
-                                cena={item.cena}
+                                name={item.name}
+                                describe={item.describe}
+                                time={item.time}
+                                price={item.price}
                             />
                         ))
                         :

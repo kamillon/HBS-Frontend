@@ -12,7 +12,7 @@ const AddUser = () => {
 
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
-        username: 'manager1231111',
+        username: 'manager1231112',
         first_name: '',
         last_name: '',
         is_staff: true,
@@ -26,100 +26,84 @@ const AddUser = () => {
     });
 
 
-    const [errors, setErrors] = useState({})
+    //const [errors, setErrors] = useState({})
 
 
-    // const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData;
+    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData;
 
-    // const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
    
-    const onChange = e =>{
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value ?? e.target.checked
+    // const onChange = e =>{
+    //     setFormData({
+    //         ...formData,
+    //         [e.target.name]: e.target.value ?? e.target.checked
 
-        })
+    //     })
         
-        if(!!errors[e.target.name]){
-            setErrors({
-                ...errors,
-                [e.target.name]: null
-            })
-        }
-    }
+    //     if(!!errors[e.target.name]){
+    //         setErrors({
+    //             ...errors,
+    //             [e.target.name]: null
+    //         })
+    //     }
+    // }
 
 
-    const validateForm = () => {
-        const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData
-        const newErrors = {}
+    // const validateForm = () => {
+    //     const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData
+    //     const newErrors = {}
         
-        if(!first_name || first_name === '') newErrors.first_name = 'Nieprawidłowa nazwa'
+    //     if(!first_name || first_name === '') newErrors.first_name = 'Nieprawidłowa nazwa'
 
-        return newErrors
-    }
+    //     return newErrors
+    // }
 
     const onSubmit = async e => {
         e.preventDefault();
-        const formErrors = validateForm()
-        if(Object.keys(formErrors).length > 0){
-            setErrors(formErrors)
-        }
-        else{
-            console.log('form submitted')
-        }
-
-        // if (localStorage.getItem('isAuthenticated')) {
-        //     if (password === re_password) {
-        //         const config = {
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': `JWT ${access}`,
-        //                 'Accept': 'application/json',
-        //             }
-        //         };
-
-        //         let role = ''
-        //         if(userRole === 'admin'){
-        //             role = 'manager'
-        //         }
-        //         else if(userRole === 'manager'){
-        //             role = 'employee'
-        //         }
-            
-        //         const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
-        //             email, password, re_password, phone, role });
-
-        //         try {
-
-        //             let url = ''
-        //             if(userRole === 'admin'){
-        //                 url = `http://127.0.0.1:8000/auth/users/`
-        //             }
-        //             else if(userRole === 'manager'){
-        //                 url = `http://127.0.0.1:8000/pracownik/`
-        //             }
-
-        //             const res = await axios.post(url, body, config);
-
-
-        //             // let res = ''
-        //             // if(userRole == 'admin'){
-        //             //     res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
-        //             // }
-        //             // else if(userRole == 'manager'){
-        //             //     res = await axios.post(`http://127.0.0.1:8000/pracownik/`, body, config);
-        //             // }
-        
-        //             console.log(res.data)
-        //             setAccountCreated(true);
-                    
-        //         } 
-        //         catch(error) {
-        //             console.log(error)
-        //         }
-
-        //     }
+        // const formErrors = validateForm()
+        // if(Object.keys(formErrors).length > 0){
+        //     setErrors(formErrors)
         // }
+        // else{
+        //     console.log('form submitted')
+        // }
+
+        if (localStorage.getItem('isAuthenticated')) {
+            if (password === re_password) {
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `JWT ${access}`,
+                        'Accept': 'application/json',
+                    }
+                };
+
+                let role = ''
+                if(userRole === 'admin'){
+                    role = 'manager'
+                }
+                else if(userRole === 'manager'){
+                    role = 'employee'
+                }
+            
+                const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
+                    email, password, re_password, phone, role });
+
+                try {
+
+                    const url = `http://127.0.0.1:8000/auth/users/`
+                    const res = await axios.post(url, body, config);
+        
+                    console.log(res.data)
+                    setAccountCreated(true);
+                    
+                } 
+                catch(error) {
+                    console.log(error)
+                }
+
+            }
+        }
     };
 
 
@@ -152,12 +136,12 @@ const AddUser = () => {
                     name='first_name'
                     value={formData.first_name}
                     onChange={e => onChange(e)}
-                    isInvalid={!!errors.first_name}
-                    // required
+                    //isInvalid={!!errors.first_name}
+                    required
                     />
-                    <Form.Control.Feedback type='invalid'>
+                    {/* <Form.Control.Feedback type='invalid'>
                         {errors.first_name}
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                 </Form.Group>
                 {/* <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Imię*</Form.Label>

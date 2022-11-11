@@ -24,15 +24,15 @@ const ListServices = (props) => {
                     <tr key={props.id}>
                         <td className='w-75'>
                         <div className="ms-3">
-                            <p className="fw-bold mb-1">{props.nazwa_uslugi}</p>
-                            <p className="text-muted mb-0">{props.opis}</p>
+                            <p className="fw-bold mb-1">{props.name}</p>
+                            <p className="text-muted mb-0">{props.describe}</p>
                         </div>
                         </td>
                         <td className='w-25'> 
                             <div className="row">
                                 <div className="col-md-6 text-end">
-                                    <p className="fw-bold mb-1">{props.cena} zł</p>
-                                    <p className="text-muted mb-0">{convertMinsToTime(props.czas)}</p>
+                                    <p className="fw-bold mb-1">{props.price} zł</p>
+                                    <p className="text-muted mb-0">{convertMinsToTime(props.time)}</p>
                                 </div>
                                 <div className="col-md-6 mt-2 mt-md-0">
                                     <button
@@ -40,10 +40,10 @@ const ListServices = (props) => {
                                         className="btn btn-primary"
                                         onClick={() => navigate(`/hairsalon/${salonId}/booking`,{state:{
                                             serviceId: props.id,
-                                            nazwa_uslugi: props.nazwa_uslugi,
-                                            opis: props.opis,
-                                            cena: props.cena,
-                                            czas: props.czas
+                                            name: props.name,
+                                            describe: props.describe,
+                                            price: props.price,
+                                            time: props.time
                                         }})}
                                     >
                                         UMÓW
