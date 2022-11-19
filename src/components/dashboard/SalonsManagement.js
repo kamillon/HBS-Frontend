@@ -97,7 +97,7 @@ const SalonsManagement = () => {
 
 
     const filteredData = data.filter(element => {
-        return element.wlasciciel === currentUser.id;
+        return element.owner === currentUser.id;
     });
 
     
@@ -142,22 +142,22 @@ const SalonsManagement = () => {
                             <th scope="col">Telefon</th>
                             <th scope="col">Email</th>
                             <th scope="col">Właściciel</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col">Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
                         {dataToBeMapped.map((item) => (
                             <tr key={item.id}>
                                 <th scope="row">{item.id}</th>
-                                <td>{item.nazwa}</td>
-                                <td>{item.ulica}</td>
-                                <td>{item.nr_budynku}</td>
-                                <td>{item.miejscowosc}</td>
-                                <td>{item.kod_pocztowy}</td>
-                                <td>{item.poczta}</td>
-                                <td>{item.telefon}</td>
+                                <td>{item.name}</td>
+                                <td>{item.street}</td>
+                                <td>{item.house_number}</td>
+                                <td>{item.city}</td>
+                                <td>{item.postal_code}</td>
+                                <td>{item.postal_code_locality}</td>
+                                <td>{item.phone_number}</td>
                                 <td>{item.email}</td>
-                                <td>{item.wlasciciel}</td>
+                                <td>{item.owner}</td>
                                 <td>
                                     <button
                                         type="button"
@@ -173,7 +173,7 @@ const SalonsManagement = () => {
                                         className="btn btn-danger mt-1 mt-md-0"
                                         onClick={() => {
                                             handleShow();
-                                            setSalonData({id: item.id, nazwa: item.nazwa})
+                                            setSalonData({id: item.id, name: item.name})
                                         }}
                                     >
                                         USUŃ
@@ -198,7 +198,7 @@ const SalonsManagement = () => {
                     <div className='text-center'>
                         <img src={wykrzyknik} style={{width: "15%"}} alt="" />
                         <h4>Jesteś pewny?</h4>
-                        <p>Czy na pewno chcesz usunąć salon {salonData.nazwa}?</p>
+                        <p>Czy na pewno chcesz usunąć salon {salonData.name}?</p>
                     </div>
                     </Modal.Body>
                 <Modal.Footer>

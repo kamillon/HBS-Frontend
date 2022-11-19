@@ -23,12 +23,12 @@ const ManageEmployee = () => {
 
                 <div className="col-auto col-md-9 col-lg-10 main p-5">
 
-                    <div>
+                    {/* <div>
                     <p className="lead d-none d-sm-block">
                         Add Employee Details and Records
                     </p>
                     <h2>Witaj, {currentUser?.first_name} !</h2>
-                    </div>
+                    </div> */}
 
                     <div>
                         <UserManagement />

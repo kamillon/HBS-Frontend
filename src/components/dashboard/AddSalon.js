@@ -13,20 +13,20 @@ const AddSalon = () => {
     const [data, setData] = useState([]);
 
     const [formData, setFormData] = useState({
-        nazwa: '',
-        ulica: '',
-        nr_budynku: '',
-        miejscowosc: '',
-        kod_pocztowy: '',
-        poczta: '',
-        telefon: '',
+        name: '',
+        street: '',
+        house_number: '',
+        city: '',
+        postal_code: '',
+        postal_code_locality: '',
+        phone_number: '',
         email: '',
-        wlasciciel: '',
+        owner: '',
     });
 
 
 
-    const { nazwa, ulica, nr_budynku, miejscowosc, kod_pocztowy, poczta, telefon, email, wlasciciel } = formData;
+    const { name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner } = formData;
 
     const listOwners = async () => {
         if (access) {
@@ -40,7 +40,7 @@ const AddSalon = () => {
 
             try {
 
-                const res = await axios.get(`http://127.0.0.1:8000/wlasciciel/`, config);
+                const res = await axios.get(`http://127.0.0.1:8000/salon-owner/`, config);
 
 
                 setData(res.data)
@@ -77,7 +77,7 @@ const AddSalon = () => {
                 }
             };
 
-            const body = JSON.stringify({ nazwa, ulica, nr_budynku, miejscowosc, kod_pocztowy, poczta, telefon, email, wlasciciel });
+            const body = JSON.stringify({ name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner });
 
             try {
 
@@ -105,6 +105,8 @@ const AddSalon = () => {
     },[salonCreated])
     
 
+    console.log(data)
+
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
             <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
@@ -115,7 +117,7 @@ const AddSalon = () => {
                         type='text'
                         placeholder='Nazwa salonu*'
                         name='nazwa'
-                        value={nazwa}
+                        value={name}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -126,7 +128,7 @@ const AddSalon = () => {
                         type='text'
                         placeholder='Ulica*'
                         name='ulica'
-                        value={ulica}
+                        value={street}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -138,7 +140,7 @@ const AddSalon = () => {
                         type='text'
                         placeholder='Nr budynku*'
                         name='nr_budynku'
-                        value={nr_budynku}
+                        value={house_number}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -150,7 +152,7 @@ const AddSalon = () => {
                         type='text'
                         placeholder='Miejscowosc*'
                         name='miejscowosc'
-                        value={miejscowosc}
+                        value={city}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -162,7 +164,7 @@ const AddSalon = () => {
                         type='text'
                         placeholder='Kod pocztowy*'
                         name='kod_pocztowy'
-                        value={kod_pocztowy}
+                        value={postal_code}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -174,7 +176,7 @@ const AddSalon = () => {
                         type='text'
                         placeholder='Poczta*'
                         name='poczta'
-                        value={poczta}
+                        value={postal_code_locality}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -187,7 +189,7 @@ const AddSalon = () => {
                         placeholder='Telefon*'
                         name='telefon'
                         maxLength='9'
-                        value={telefon}
+                        value={phone_number}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -207,13 +209,13 @@ const AddSalon = () => {
 
                 <div className="mb-3">
                     <label className="FormControlSelect">Właściciel</label>
-                    <select className="form-control" name='wlasciciel' value={wlasciciel} onChange={e => onChange(e)}>
+                    <select className="form-control" name='owner' value={owner} onChange={e => onChange(e)}>
                         <option value=''>
                             --Wybierz właściciela--
                         </option>
                         {data.map(owner => (
-                            <option key={owner.id} value={owner.id}>
-                                {owner.first_name}
+                            <option key={owner.user.id} value={owner.user.id}>
+                                {owner.user.first_name}
                             </option>
                         ))}
                     </select>

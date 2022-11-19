@@ -12,20 +12,20 @@ const EditSalon = () => {
     const [dataOwners, setDataOwners] = useState([]);
 
     const initialState = {
-        nazwa: '',
-        ulica: '',
-        nr_budynku: '',
-        miejscowosc: '',
-        kod_pocztowy: '',
-        poczta: '',
-        telefon: '',
+        name: '',
+        street: '',
+        house_number: '',
+        city: '',
+        postal_code: '',
+        postal_code_locality: '',
+        phone_number: '',
         email: '',
-        wlasciciel: '',
+        owner: '',
     };
 
     const [data, setData] = useState(initialState);
     const [salonUpdated, setSalonUpdated] = useState(false);
-    const { nazwa, ulica, nr_budynku, miejscowosc, kod_pocztowy, poczta, telefon, email, wlasciciel } = data;
+    const { name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner } = data
     
 
     const listOwners = async () => {
@@ -40,7 +40,7 @@ const EditSalon = () => {
 
             try {
 
-                const res = await axios.get(`http://127.0.0.1:8000/wlasciciel/`, config);
+                const res = await axios.get(`http://127.0.0.1:8000/salon-owner/`, config);
 
 
                 setDataOwners(res.data)
@@ -115,7 +115,7 @@ const EditSalon = () => {
                 }
             };
 
-            const body = JSON.stringify({nazwa, ulica, nr_budynku, miejscowosc, kod_pocztowy, poczta, telefon, email, wlasciciel});
+            const body = JSON.stringify({ name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner });
 
             try {
 
@@ -153,7 +153,7 @@ const EditSalon = () => {
                         type='text'
                         placeholder='Nazwa salonu*'
                         name='nazwa'
-                        value={nazwa}
+                        value={name}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -164,7 +164,7 @@ const EditSalon = () => {
                         type='text'
                         placeholder='Ulica*'
                         name='ulica'
-                        value={ulica}
+                        value={street}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -176,7 +176,7 @@ const EditSalon = () => {
                         type='text'
                         placeholder='Nr budynku*'
                         name='nr_budynku'
-                        value={nr_budynku}
+                        value={house_number}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -188,7 +188,7 @@ const EditSalon = () => {
                         type='text'
                         placeholder='Miejscowosc*'
                         name='miejscowosc'
-                        value={miejscowosc}
+                        value={city}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -200,7 +200,7 @@ const EditSalon = () => {
                         type='text'
                         placeholder='Kod pocztowy*'
                         name='kod_pocztowy'
-                        value={kod_pocztowy}
+                        value={postal_code}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -212,7 +212,7 @@ const EditSalon = () => {
                         type='text'
                         placeholder='Poczta*'
                         name='poczta'
-                        value={poczta}
+                        value={postal_code_locality}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -225,7 +225,7 @@ const EditSalon = () => {
                         placeholder='Telefon*'
                         name='telefon'
                         maxLength='9'
-                        value={telefon}
+                        value={phone_number}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -245,10 +245,10 @@ const EditSalon = () => {
 
                 <div className="mb-3">
                     <label className="FormControlSelect">Typ użytkownika</label>
-                    <select className="form-control" name='wlasciciel' value={wlasciciel} onChange={e => onChange(e)}>
+                    <select className="form-control" name='owner' value={owner} onChange={e => onChange(e)}>
                         {dataOwners.map(owner => (
-                            <option key={owner.id} value={owner.id}>
-                                {owner.first_name}
+                            <option key={owner.user.id} value={owner.user.id}>
+                                {owner.user.first_name}
                             </option>
                         ))}
                     </select>

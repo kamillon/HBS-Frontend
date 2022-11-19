@@ -31,6 +31,7 @@ import EditSalon from './components/dashboard/EditSalon';
 import AccountSettings from './components/dashboard/AccountSettings';
 import ChangeEmailConfirm from './components/dashboard/ChangeEmailConfirm';
 import Booking from './pages/Booking';
+import Reservations from './components/dashboard/Reservations';
 
 const ROLES = {
   "customer": "customer",
@@ -74,12 +75,14 @@ function App() {
                 <Route path='/admin/salons/' element={<Salons/>} />
                 <Route path='/admin/salons/add/' element={<AddSalon/>} />
                 <Route path='/admin/salons/edit/:uid' element={<EditSalon/>} />
+                <Route path='/admin/reservations/' element={<Reservations/>} />
                 <Route path='/admin/account-settings/' element={<AccountSettings/>} />
 
               </Route>
 
               <Route element={<RequireAuth allowedRole={ROLES.employee}/>}>
                 <Route exact path='/employee/' element={<EmployeeDashboard/>} />
+                <Route path='/employee/reservations/' element={<Reservations/>} />
                 <Route path='/employee/account-settings/' element={<AccountSettings/>} />
               </Route>
 
@@ -91,6 +94,7 @@ function App() {
                 <Route path='/salon_owner/salons/' element={<Salons/>} />
                 {/* <Route path='/salon_owner/salons/add/' element={<AddSalon/>} /> */}
                 <Route path='/salon_owner/salons/edit/:uid' element={<EditSalon/>} />
+                <Route path='/salon_owner/reservations/' element={<Reservations/>} />
                 <Route path='/salon_owner/account-settings/' element={<AccountSettings/>} />
               </Route>
 
