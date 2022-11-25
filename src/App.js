@@ -32,6 +32,9 @@ import AccountSettings from './components/dashboard/AccountSettings';
 import ChangeEmailConfirm from './components/dashboard/ChangeEmailConfirm';
 import Booking from './pages/Booking';
 import Reservations from './components/dashboard/Reservations';
+import Services from './components/dashboard/Services';
+import AddService from './components/dashboard/AddService';
+import EditService from './components/dashboard/EditService';
 
 const ROLES = {
   "customer": "customer",
@@ -76,6 +79,9 @@ function App() {
                 <Route path='/admin/salons/add/' element={<AddSalon/>} />
                 <Route path='/admin/salons/edit/:uid' element={<EditSalon/>} />
                 <Route path='/admin/reservations/' element={<Reservations/>} />
+                <Route path='/admin/services/' element={<Services/>} />
+                <Route path='/admin/services/add/' element={<AddService/>} />
+                <Route path='/admin/services/edit/:uid' element={<EditService/>} />
                 <Route path='/admin/account-settings/' element={<AccountSettings/>} />
 
               </Route>
@@ -95,6 +101,9 @@ function App() {
                 {/* <Route path='/salon_owner/salons/add/' element={<AddSalon/>} /> */}
                 <Route path='/salon_owner/salons/edit/:uid' element={<EditSalon/>} />
                 <Route path='/salon_owner/reservations/' element={<Reservations/>} />
+                <Route path='/salon_owner/services/' element={<Services/>} />
+                <Route path='/salon_owner/services/add/' element={<AddService/>} />
+                <Route path='/salon_owner/services/edit/:uid' element={<EditService/>} />
                 <Route path='/salon_owner/account-settings/' element={<AccountSettings/>} />
               </Route>
 

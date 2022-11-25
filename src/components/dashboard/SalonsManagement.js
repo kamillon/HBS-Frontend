@@ -153,7 +153,7 @@ const SalonsManagement = () => {
                                 <td>{item.street}</td>
                                 <td>{item.house_number}</td>
                                 <td>{item.city}</td>
-                                <td>{item.postal_code}</td>
+                                <td>{item.post_code}</td>
                                 <td>{item.postal_code_locality}</td>
                                 <td>{item.phone_number}</td>
                                 <td>{item.email}</td>
