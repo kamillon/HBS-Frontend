@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import hair_salon from '../images/hair_salon.png';
 
 
 const CardComponent = (props) => {
@@ -12,9 +13,9 @@ const CardComponent = (props) => {
         <>
             <div className="card shadow-sm my-5 mx-2" onClick={() => navigate(`/hairsalon/${props.id}`)} style={{ cursor: "pointer" }}>
                 <img
-                    src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png"
+                    src={hair_salon}
                     className="card-img-top card-img"
-                    alt="..."
+                    alt="hair_salon_picture"
                 />
                 <div className="card-body d-flex flex-column">
                     <h5 className="card-title">{props.title}</h5>

@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CardComponent from '../components/CardComponent';
+import hair_salon_picture from '../images/hair_salon_picture.png';
 
 const HairSalon = () => {
 
@@ -39,11 +40,12 @@ const HairSalon = () => {
     return (
         <div>
             <section className="p-5 bg-light">
-                <div className='container py-5'>
+                <div className='container'>
                     <div className='row'>
                         <div className='col-md'>
                             <Link to='/'>
-                                <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="" />
+                                {/* <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="" /> */}
+                                <img src={hair_salon_picture} className="img-fluid w-75 d-none d-sm-block" alt="hair_salon_picture" />
                             </Link>
                         </div>
                         <div className='col-md'>

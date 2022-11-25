@@ -77,7 +77,7 @@ const Home = () => {
 
 
                         </div>
-                        <img src={barber} className="img-fluid w-50 d-none d-sm-block" alt="" />
+                        <img src={barber} className="img-fluid w-50 d-none d-sm-block" alt="barber_image" />
                     </div>
                 </div>
             </section>
@@ -109,7 +109,7 @@ const Home = () => {
                         <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
                             <Link to='/hairsalon' style={{ textDecoration: 'none', color: 'black' }}>
                                 <div className="card border-0 bg-light" style={{ width: "12rem" }}>
-                                    <img src={fryzjerIcon} className="card-img-top p-4" alt="..." />
+                                    <img src={fryzjerIcon} className="card-img-top p-4" alt="hairdresser_icon" />
                                     <div className="card-body text-center">
                                         <h4>Fryzjerstwo</h4>
                                     </div>
@@ -119,7 +119,7 @@ const Home = () => {
                         <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
                             <Link to='/barber' style={{ textDecoration: 'none', color: 'black' }}>
                                 <div className="card border-0 bg-light" style={{ width: "12rem" }}>
-                                    <img src={barberIcon} className="card-img-top p-4" alt="..." />
+                                    <img src={barberIcon} className="card-img-top p-4" alt="barber_icon" />
                                     <div className="card-body text-center">
                                         <h4>Barber</h4>
                                     </div>
@@ -144,9 +144,7 @@ const Home = () => {
                             </p>
                         </div>
                         <div className='col-md text-center'>
-                            <Link to='/'>
-                                <img src={building} className="img-fluid w-50" alt="" />
-                            </Link>
+                            <img src={building} className="img-fluid w-50" alt="building_image" />
                         </div>
                     </div>
                 </div>
@@ -157,9 +155,7 @@ const Home = () => {
                 <div className='container py-5'>
                     <div className='row'>
                         <div className='col-md text-center'>
-                            <a href='/'>
-                                <img src={booking} className="img-fluid w-50" alt="" />
-                            </a>
+                            <img src={booking} className="img-fluid w-50" alt="booking_image" />
                         </div>
                         <div className='col-md'>
                             <h1 className='mb-5'>Coś Ci wypadło? Nie szkodzi!</h1>
@@ -176,7 +172,7 @@ const Home = () => {
 
             
 
-            <section className='p-5 bg-dark text-white'>
+            <section className='p-5 pb-1 bg-dark text-white'>
                 <div className='container'>
                     <h2 className='text-center mb-4'>Znajdź specjalistę według miasta</h2>
                     <div className='row py-5'>
@@ -221,6 +217,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+                <hr/>
             </section>
         </div>
     )

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import ListServices from '../components/ListServices';
+import hair_salon from '../images/hair_salon.png';
 
 const HairSalonDetail = (props) => {
     const navigate = useNavigate()
@@ -46,14 +47,13 @@ const HairSalonDetail = (props) => {
             <section className="p-5 bg-dark mb-5 text-white">
                 <div className='container'>
                     <div className='row'>
-                        <div className='col-md'
+                        {/* <div className='col-md'
                             style={{
                                 backgroundImage: `url('https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
                                 height: '60vh'
-                            }}>
-                            {/* <Link to='/'>
-                                <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="..." />
-                            </Link> */}
+                            }}> */}
+                            <div className='col-md'>
+                                <img src={hair_salon} className="img-fluid w-50 d-none d-sm-block" alt="hair_salon" />
                         </div>
                         <div className='col-md px-sm-0 px-md-5 py-sm-3 py-md-0'>
                             <h2>Salon 1</h2>

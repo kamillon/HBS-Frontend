@@ -242,7 +242,15 @@ const Booking = (props) => {
     const [rowData, setRowData] = useState({});
     const [slots2, setSlots2] = useState([]);
     
-    const minTime=setHours(setMinutes(new Date(), moment(rowData[0]?.from_hour, 'HH:mm').minute()), moment(rowData[0]?.from_hour, 'HH:mm').hour())
+    // const minTime=setHours(setMinutes(new Date(), moment(rowData[0]?.from_hour, 'HH:mm').minute()), moment(rowData[0]?.from_hour, 'HH:mm').hour())
+
+    const minTime=setHours(setMinutes(new Date(), 
+    moment(rowData[0]?.from_hour, 'HH:mm').minute()), 
+    moment(rowData[0]?.from_hour, 'HH:mm').hour()
+    )
+
+    
+
     const maxTime=setHours(setMinutes(new Date(), moment(rowData[0]?.to_hour, 'HH:mm').minute()), moment(rowData[0]?.to_hour, 'HH:mm').hour())
 
     useEffect(() => {
@@ -436,10 +444,10 @@ const Booking = (props) => {
                         onChange={date => setSelectedDate(date)}
                         calendarStartDay={1}
                         dateFormat='yyyy/MM/dd'
-                        // minDate={new Date()}
-                        // maxDate={date14}
+                        minDate={new Date()}
+                        maxDate={new Date() + 14}
                         // excludeDates={holidays}
-                        includeDates={data}
+                        // includeDates={data}
                         showTimeSelect
                         timeFormat='HH:mm'
                         timeIntervals={30}
