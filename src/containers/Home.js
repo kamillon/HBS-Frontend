@@ -11,32 +11,19 @@ import barberIcon from '../images/barber1.png';
 
 
 const Home = () => {
-    // const { contextState, setContextState } = React.useContext(ThingsContext);
-    // const isAuthenticated = contextState.isAuthenticated
-
-
-    // useEffect(()=> {
-    //     checkAuthenticated();
-    //     loadUser();
-    //     console.log("wyrenderowano")
-    // })
-
-
     const { currentUser, isAuthenticated } = useAuth()
     console.log(currentUser)
     console.log(isAuthenticated)
 
     return (
-        // <div className="container bg-light p-5 mt-5">
         <div>
             {/* <Slider /> */}
-
 
             <section className='bg-dark text-light p-5 text-center text-sm-start'>
                 <div className='container'>
                     <div className='d-sm-flex align-items-center justify-content-between'>
                         <div className='px-5'>
-                            <h1>Umów się<br/>
+                            <h1>Umów się<br />
                                 na nowy look</h1>
                             <span>Odkryj najlepsze salony w okolicy i umów się na wizytę</span>
                             <div className="input-group mt-5">
@@ -52,39 +39,14 @@ const Home = () => {
                                     type="button"
                                     id="button-addon2"
                                 >
-                                    Button
+                                    Szukaj
                                 </button>
                             </div>
-
-                            {/* <div className="input-group">
-                                <select 
-                                className="form-select" 
-                                id="inputGroupSelect04" 
-                                aria-label="Example select with button addon">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                                <button 
-                                
-                                className="btn btn-outline-secondary" 
-                                type="button"
-                                >
-                                    Button
-                                </button>
-                            </div> */}
-
-
                         </div>
                         <img src={barber} className="img-fluid w-50 d-none d-sm-block" alt="barber_image" />
                     </div>
                 </div>
             </section>
-
-
-
-
 
             <section className='py-5'>
                 <div className='container'>
@@ -125,11 +87,10 @@ const Home = () => {
                                     </div>
                                 </div>
                             </Link>
-                        </div>  
+                        </div>
                     </div>
                 </div>
             </section>
-
 
             <section className="p-5">
                 <div className='container py-5'>
@@ -137,10 +98,10 @@ const Home = () => {
                         <div className='col-md'>
                             <h1 className='mb-5'>Umów się online</h1>
                             <p>
-                            Chcesz umówić się do fryzjera, barbera, stylistki paznokci lub salonu masażu w okolicy? Szukasz miejsca, w którym najlepsi specjaliści zadbają o Twoją brodę, brwi lub zrobią relaksujący masaż?
+                                Chcesz umówić się do fryzjera, barbera, stylistki paznokci lub salonu masażu w okolicy? Szukasz miejsca, w którym najlepsi specjaliści zadbają o Twoją brodę, brwi lub zrobią relaksujący masaż?
                             </p>
                             <p>
-                            Booksy to darmowa aplikacja do rezerwacji, dzięki której z łatwością znajdziesz wolny termin i wygodnie umówisz się na wizytę. Bez dzwonienia — rezerwujesz o każdej porze i z dowolnego miejsca. 
+                                Booksy to darmowa aplikacja do rezerwacji, dzięki której z łatwością znajdziesz wolny termin i wygodnie umówisz się na wizytę. Bez dzwonienia — rezerwujesz o każdej porze i z dowolnego miejsca.
                             </p>
                         </div>
                         <div className='col-md text-center'>
@@ -149,7 +110,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
 
             <section className="p-5">
                 <div className='container py-5'>
@@ -160,17 +120,15 @@ const Home = () => {
                         <div className='col-md'>
                             <h1 className='mb-5'>Coś Ci wypadło? Nie szkodzi!</h1>
                             <p>
-                            Pobierz Booksy, darmową aplikację do rezerwacji, i zarządzaj swoimi wizytami, gdziekolwiek jesteś. Zmień termin wizyty lub odwołaj rezerwację bez dzwonienia. 
+                                Pobierz Booksy, darmową aplikację do rezerwacji, i zarządzaj swoimi wizytami, gdziekolwiek jesteś. Zmień termin wizyty lub odwołaj rezerwację bez dzwonienia.
                             </p>
                             <p>
-                            Wiemy, że każdego dnia dużo się u Ciebie dzieje, dlatego będziemy wysyłać Ci przypomnienia o nadchodzących wizytach. Dzięki nim nigdy nie przegapisz terminu!
+                                Wiemy, że każdego dnia dużo się u Ciebie dzieje, dlatego będziemy wysyłać Ci przypomnienia o nadchodzących wizytach. Dzięki nim nigdy nie przegapisz terminu!
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
-
-            
 
             <section className='p-5 pb-1 bg-dark text-white'>
                 <div className='container'>
@@ -217,10 +175,9 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <hr/>
+                <hr />
             </section>
         </div>
     )
 };
-
 export default Home;

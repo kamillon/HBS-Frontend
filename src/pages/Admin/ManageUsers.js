@@ -221,21 +221,10 @@ const ManageUsers = () => {
         <div className="content-wrap container-fluid" id="main">
             <div className="main-content row row-offcanvas row-offcanvas-left full-screen">
                 <Sidebar role={userRole}/>
-
                 <div className="col-auto col-md-9 col-lg-10 main p-5">
-
-                    <div className='container'>
-                        <p className="lead d-none d-sm-block">
-                            Add Employee Details and Records
-                        </p>
-                        <h2>Witaj, {currentUser?.first_name} !</h2>
-                    </div>
-
                     <div>
                         {/* <div className="col-sm-6 col-md-12 py-2"> */}
                         <UserManagement />
-                  
-
                         {/* </div> */}
                     </div>
                 </div>

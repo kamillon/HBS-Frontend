@@ -118,7 +118,12 @@ const UserManagement = () => {
 
     return (
         <div className='container'>
-            <h2>Zarządzaj użytkownikami</h2>
+            
+            {userRole === "salon_owner" ? 
+            <h2>Pracownicy</h2>
+            :
+            <h2>Użytkownicy</h2>
+            }
             <button
                 onClick={() => navigate(`/${userRole}/users/add/`)}
                 type='button'

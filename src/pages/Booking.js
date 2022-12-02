@@ -7,12 +7,15 @@ import { useAuth } from "../context/AuthContext"
 import ListServices from '../components/ListServices';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import subDays from "date-fns/subDays";
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
+// import subDays from "date-fns/subDays";
+// import setHours from "date-fns/setHours";
+// import setMinutes from "date-fns/setMinutes";
+// import { addDays } from 'date-fns';
+
+import { subDays, addDays, setHours, setMinutes } from 'date-fns';
 import moment from 'moment';
 
-const Booking = (props) => {
+const Booking = () => {
     const navigate = useNavigate()
     const { salonId } = useParams()
     const [data, setData] = useState([]);
@@ -24,14 +27,46 @@ const Booking = (props) => {
     const location = useLocation();
     const { access, userRole, currentUser } = useAuth()
 
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(new Date);
+
+    const props = location.state
+    console.log(props)
+
+
+    const jsonData = [
+        {
+            "id": 1,
+            "weekday": 1,
+            "from_hour": "08:00:00",
+            "to_hour": "15:30:00",
+            "is_day_off": false,
+            "employeeId": 1
+        },
+        {
+            "id": 2,
+            "weekday": 2,
+            "from_hour": "08:00:00",
+            "to_hour": "15:00:00",
+            "is_day_off": false,
+            "employeeId": 1
+        },
+        {
+            "id": 3,
+            "weekday": 3,
+            "from_hour": "10:00:00",
+            "to_hour": "15:00:00",
+            "is_day_off": false,
+            "employeeId": 1
+        }
+    ]
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
     const [formData, setFormData] = useState({
-        customerId: currentUser.id,
-        serviceId: location.state.serviceId,
+        // customerId: currentUser.id,
+        serviceId: props.serviceId,
         employeeId: '1',
         // date: '',
         // start_time: '',
@@ -40,11 +75,12 @@ const Booking = (props) => {
     });
 
     const [chooseDate, setChooseDate] = useState()
-    const [chooseStartTime, setChooseStartTime] = useState()
+    const [chooseStartTime, setChooseStartTime] = useState(null)
     const [chooseEndTime, setChooseEndTime] = useState()
 
 
-
+    console.log(chooseDate)
+    console.log(chooseStartTime)
 
     const { customerId, serviceId, employeeId, is_active } = formData;
 
@@ -63,7 +99,7 @@ const Booking = (props) => {
             };
 
             const body = JSON.stringify({ 
-                customerId: customerId, 
+                customerId: currentUser.id, 
                 serviceId: serviceId, 
                 salonId: salonId,
                 employeeId: employeeId, 
@@ -128,7 +164,7 @@ const Booking = (props) => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
+                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
@@ -150,7 +186,7 @@ const Booking = (props) => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
+                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
@@ -172,7 +208,7 @@ const Booking = (props) => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
+                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
@@ -180,7 +216,7 @@ const Booking = (props) => {
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/service/`, config);
 
-                setService(res.data.filter(i => parseInt(i.id) === parseInt(location.state.serviceId)))
+                setService(res.data.filter(i => parseInt(i.id) === parseInt(props.serviceId)))
                 console.log(res.data)
 
             } catch (err) {
@@ -226,7 +262,7 @@ const Booking = (props) => {
             }
         };
 
-        listOpeningHours(employeeId)
+        // listOpeningHours(employeeId)
 
         
 
@@ -244,17 +280,23 @@ const Booking = (props) => {
     
     // const minTime=setHours(setMinutes(new Date(), moment(rowData[0]?.from_hour, 'HH:mm').minute()), moment(rowData[0]?.from_hour, 'HH:mm').hour())
 
-    const minTime=setHours(setMinutes(new Date(), 
+    let minTime=setHours(setMinutes(new Date(), 
     moment(rowData[0]?.from_hour, 'HH:mm').minute()), 
     moment(rowData[0]?.from_hour, 'HH:mm').hour()
     )
 
     
 
+
+
+
+    
+    
+
     const maxTime=setHours(setMinutes(new Date(), moment(rowData[0]?.to_hour, 'HH:mm').minute()), moment(rowData[0]?.to_hour, 'HH:mm').hour())
 
     useEffect(() => {
-    setRowData(data2.filter(i => moment(selectedDate).format("YYYY-MM-DD") === moment(i.date).format("YYYY-MM-DD")).map(item => ({
+    setRowData(jsonData.filter(i => moment(selectedDate).day() === i.weekday).map(item => ({
         from_hour: item.from_hour,
         to_hour: item.to_hour,
     })));
@@ -274,7 +316,19 @@ const Booking = (props) => {
 
     console.log(chooseEndTime)
 
+    const currentTime=setHours(setMinutes(new Date(), 
+    moment(new Date(), 'HH:mm').minute()), 
+    moment(new Date(), 'HH:mm').hour()
+    )
 
+    if(moment(selectedDate).day() === moment(new Date()).day()){
+        if(minTime < currentTime && currentTime < maxTime){
+            minTime = currentTime;
+        }
+    }
+
+
+    
 
 
     // const do_godz = moment(data.od_godziny, 'HH:mm').hour()
@@ -324,6 +378,29 @@ const Booking = (props) => {
         console.log(selectedDate)
 
 
+
+
+        
+        const filterPassedTime = (time) => {
+            for (let i = 0; i < slots2.length; i++) {
+                const e = slots2[i];
+
+                const x = moment(time),
+                    beforeTime = moment(e.start),
+                    afterTime = moment(e.end);
+
+                if (
+                    x.isBetween(beforeTime, afterTime) ||
+                    x.isSame(moment(beforeTime)) ||
+                    x.isSame(moment(afterTime))
+                ) {
+                    return false;
+                }
+                if (i + 1 == slots2.length) {
+                    return true;
+                }
+                }
+          };
 
 
 
@@ -445,7 +522,7 @@ const Booking = (props) => {
                         calendarStartDay={1}
                         dateFormat='yyyy/MM/dd'
                         minDate={new Date()}
-                        maxDate={new Date() + 14}
+                        maxDate={addDays(new Date(), 14)}
                         // excludeDates={holidays}
                         // includeDates={data}
                         showTimeSelect
@@ -454,39 +531,31 @@ const Booking = (props) => {
                         minTime={minTime}
                         maxTime={maxTime}
                         // excludeTimes={selectedDate.getDate() == new Date().getDate() ? timeOff : timeOff2}
-                        filterTime={(time) => {
-                            for (let i = 0; i < slots2.length; i++) {
-                            const e = slots2[i];
-        
-                            const x = moment(time),
-                                beforeTime = moment(e.start),
-                                afterTime = moment(e.end);
-        
-                            if (
-                                x.isBetween(beforeTime, afterTime) ||
-                                x.isSame(moment(beforeTime)) ||
-                                x.isSame(moment(afterTime))
-                            ) {
-                                return false;
-                            }
-                            if (i + 1 == slots2.length) {
-                                return true;
-                            }
-                            }
-                        }}
+                        filterTime={filterPassedTime}
                     />
                     
                 </div>
-                
+                {access ?
                 <button className='btn btn-primary me-1' type='submit'>Rezerwuj</button>
+                :
+      
+
+                <button
+                    type='button'
+                    className="btn btn-primary me-1"
+                    onClick={() => navigate(`/login`, {state: {...props, path: location.pathname}}, {replace: true})}
+                >
+                    Rezerwuj
+                </button>
+                }
             </form>
 
             </div>
 
             <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
                 umow wizytę<br/>
-            id: {location.state.serviceId}<br/>
-            {location.state.name}
+            id: {props.serviceId}<br/>
+            {props.name}
                 </div>
 
                     </div>

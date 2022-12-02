@@ -80,9 +80,8 @@ const Signup = () => {
 
     return (
         <div className='min-vh-100 color-overlay2 d-flex justify-content-center align-items-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
-                <h1>Sign In</h1>
-                <p>Sign into your Account</p>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form text-center' onSubmit={e => onSubmit(e)}>
+                <h1>Zarejestruj się</h1>
                 <div className='mb-3 mt-5'>
                     <input
                         className='form-control'
@@ -219,11 +218,7 @@ const Signup = () => {
                     />
                 </div>
                 <div className='text-center mt-4'>
-                    <button className='btn btn-primary w-100' type='submit'>Register</button>
-                    <p className='mt-3'>
-                        <Link to='/login' style={{ textDecoration: 'none' }}>Already have an account?</Link>
-                        
-                    </p>
+                    <button className='btn btn-primary w-100' type='submit'>Zarejestruj się</button>
                 </div>
             </form>
         </div>

@@ -15,11 +15,6 @@ const Reservations = () => {
                 <Sidebar role={userRole} />
                 <div className="col-auto col-md-9 col-lg-10 main p-5">
                     <div>
-                        <p className="lead d-none d-sm-block">
-                            Rezerwacje
-                        </p>
-                    </div>
-                    <div>
                         <ReservationsManagement />
                     </div>
                 </div>

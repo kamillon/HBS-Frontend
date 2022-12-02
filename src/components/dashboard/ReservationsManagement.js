@@ -122,16 +122,26 @@ const ReservationsManagement = () => {
 
     return (
         <div className='container'>
-            {currentUser.role === 'salon_owner' &&
-                <select className="form-select w-25" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}>
-                    <option>---Wybierz salon---</option>
-                    {salonDataFiltered.map(salon => (
-                        <option key={salon.id} value={salon.id}>
-                            {salon.name}
-                        </option>
-                    ))}
-                </select>
-            }
+            <div className='row mb-5'>
+                <div className='col'>
+                    <h2>Rezerwacje</h2>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-6 text-center mb-3">
+                    {currentUser.role === 'salon_owner' &&
+                    <select className="form-select" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}>
+                        <option>---Wybierz salon---</option>
+                        {salonDataFiltered.map(salon => (
+                            <option key={salon.id} value={salon.id}>
+                                {salon.name}
+                            </option>
+                        ))}
+                    </select>
+                    }
+                </div>
+            </div>
+            
             {mappedData.length > 0 ?
                 <div className="table-responsive">
                     <table className="table table-hover">
@@ -162,6 +172,7 @@ const ReservationsManagement = () => {
                                     <td>{item.end_time}</td>
                                     <td>{item.is_active ? "active" : "inactive"}</td>
                                     <td>
+                                        {item.is_active ? 
                                         <button
                                             type="button"
                                             style={{ width: '80px' }}
@@ -173,6 +184,9 @@ const ReservationsManagement = () => {
                                         >
                                             ANULUJ
                                         </button>
+                                        : 
+                                        <></>
+                                        }
                                     </td>
                                 </tr>
                             ))

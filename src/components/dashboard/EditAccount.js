@@ -54,16 +54,8 @@ const EditAccount = () => {
         getUser()
     }, [access, userRole])
 
-
-
-
-
     const [accountUpdated, setAccountUpdated] = useState(false);
-
-
-
     const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, phone, role } = data;
-
 
 
     function onChange(event) {
@@ -75,7 +67,7 @@ const EditAccount = () => {
             }
         })
     }
-    
+
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -106,8 +98,6 @@ const EditAccount = () => {
             catch (error) {
                 console.log(error)
             }
-
-
         }
     };
 
@@ -119,14 +109,11 @@ const EditAccount = () => {
     }, [accountUpdated])
 
 
-
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
             <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
                 <h3>Informacje podstawowe</h3>
-                {/* <p>Create your Account</p> */}
-                {/* <p>Witaj, {currentUser.first_name} {currentUser.last_name} !</p> */}
-                <div className='mb-3'>
+                <div className='mb-3 mt-3'>
                     <input
                         className='form-control'
                         type='text'

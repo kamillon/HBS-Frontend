@@ -2,37 +2,28 @@ import React, { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-
 const Activate = () => {
     const [verified, setVerified] = useState(false);
-
-    const {uid, token} = useParams()
+    const { uid, token } = useParams()
 
     const verify_account = async e => {
-        // const uid = match.params.uid;
-        // const token = match.params.token;
-
-        // verify(uid, token);
-
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-    
+
         const body = JSON.stringify({ uid, token });
-    
 
         try {
             const res = await axios.post(`http://127.0.0.1:8000/auth/users/activation/`, body, config);
 
             console.log(res.data)
-            
-        } 
-        catch(error) {
+
+        }
+        catch (error) {
             console.log(error)
         }
-
 
         setVerified(true);
     };
@@ -42,20 +33,18 @@ const Activate = () => {
     }
 
     return (
-        <div className='container'>
-            <div 
-                className='d-flex flex-column justify-content-center align-items-center'
-                style={{ marginTop: '200px' }}
-            >
-                <h1>Verify your Account:</h1>
+        <div className='min-vh-100 color-overlay d-flex justify-content-center align-items-center'>
+            <div className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded login-form text-center'>
+                <h1>Dziękujemy za rejestrację</h1>
+                <p className='mt-3'>W celu aktywacji konta prosimy kliknąć w poniższy przycisk.</p>
                 <button
                     onClick={verify_account}
-                    style={{ marginTop: '50px' }}
                     type='button'
                     className='btn btn-primary'
                 >
-                    Verify
+                    Kliknij aby potwierdzić konto
                 </button>
+                <p className='mt-3'>Loginem do konta jest adres e-mail, na który została dostarczona ta wiadomość.</p>
             </div>
         </div>
     );

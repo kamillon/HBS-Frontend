@@ -148,8 +148,13 @@ const ServiceManagement = () => {
 
     return (
         <div className='container'>
+            <div className='row mb-5'>
+                <div className='col'>
+                    <h2>Usługi</h2>
+                </div>
+            </div>
             <div className="row">
-                <div className="col-md-6 text-center">
+                <div className="col-md-6 text-center mb-3">
                     <select className="form-select" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}>
                         <option>---Wybierz salon---</option>
                         {mappedSalons.map(salon => (

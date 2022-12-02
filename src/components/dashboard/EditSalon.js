@@ -16,7 +16,7 @@ const EditSalon = () => {
         street: '',
         house_number: '',
         city: '',
-        postal_code: '',
+        post_code: '',
         postal_code_locality: '',
         phone_number: '',
         email: '',
@@ -25,7 +25,7 @@ const EditSalon = () => {
 
     const [data, setData] = useState(initialState);
     const [salonUpdated, setSalonUpdated] = useState(false);
-    const { name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner } = data
+    const { name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner } = data
     
 
     const listOwners = async () => {
@@ -115,7 +115,7 @@ const EditSalon = () => {
                 }
             };
 
-            const body = JSON.stringify({ name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner });
+            const body = JSON.stringify({ name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner });
 
             try {
 
@@ -152,7 +152,7 @@ const EditSalon = () => {
                         className='form-control'
                         type='text'
                         placeholder='Nazwa salonu*'
-                        name='nazwa'
+                        name='name'
                         value={name}
                         onChange={e => onChange(e)}
                         required
@@ -163,7 +163,7 @@ const EditSalon = () => {
                         className='form-control'
                         type='text'
                         placeholder='Ulica*'
-                        name='ulica'
+                        name='street'
                         value={street}
                         onChange={e => onChange(e)}
                         required
@@ -175,7 +175,7 @@ const EditSalon = () => {
                         className='form-control'
                         type='text'
                         placeholder='Nr budynku*'
-                        name='nr_budynku'
+                        name='house_number'
                         value={house_number}
                         onChange={e => onChange(e)}
                         required
@@ -187,7 +187,7 @@ const EditSalon = () => {
                         className='form-control'
                         type='text'
                         placeholder='Miejscowosc*'
-                        name='miejscowosc'
+                        name='city'
                         value={city}
                         onChange={e => onChange(e)}
                         required
@@ -199,8 +199,8 @@ const EditSalon = () => {
                         className='form-control'
                         type='text'
                         placeholder='Kod pocztowy*'
-                        name='kod_pocztowy'
-                        value={postal_code}
+                        name='post_code'
+                        value={post_code}
                         onChange={e => onChange(e)}
                         required
                     />
@@ -211,7 +211,7 @@ const EditSalon = () => {
                         className='form-control'
                         type='text'
                         placeholder='Poczta*'
-                        name='poczta'
+                        name='postal_code_locality'
                         value={postal_code_locality}
                         onChange={e => onChange(e)}
                         required
@@ -223,7 +223,7 @@ const EditSalon = () => {
                         className='form-control'
                         type='text'
                         placeholder='Telefon*'
-                        name='telefon'
+                        name='phone_number'
                         maxLength='9'
                         value={phone_number}
                         onChange={e => onChange(e)}

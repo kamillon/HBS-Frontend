@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const redirectPath = location.state?.path || '/'
+    const props = location.state
 
 
 
@@ -45,7 +46,7 @@ export const AuthProvider = ({ children }) => {
                 setRefresh(res.data.refresh)
                 localStorage.setItem('access', JSON.stringify(res.data.access))
                 localStorage.setItem('refresh', JSON.stringify(res.data.refresh))
-                navigate(redirectPath, {replace:true})
+                navigate(redirectPath, {state: {...props}},{replace:true})
                 
             }
         } 

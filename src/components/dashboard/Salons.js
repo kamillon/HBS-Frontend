@@ -20,29 +20,15 @@ const Salons = () => {
     return (
         <div className="content-wrap container-fluid" id="main">
             <div className="main-content row row-offcanvas row-offcanvas-left full-screen">
-                <Sidebar role={userRole}/>
-
+                <Sidebar role={userRole} />
                 <div className="col-auto col-md-9 col-lg-10 main p-5">
-
                     <div>
-                        <p className="lead d-none d-sm-block">
-                            Salons
-                        </p>
-                    {/* <h2>Zarządzaj salonami</h2> */}
-                    </div>
-
-                    <div>
-      
                         <SalonsManagement />
-                  
-
                     </div>
                 </div>
             </div>
         </div>
-
     )
 };
-
 
 export default Salons;

@@ -17,7 +17,7 @@ const AddSalon = () => {
         street: '',
         house_number: '',
         city: '',
-        postal_code: '',
+        post_code: '',
         postal_code_locality: '',
         phone_number: '',
         email: '',
@@ -26,7 +26,7 @@ const AddSalon = () => {
 
 
 
-    const { name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner } = formData;
+    const { name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner } = formData;
 
     const listOwners = async () => {
         if (access) {
@@ -77,7 +77,7 @@ const AddSalon = () => {
                 }
             };
 
-            const body = JSON.stringify({ name, street, house_number, city, postal_code, postal_code_locality, phone_number, email, owner });
+            const body = JSON.stringify({ name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner });
 
             try {
 
@@ -112,22 +112,34 @@ const AddSalon = () => {
             <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
             <h1 className='mb-5'>Utwórz salon</h1>
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputName' 
+                        className='form-label'>
+                            Nazwa salonu
+                    </label>
                     <input
+                        id='inputName'
                         className='form-control'
                         type='text'
-                        placeholder='Nazwa salonu*'
-                        name='nazwa'
+                        placeholder='Nazwa salonu'
+                        name='name'
                         value={name}
                         onChange={e => onChange(e)}
                         required
                     />
                 </div>
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputStreet' 
+                        className='form-label'>
+                            Ulica
+                    </label>
                     <input
+                        id='inputStreet'
                         className='form-control'
                         type='text'
-                        placeholder='Ulica*'
-                        name='ulica'
+                        placeholder='Ulica'
+                        name='street'
                         value={street}
                         onChange={e => onChange(e)}
                         required
@@ -135,11 +147,17 @@ const AddSalon = () => {
                 </div>
 
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputHouseNumber' 
+                        className='form-label'>
+                            Nr budynku
+                    </label>
                     <input
+                        id='inputHouseNumber'
                         className='form-control'
                         type='text'
-                        placeholder='Nr budynku*'
-                        name='nr_budynku'
+                        placeholder='Nr budynku'
+                        name='house_number'
                         value={house_number}
                         onChange={e => onChange(e)}
                         required
@@ -147,11 +165,17 @@ const AddSalon = () => {
                 </div>
 
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputCity' 
+                        className='form-label'>
+                            Miejscowość
+                    </label>
                     <input
+                        id='inputCity'
                         className='form-control'
                         type='text'
-                        placeholder='Miejscowosc*'
-                        name='miejscowosc'
+                        placeholder='Miejscowość'
+                        name='city'
                         value={city}
                         onChange={e => onChange(e)}
                         required
@@ -159,23 +183,35 @@ const AddSalon = () => {
                 </div>
 
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputPostcode' 
+                        className='form-label'>
+                            Kod pocztowy
+                    </label>
                     <input
+                        id='inputPostcode'
                         className='form-control'
                         type='text'
-                        placeholder='Kod pocztowy*'
-                        name='kod_pocztowy'
-                        value={postal_code}
+                        placeholder='Kod pocztowy'
+                        name='post_code'
+                        value={post_code}
                         onChange={e => onChange(e)}
                         required
                     />
                 </div>
 
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputPostalCodeLocality' 
+                        className='form-label'>
+                            Poczta
+                    </label>
                     <input
+                        id='inputPostalCodeLocality'
                         className='form-control'
                         type='text'
-                        placeholder='Poczta*'
-                        name='poczta'
+                        placeholder='Poczta'
+                        name='postal_code_locality'
                         value={postal_code_locality}
                         onChange={e => onChange(e)}
                         required
@@ -183,11 +219,17 @@ const AddSalon = () => {
                 </div>
 
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputPhoneNumber' 
+                        className='form-label'>
+                            Telefon
+                    </label>
                     <input
+                        id='inputPhoneNumber'
                         className='form-control'
                         type='text'
-                        placeholder='Telefon*'
-                        name='telefon'
+                        placeholder='Telefon'
+                        name='phone_number'
                         maxLength='9'
                         value={phone_number}
                         onChange={e => onChange(e)}
@@ -196,10 +238,16 @@ const AddSalon = () => {
                 </div>
 
                 <div className='mb-3'>
+                    <label 
+                        htmlFor='inputEmail' 
+                        className='form-label'>
+                            Email
+                    </label>
                     <input
+                        id='inputEmail'
                         className='form-control'
                         type='email'
-                        placeholder='Email*'
+                        placeholder='Email'
                         name='email'
                         value={email}
                         onChange={e => onChange(e)}
@@ -208,8 +256,13 @@ const AddSalon = () => {
                 </div>
 
                 <div className="mb-3">
-                    <label className="FormControlSelect">Właściciel</label>
-                    <select className="form-control" name='owner' value={owner} onChange={e => onChange(e)}>
+                     <label 
+                        htmlFor='inputOwner' 
+                        className='form-label'>
+                            Właściciel
+                    </label>
+                    {/* <label className="FormControlSelect">Właściciel</label> */}
+                    <select className="form-control" name='owner' id= 'inputOwner' value={owner} onChange={e => onChange(e)}>
                         <option value=''>
                             --Wybierz właściciela--
                         </option>

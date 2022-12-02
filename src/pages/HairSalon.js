@@ -39,19 +39,16 @@ const HairSalon = () => {
 
     return (
         <div>
-            <section className="p-5 bg-light">
+            <section className="pt-5 bg-light">
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md'>
-                            <Link to='/'>
-                                {/* <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="" /> */}
-                                <img src={hair_salon_picture} className="img-fluid w-75 d-none d-sm-block" alt="hair_salon_picture" />
-                            </Link>
+                            {/* <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="" /> */}
+                            <img src={hair_salon_picture} className="img-fluid w-75 d-none d-sm-block" alt="hair_salon_picture" />
                         </div>
                         <div className='col-md'>
-                            <h2>Learn The basic</h2>
-                            <p>Contrart to populat belief, Lorem Ipsumasdsd
-                                asdsadsadsadsadasdsadasdasdsadsadsad
+                            <h2>Znajdź odpowiedni salon dla siebie</h2>
+                            <p>Przeglądaj z setek dostępnych salonów i umów się na wizytę już dziś.
                             </p>
                         </div>
                     </div>
@@ -59,7 +56,7 @@ const HairSalon = () => {
             </section>
             <div className='container'>
             {data.length <= 0 ? (<h4 className='pt-3'>Nie znaleziono salonów</h4>) : (
-                <div className='row pt-5'>
+                <div className='row'>
 
                     {data.map((item) => (
                         <div className='col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch' key={item.id} >

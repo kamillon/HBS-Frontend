@@ -113,10 +113,10 @@ const SalonsManagement = () => {
 
       return (
         <div className='container'>
+             <h2>Salony</h2>
 
             {userRole === 'admin' ? 
                 <div>
-                    <h2>Zarządzaj salonami</h2>
                     <button
                         onClick={() => navigate(`/${userRole}/salons/add/`)}
                         type='button'

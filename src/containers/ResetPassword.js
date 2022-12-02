@@ -41,11 +41,12 @@ const ResetPassword = () => {
     }
 
     return (
-        <div className='container mt-5'>
-            <h1>Request Password Reset:</h1>
-            <form onSubmit={e => onSubmit(e)}>
+        <div className='min-vh-100 color-overlay d-flex justify-content-center align-items-center'>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded login-form text-center' onSubmit={e => onSubmit(e)}>
+                <h1>Nie pamiętasz hasła?</h1>
+                <p>Jeśli na ten e-mail jest założone konto, to wyślemy na niego wiadomość.</p>
                 <div className='form-group'>
-                    <input
+                     <input
                         className='form-control'
                         type='email'
                         placeholder='Email'
@@ -55,7 +56,9 @@ const ResetPassword = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary' type='submit'>Reset Password</button>
+                <div className='text-center mt-4'>
+                    <button className='btn btn-primary w-100' type='submit'>Odzyskaj hasło</button>
+                </div>
             </form>
         </div>
     );

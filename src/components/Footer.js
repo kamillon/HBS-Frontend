@@ -22,7 +22,6 @@ const Footer = () => {
                             <p className="mb-0 list-unstyled">
                                 <a className="me-3 text-decoration-none link-secondary" href="/">Home</a>
                                 <a className="me-3 text-decoration-none link-secondary" href="/hairsalon">Fryzjer</a>
-                                <a className="me-3 text-decoration-none link-secondary" href="/login">Zaloguj</a>
                             </p>
                         </div>
                     </div>
