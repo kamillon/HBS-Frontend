@@ -504,7 +504,7 @@ const Booking = () => {
                     <label className="FormControlSelect">Wybierz pracownika</label>
                     <select className="form-select mt-2" name='employeeId' value={employeeId} onChange={e => onChange(e)}>
                         {employee.map(employee => (
-                            <option key={employee.id} value={employee.id}>
+                            <option key={employee.user.id} value={employee.user.id}>
                                 {employee.user.first_name + ' ' + employee.user.last_name}
                             </option>
                         ))}

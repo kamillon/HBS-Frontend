@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
+import OpeningHours from './OpeningHours';
 
 const EditSalon = () => {
 
     const { access, userRole } = useAuth()
     const navigate = useNavigate()
     const { uid } = useParams()
-    // console.log(uid)
     const [dataOwners, setDataOwners] = useState([]);
 
     const initialState = {
@@ -26,7 +26,7 @@ const EditSalon = () => {
     const [data, setData] = useState(initialState);
     const [salonUpdated, setSalonUpdated] = useState(false);
     const { name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner } = data
-    
+
 
     const listOwners = async () => {
         if (access) {
@@ -85,6 +85,7 @@ const EditSalon = () => {
             }
         };
 
+
         if (uid) {
             getSalon()
             listOwners()
@@ -128,8 +129,6 @@ const EditSalon = () => {
             catch (error) {
                 console.log(error)
             }
-
-
         }
     };
 
@@ -140,128 +139,138 @@ const EditSalon = () => {
     }, [salonUpdated])
 
 
-
     return (
-        <div className='container mt-5 d-flex align-items-center justify-content-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
-                <h1>Edytuj dane</h1>
-                
-                
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Nazwa salonu*'
-                        name='name'
-                        value={name}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Ulica*'
-                        name='street'
-                        value={street}
-                        onChange={e => onChange(e)}
-                        required
-                    />
+        <div className='container mt-5'>
+            <div className="row">
+                <div className="col-lg-7">
+                <h1 className='mb-5'>Edytuj dane</h1>
+                    
+                    <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded' onSubmit={e => onSubmit(e)}>
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='text'
+                                placeholder='Nazwa salonu*'
+                                name='name'
+                                value={name}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='text'
+                                placeholder='Ulica*'
+                                name='street'
+                                value={street}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='text'
+                                placeholder='Nr budynku*'
+                                name='house_number'
+                                value={house_number}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='text'
+                                placeholder='Miejscowosc*'
+                                name='city'
+                                value={city}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='text'
+                                placeholder='Kod pocztowy*'
+                                name='post_code'
+                                value={post_code}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='text'
+                                placeholder='Poczta*'
+                                name='postal_code_locality'
+                                value={postal_code_locality}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='text'
+                                placeholder='Telefon*'
+                                name='phone_number'
+                                maxLength='9'
+                                value={phone_number}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+
+                        <div className='mb-3'>
+                            <input
+                                className='form-control'
+                                type='email'
+                                placeholder='Email*'
+                                name='email'
+                                value={email}
+                                onChange={e => onChange(e)}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="FormControlSelect">Typ użytkownika</label>
+                            <select className="form-control" name='owner' value={owner} onChange={e => onChange(e)}>
+                                {dataOwners.map(owner => (
+                                    <option key={owner.user.id} value={owner.user.id}>
+                                        {owner.user.first_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <button className='btn btn-primary me-1' type='submit'>Edytuj</button>
+                        <button className='btn btn-danger' onClick={() => navigate(`/${userRole}/salons/`)}>Anuluj</button>
+                    </form>
                 </div>
 
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Nr budynku*'
-                        name='house_number'
-                        value={house_number}
-                        onChange={e => onChange(e)}
-                        required
-                    />
+                <div className="col-lg-5 mt-5 mt-md-0 ">
+                <h1 className='ms-4 mb-5'>Godziny otwarcia</h1>
+
+                    <OpeningHours day={"Poniedziałek"} weekday={1} />
+                    <OpeningHours day={"Wtorek"} weekday={2} />
+                    <OpeningHours day={"Środa"} weekday={3} />
+                    <OpeningHours day={"Czwartek"} weekday={4} />
+                    <OpeningHours day={"Piątek"} weekday={5} />
+                    <OpeningHours day={"Sobota"} weekday={6} />
+                    <OpeningHours day={"Niedziela"} weekday={0} />
                 </div>
-
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Miejscowosc*'
-                        name='city'
-                        value={city}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Kod pocztowy*'
-                        name='post_code'
-                        value={post_code}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Poczta*'
-                        name='postal_code_locality'
-                        value={postal_code_locality}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='text'
-                        placeholder='Telefon*'
-                        name='phone_number'
-                        maxLength='9'
-                        value={phone_number}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-
-                <div className='mb-3'>
-                    <input
-                        className='form-control'
-                        type='email'
-                        placeholder='Email*'
-                        name='email'
-                        value={email}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label className="FormControlSelect">Typ użytkownika</label>
-                    <select className="form-control" name='owner' value={owner} onChange={e => onChange(e)}>
-                        {dataOwners.map(owner => (
-                            <option key={owner.user.id} value={owner.user.id}>
-                                {owner.user.first_name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                
-
-                <button className='btn btn-primary me-1' type='submit'>Edytuj</button>
-                <button className='btn btn-danger' onClick={() => navigate(`/${userRole}/salons/`)}>Anuluj</button>
-            </form>
+            </div>
         </div>
     );
 };
-
 
 export default EditSalon;

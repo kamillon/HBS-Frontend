@@ -12,7 +12,7 @@ const AddUser = () => {
 
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
-        username: 'salon_owner1231112',
+        username: '',
         first_name: '',
         last_name: '',
         is_staff: true,
@@ -127,6 +127,19 @@ const AddUser = () => {
 
             <Form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
                 <h1 className='mb-5'>Utwórz konto</h1>
+                <Form.Group className="mb-3" controlId="inputUsername">
+                    <Form.Label>Nazwa użytkownika*</Form.Label>
+                    <Form.Control 
+                    className='form-control'
+                    // id='inputLastName'
+                    type='text'
+                    placeholder='Nazwa użytkownika*'
+                    name='username'
+                    value={formData.username}
+                    onChange={e => onChange(e)}
+                    />
+                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="inputFirstName">
                     <Form.Label>Imię*</Form.Label>
                     <Form.Control 
