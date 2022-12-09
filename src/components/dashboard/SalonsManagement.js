@@ -127,7 +127,7 @@ const SalonsManagement = () => {
                 </div> : <></>
             }
 
-
+        {dataToBeMapped.length > 0 ?
             <div className="table-responsive">
                 <table className="table table-hover">
                     <thead>
@@ -185,6 +185,9 @@ const SalonsManagement = () => {
                     </tbody>
                 </table>
             </div>
+            :
+            <p>Aktualnie nie posiadasz żadnego przypisanego salonu</p>
+}
 
             {/* <Button variant="primary" onClick={handleShow}>
                 Launch demo modal

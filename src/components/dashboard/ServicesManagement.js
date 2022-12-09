@@ -71,37 +71,32 @@ const ServiceManagement = () => {
             }
         };
 
-        const listOfSalonsOwners = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
+        // const listOfSalonsOwners = async () => {
+        //     if (access) {
+        //         const config = {
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `JWT ${access}`,
+        //                 'Accept': 'application/json'
+        //             }
+        //         };
 
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
-                    setOwnerSalons(res.data)
-                    console.log(res.data)
-                } catch (err) {
-                    setOwnerSalons(null)
-                    console.log(err)
-                }
-            } else {
-                setOwnerSalons(null)
-                console.log("Blad")
-            }
-        };
+        //         try {
+        //             const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
+        //             setOwnerSalons(res.data)
+        //             console.log(res.data)
+        //         } catch (err) {
+        //             setOwnerSalons(null)
+        //             console.log(err)
+        //         }
+        //     } else {
+        //         setOwnerSalons(null)
+        //         console.log("Blad")
+        //     }
+        // };
 
         getServices()
-        if (currentUser.role === 'admin') {
-            getSalons()
-        }
-        if (currentUser.role === 'salon_owner') {
-            listOfSalonsOwners()
-        }
+        getSalons()
     }, [access])
 
 
@@ -134,6 +129,9 @@ const ServiceManagement = () => {
         }
     }, [removed])
 
+  
+
+
     let mappedData = ({})
     let mappedSalons = ({})
 
@@ -143,7 +141,7 @@ const ServiceManagement = () => {
     }
     else if (userRole === 'salon_owner') {
         mappedData = data.filter(i => i.salonID == selectedSalon)
-        mappedSalons = ownerSalons
+        mappedSalons = salonData.filter(i => i.owner == currentUser.id)
     }
 
     return (
@@ -165,6 +163,7 @@ const ServiceManagement = () => {
                     </select>
                 </div>
                 <div className="col-md-6 text-center mt-3 mt-md-0">
+                    {mappedSalons.length > 0 ? 
                     <button
                         onClick={() => navigate(`/${userRole}/services/add/`)}
                         type='button'
@@ -172,6 +171,15 @@ const ServiceManagement = () => {
                     >
                         DODAJ USŁUGĘ
                     </button>
+                    :
+                    <button
+                        type='button'
+                        disabled
+                        className='btn btn-primary'
+                    >
+                        DODAJ USŁUGĘ
+                    </button>
+}
                 </div>
             </div>
 

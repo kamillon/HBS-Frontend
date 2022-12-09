@@ -29,7 +29,7 @@ const EditEmployee = () => {
             re_password: 'zaq1@WSX',
             phone: '',
             role: 'employee',
-        },
+          },
     });
 
     useEffect(() => {
@@ -91,7 +91,7 @@ const EditEmployee = () => {
         }
     }, [uid, access, userRole])
 
-
+    
     const [accountUpdated, setAccountUpdated] = useState(false);
     const [salonUpdated, setSalonUpdated] = useState(false);
 
@@ -99,12 +99,12 @@ const EditEmployee = () => {
     const { salon, user } = formData;
 
     const onChange = e => setFormData({
-        ...formData,
+        ...formData, 
         user: {
             ...formData.user,
-            [e.target.name]: e.target.value ?? e.target.checked
+            [e.target.name]: e.target.value ?? e.target.checked 
         }
-    });
+      });
 
     const handleChangeSalon = e => setFormData({
         salon: e.target.value,
@@ -128,10 +128,10 @@ const EditEmployee = () => {
 
             const body = JSON.stringify({
                 username: user.username,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                phone: user.phone,
+                first_name: user.first_name, 
+                last_name: user.last_name, 
+                email: user.email, 
+                phone: user.phone, 
                 role: user.role,
             });
 
