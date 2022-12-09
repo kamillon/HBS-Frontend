@@ -35,6 +35,7 @@ import Reservations from './components/dashboard/Reservations';
 import Services from './components/dashboard/Services';
 import AddService from './components/dashboard/AddService';
 import EditService from './components/dashboard/EditService';
+import WorkHours from './components/dashboard/WorkHours';
 
 const ROLES = {
   "customer": "customer",
@@ -89,6 +90,7 @@ function App() {
               <Route element={<RequireAuth allowedRole={ROLES.employee}/>}>
                 <Route exact path='/employee/' element={<EmployeeDashboard/>} />
                 <Route path='/employee/reservations/' element={<Reservations/>} />
+                <Route path='/employee/work-hours/' element={<WorkHours/>} />
                 <Route path='/employee/account-settings/' element={<AccountSettings/>} />
               </Route>
 

@@ -5,7 +5,7 @@ import avatar from '../images/avatar.png';
 
 const Sidebar = (props) => {
     const { userRole, currentUser } = useAuth()
-    
+
     const functionWithSwitch = () => {
         switch (props.role) {
             case "admin":
@@ -63,10 +63,10 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-                        <hr/>
+                        <hr />
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
-                                <i className="bi bi-calendar-check-fill"></i>
+                                <i className="bi bi-gear-fill"></i>
                                 <span className="ms-3">
                                     Ustawienia konta
                                 </span>
@@ -130,11 +130,11 @@ const Sidebar = (props) => {
                             </Link>
                         </li>
 
-                        <hr/>
+                        <hr />
 
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
-                                <i className="bi bi-calendar-check-fill"></i>
+                                <i className="bi bi-gear-fill"></i>
                                 <span className="ms-3">
                                     Ustawienia konta
                                 </span>
@@ -161,12 +161,20 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
+                        <li className="nav-item mb-2">
+                            <Link to={`/${userRole}/work-hours/`} className="nav-link text-secondary">
+                                <i className="bi bi-calendar-day-fill"></i>
+                                <span className="ms-3">
+                                    Godziny pracy
+                                </span>
+                            </Link>
+                        </li>
 
-                        <hr/>
+                        <hr />
 
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
-                                <i className="bi bi-calendar-check-fill"></i>
+                                <i className="bi bi-gear-fill"></i>
                                 <span className="ms-3">
                                     Ustawienia konta
                                 </span>
@@ -193,12 +201,12 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-                        
-                        <hr/>
-                        
+
+                        <hr />
+
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
-                                <i className="bi bi-calendar-check-fill"></i>
+                                <i className="bi bi-gear-fill"></i>
                                 <span className="ms-3">
                                     Ustawienia konta
                                 </span>
@@ -215,11 +223,11 @@ const Sidebar = (props) => {
         <div className="col-md-3 col-lg-2 sidebar-offcanvas ps-0" id="sidebar" role="navigation" style={{ backgroundColor: "#e9ecef" }}>
             <ul className="nav flex-column sticky-top ps-0 pt-5 p-3">
                 <li className="nav-item mb-2 text-center">
-                    <img src={avatar} className="p-3" alt="avatar" style={{width: "150px"}}/>
+                    <img src={avatar} className="p-3" alt="avatar" style={{ width: "150px" }} />
                     <h5 className='text-center mt-2'>
                         {currentUser?.first_name} {currentUser?.last_name}
                     </h5>
-                    </li>
+                </li>
                 <hr />
 
                 {functionWithSwitch()}

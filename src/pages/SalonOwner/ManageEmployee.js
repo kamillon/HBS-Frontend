@@ -7,8 +7,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import wykrzyknik from '../../images/wykrzyknik.png';
 import Sidebar from '../../components/Sidebar';
-import UserManagement from '../../components/UserManagement';
+// import UserManagement from '../../components/UserManagement';
 import '../Admin/admin.css';
+import EmployeesManagement from '../../components/dashboard/EmployeesManagement';
 
 const ManageEmployee = () => {
 
@@ -31,7 +32,8 @@ const ManageEmployee = () => {
                     </div> */}
 
                     <div>
-                        <UserManagement />
+                        {/* <UserManagement /> */}
+                        <EmployeesManagement/>
                     </div>
                 </div>
             </div>
