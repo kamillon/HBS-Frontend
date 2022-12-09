@@ -10,13 +10,14 @@ import Sidebar from '../Sidebar';
 
 const EmployeesManagement = () => {
     const navigate = useNavigate()
-    const { access, userRole } = useAuth()
+    const { access, userRole, currentUser } = useAuth()
     const [data, setData] = useState([]);
     const [removed, setRemoved] = useState(false);
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
     const [userData, setUserData] = useState({})
+    const [salonData, setSalonData] = useState([]);
 
 
     const listUsers = async () => {
@@ -30,7 +31,7 @@ const EmployeesManagement = () => {
             };
 
             try {
-                const url =`http://127.0.0.1:8000/employee/`
+                const url = `http://127.0.0.1:8000/employee/`
 
                 const res = await axios.get(url, config);
 
@@ -48,8 +49,38 @@ const EmployeesManagement = () => {
     };
 
 
+    const listSalons = async () => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+
+            try {
+
+                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+
+
+                setSalonData(res.data.filter(i => i.owner == currentUser.id))
+                console.log(res.data)
+
+            } catch (err) {
+                setSalonData(null)
+                console.log(err)
+            }
+        } else {
+            setSalonData(null)
+            console.log("Blad")
+        }
+    };
+
+
     useEffect(() => {
         listUsers()
+        listSalons()
     }, [access])
 
 
@@ -76,12 +107,6 @@ const EmployeesManagement = () => {
         }
     };
 
-    // if (removed) {
-    //     window.location.reload(false);
-    // }
-
-
-
     useEffect(() => {
         if (removed) {
             window.location.reload(false);
@@ -93,11 +118,11 @@ const EmployeesManagement = () => {
         <div className='container'>
             <h2>Pracownicy</h2>
             <button
-                onClick={() => navigate(`/${userRole}/users/add/`)}
+                onClick={() => navigate(`/${userRole}/employee/add/`)}
                 type='button'
                 className='btn btn-primary mt-5 mb-3'
             >
-                DODAJ UŻYTKOWNIKA
+                DODAJ PRACOWNIKA
             </button>
 
 
@@ -106,9 +131,10 @@ const EmployeesManagement = () => {
                     <thead>
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Nazwa użytkownika</th>
+                            <th scope="col">Email</th>
                             <th scope="col">Imię</th>
                             <th scope="col">Nazwisko</th>
+                            <th scope="col">SalonId</th>
                             <th scope="col">Status konta</th>
                             <th scope="col">Rola</th>
                             <th scope="col">Akcje</th>
@@ -118,9 +144,10 @@ const EmployeesManagement = () => {
                         {data.map((item) => (
                             <tr key={item.user.id}>
                                 <th scope="row">{item.user.id}</th>
-                                <td>{item.user.username}</td>
+                                <td>{item.user.email}</td>
                                 <td>{item.user.first_name}</td>
                                 <td>{item.user.last_name}</td>
+                                <td>{item.salon}</td>
                                 <td>{item.user.is_active ? "active" : "inactive"}</td>
                                 <td>{item.user.role}</td>
                                 <td>
@@ -128,7 +155,7 @@ const EmployeesManagement = () => {
                                         type="button"
                                         className="btn btn-primary me-1"
                                         style={{ width: '80px' }}
-                                        onClick={() => navigate(`/${userRole}/users/edit/${item.user.id}`)}
+                                        onClick={() => navigate(`/${userRole}/employee/edit/${item.user.id}`)}
                                     >
                                         EDYTUJ
                                     </button>
@@ -138,10 +165,11 @@ const EmployeesManagement = () => {
                                         className="btn btn-danger mt-1 mt-md-0"
                                         onClick={() => {
                                             handleShow();
-                                            setUserData({ 
-                                                id: item.user.id, 
-                                                first_name: item.user.first_name, 
-                                                last_name: item.user.last_name })
+                                            setUserData({
+                                                id: item.user.id,
+                                                first_name: item.user.first_name,
+                                                last_name: item.user.last_name
+                                            })
                                         }}
                                     >
                                         USUŃ

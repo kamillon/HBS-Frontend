@@ -86,7 +86,7 @@ const Sidebar = (props) => {
                             </Link>
                         </li>
                         <li className="nav-item mb-2">
-                            <Link to={`/${userRole}/users/`} className="nav-link text-secondary">
+                            <Link to={`/${userRole}/employee/`} className="nav-link text-secondary">
                                 <i className="bi bi-people-fill"></i>
                                 <span className="ms-3">
                                     Pracownicy
