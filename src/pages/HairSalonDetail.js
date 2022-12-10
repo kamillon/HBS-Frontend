@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext"
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ListServices from '../components/ListServices';
 import hair_salon from '../images/hair_salon.png';
+import SalonContact from './SalonContact';
+import avatar from '../images/avatar.png';
 
 const HairSalonDetail = (props) => {
-    const navigate = useNavigate()
+    const { access } = useAuth()
     const { salonId } = useParams()
     const [data, setData] = useState([])
+    const [employee, setEmployee] = useState([])
+    const [salonData, setSalonData] = useState([])
     const [search, setSearch] = useState('')
 
     useEffect(() => {
@@ -32,14 +36,66 @@ const HairSalonDetail = (props) => {
             }
         };
 
+        const getEmployee = async () => {
+            if (access) {
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `JWT ${access}`,
+                        'Accept': 'application/json'
+                    }
+                };
+
+                try {
+                    const url = `http://127.0.0.1:8000/employee/`
+
+                    const res = await axios.get(url, config);
+
+                    setEmployee(res.data.filter(i => i.salon == salonId))
+                    console.log(res.data)
+
+                } catch (err) {
+                    setEmployee(null)
+                    console.log(err)
+                }
+            } else {
+                setEmployee(null)
+                console.log("Blad")
+            }
+        };
+
+        const getSalons = async () => {
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            };
+
+            try {
+                const res = await axios.get('http://127.0.0.1:8000/salon/', config);
+
+                setSalonData(res.data.filter(i => i.id == salonId))
+                console.log(res.data)
+
+            } catch (err) {
+                setSalonData(null)
+                console.log(err)
+            }
+        };
+
         listServices()
-    }, [])
-    
+        getEmployee()
+        getSalons()
+
+    }, [access, salonId])
+
     const filteredServices = data.filter(service => parseInt(service.salonID) === parseInt(salonId))
     const searchFilteredServices = filteredServices.filter(item => (
         search.toLowerCase() === ''
-        ? item
-        : item.name.toLowerCase().includes(search)
+            ? item
+            : item.name.toLowerCase().includes(search)
     ))
 
     return (
@@ -47,26 +103,27 @@ const HairSalonDetail = (props) => {
             <section className="p-5 bg-dark mb-5 text-white">
                 <div className='container'>
                     <div className='row'>
-                        {/* <div className='col-md'
-                            style={{
-                                backgroundImage: `url('https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
-                                height: '60vh'
-                            }}> */}
-                            <div className='col-md'>
-                                <img src={hair_salon} className="img-fluid w-50 d-none d-sm-block" alt="hair_salon" />
+                        <div className='col-md'>
+                            <img src={hair_salon} className="img-fluid w-50 d-none d-sm-block" alt="hair_salon" />
                         </div>
-                        <div className='col-md px-sm-0 px-md-5 py-sm-3 py-md-0'>
-                            <h2>Salon 1</h2>
-                            <p>Contrart to populat belief, Lorem Ipsumasdsd
-                                asdsadsadsadsadasdsadasdasdsadsadsad
-                            </p>
-                        </div>
+                        {employee.length > 0 ?
+                            salonData.map((salon) => (
+                                <div key={salon.id} className='col-md px-sm-0 px-md-5 py-sm-3 py-md-0'>
+                                    <h2>{salon.name}</h2>
+                                    <p>Contrart to populat belief, Lorem Ipsumasdsd
+                                        asdsadsadsadsadasdsadasdasdsadsadsad
+                                    </p>
+                                </div>
+                            ))
+                            :
+                            <></>
+                        }
                     </div>
                 </div>
             </section>
             <div className='container'>
                 <div className='row'>
-                    <div className="col-md-8">
+                    <div className="col-md-8 pe-5">
                         <div className='row'>
                             <div className='col-md-6'>
                                 <h5 className='ms-4 mb-3'>
@@ -87,177 +144,72 @@ const HairSalonDetail = (props) => {
                             </div>
                         </div>
 
-                        {searchFilteredServices.length 
-                        ? searchFilteredServices.map((item) => (
-                            <ListServices
-                                key={item.id}
-                                id={item.id}
-                                name={item.name}
-                                describe={item.describe}
-                                time={item.time}
-                                price={item.price}
-                            />
-                        ))
-                        :
-                        <p className='ms-4 mb-3'>Nie znaleziono usług</p>
-                    }
+                        {searchFilteredServices.length
+                            ? searchFilteredServices.map((item) => (
+                                <ListServices
+                                    key={item.id}
+                                    id={item.id}
+                                    name={item.name}
+                                    describe={item.describe}
+                                    time={item.time}
+                                    price={item.price}
+                                />
+                            ))
+                            :
+                            <p className='ms-4 mb-3'>Nie znaleziono usług</p>
+                        }
 
                     </div>
                     <div className="col-md-4 bg-light">
-                        <h3 className='text-center'>Znajdziesz nas</h3>
-                        <div className='map-container mb-5'>
-                            mapa<br />
+                        <div className='contact-container mt-4'>
+                            <h6>KONTAKT I GODZINY OTWARCIA</h6>
+                            {employee.length > 0 ?
+                                salonData.map((salon) => (
+                                    <div key={salon.id} className="p-2 mb-5 mt-4">
+                                        <i className="bi bi-phone me-2"></i>
+                                        <strong>{salon.phone_number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}</strong>
+                                    </div>
+                                ))
+                                :
+                                <></>
+                            }
+                            <table className="table">
+                                <tbody>
+                                    <SalonContact day={"Poniedziałek"} weekday={1} salonId={salonId} />
+                                    <SalonContact day={"Wtorek"} weekday={2} salonId={salonId} />
+                                    <SalonContact day={"Środa"} weekday={3} salonId={salonId} />
+                                    <SalonContact day={"Czwartek"} weekday={4} salonId={salonId} />
+                                    <SalonContact day={"Piątek"} weekday={5} salonId={salonId} />
+                                    <SalonContact day={"Sobota"} weekday={6} salonId={salonId} />
+                                    <SalonContact day={"Niedziela"} weekday={0} salonId={salonId} />
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div className='about-us-container'>
-                            <h6>
-                                O NAS
-                            </h6>
-                            <p>
-                                Witamy w Rozczochranym Harrym, salonie fryzjersko-kosmetycznym w Warszawie dzielnica Wola, który został stworzony z myślą o wymagających i świadomych swoich potrzeb Klientach,
-                            </p>
-                        </div>
                         <div className='employee-container mt-4'>
                             <h6>
                                 PRACOWNICY
                             </h6>
-                            <div className="row text-center mt-4">
-                                <div className='col-4 col-md-6 col-lg-4 justify-content-center'>
-                                    <img className="rounded-circle" alt="10x10" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg"
-                                        data-holder-rendered="true" width={64} />
+                            {employee.length > 0 ?
+                                <div className="row text-center mt-4">
+                                    {employee.map((i) => (
+                                        <div key={i.user.id} className='col-4 col-md-6 col-lg-4 justify-content-center'>
+                                            <img
+                                                className="rounded-circle"
+                                                alt="10x10"
+                                                src={avatar}
+                                                data-holder-rendered="true"
+                                                width={64} />
+                                            <p><strong>{i.user.first_name}</strong></p>
 
-                                    <p><strong>Kasia</strong></p>
-
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className='col-4 col-md-6 col-lg-4 justify-content-center'>
-                                    <img className="rounded-circle z-depth-2" alt="10x10" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(31).jpg"
-                                        data-holder-rendered="true" width={64} />
-
-                                    <p><strong>Gosia</strong></p>
-                                </div>
-
-                                <div className='col-4 col-md-6 col-lg-4 justify-content-center'>
-                                    <img className="rounded-circle z-depth-2" alt="10x10" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(31).jpg"
-                                        data-holder-rendered="true" width={64} />
-
-                                    <p><strong>Gosia</strong></p>
-                                </div>
-                                <div className='col-4 col-md-6 col-lg-4 justify-content-center'>
-                                    <img className="rounded-circle z-depth-2" alt="10x10" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(31).jpg"
-                                        data-holder-rendered="true" width={64} />
-
-                                    <p><strong>Gosia</strong></p>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className='contact-container mt-4'>
-                            <h6>KONTAKT</h6>
-                            <table className="table">
-                                <tbody>
-                                    <tr>
-                                        <td className='w-50'>
-                                            <div>
-                                                {/* <p className="fw-bold mb-1">{props.nazwa_uslugi}</p>
-                                            <p className="text-muted mb-0">{props.opis}</p> */}
-                                                <p>Poniedziałek</p>
-                                            </div>
-                                        </td>
-                                        <td className='w-50'>
-                                            <div className="text-end">
-                                                8.00 - 16.00
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='w-50'>
-                                            <div>
-                                                <p>Wtorek</p>
-                                            </div>
-                                        </td>
-                                        <td className='w-50'>
-                                            <div className="text-end">
-                                                8.00 - 16.00
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='w-50'>
-                                            <div>
-                                                <p>Środa</p>
-                                            </div>
-                                        </td>
-                                        <td className='w-50'>
-                                            <div className="text-end">
-                                                8.00 - 16.00
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='w-50'>
-                                            <div>
-                                                <p>Czwartek</p>
-                                            </div>
-                                        </td>
-                                        <td className='w-50'>
-                                            <div className="text-end">
-                                                8.00 - 16.00
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='w-50'>
-                                            <div>
-                                                <p>Piątek</p>
-                                            </div>
-                                        </td>
-                                        <td className='w-50'>
-                                            <div className="text-end">
-                                                8.00 - 16.00
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='w-50'>
-                                            <div>
-                                                <p>Sobota</p>
-                                            </div>
-                                        </td>
-                                        <td className='w-50'>
-                                            <div className="text-end">
-                                                9.00 - 14.00
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='w-50'>
-                                            <div>
-                                                <p>Niedziela</p>
-                                            </div>
-                                        </td>
-                                        <td className='w-50'>
-                                            <div className="text-end">
-                                                Zamknięte
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                :
+                                <></>
+                            }
                         </div>
                     </div>
-
-                    {/* {data.map((item) => (
-                    <ListServices 
-                    key={item.id} 
-                    id={item.id}
-                    nazwa_uslugi={item.nazwa_uslugi} 
-                    opis={item.opis}
-                    czas={item.czas}
-                    cena={item.cena}
-                    />
-                ))} */}
-
                 </div>
             </div>
         </div>
