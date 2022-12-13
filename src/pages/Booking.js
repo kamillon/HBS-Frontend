@@ -28,7 +28,8 @@ const Booking = () => {
     const location = useLocation();
     const { access, userRole, currentUser } = useAuth()
 
-    const [selectedDate, setSelectedDate] = useState(new Date);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
 
     const [rowData, setRowData] = useState({});
     const [slots2, setSlots2] = useState([]);
@@ -101,8 +102,18 @@ const Booking = () => {
 
     const employeeDaysOff = [];
 
-    workHours.forEach(function(item) {
-        if ( item.is_day_off === true ) { 
+    openingHours.forEach(function (item) {
+        if (item.is_closed === true) {
+            employeeDaysOff.push(item.weekday)
+        }
+    })
+
+    workHours.forEach(function (item) {
+        if (item.from_hour == null && item.to_hour == null && item.is_day_off === false) {
+            employeeDaysOff.push(item.weekday)
+        }
+
+        if (item.is_day_off === true) {
             employeeDaysOff.push(item.weekday)
         }
     })
@@ -112,17 +123,17 @@ const Booking = () => {
 
     const isWeekday = (date) => {
         const day = date.getDay();
-        const numbers = [0, 6, 5];
+        // const numbers = [0, 6, 5];
         let x = true;
         for (const element of employeeDaysOff) {
-            if(day == element){
+            if (day == element) {
                 x &&= false
             }
-            else{
+            else {
                 x &&= true
             }
-          }
-          return x
+        }
+        return x
     };
 
 
@@ -134,7 +145,6 @@ const Booking = () => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
@@ -156,7 +166,6 @@ const Booking = () => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
@@ -178,7 +187,6 @@ const Booking = () => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
@@ -234,6 +242,7 @@ const Booking = () => {
                 setWorkHours(null)
                 console.log(err)
             }
+
         };
 
         const listOpeningHours = async () => {
@@ -241,7 +250,6 @@ const Booking = () => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
@@ -283,13 +291,18 @@ const Booking = () => {
         })));
 
 
+        // setChooseDate(moment(selectedDate).format("YYYY-MM-DD"))
+        // setChooseStartTime(moment(selectedDate).format("HH:mm:ss"))
+        // setChooseEndTime(moment(selectedDate).add(service[0]?.time, 'minutes').format("HH:mm:ss"))
         setChooseDate(moment(selectedDate).format("YYYY-MM-DD"))
-        setChooseStartTime(moment(selectedDate).format("HH:mm:ss"))
-        setChooseEndTime(moment(selectedDate).add(service[0]?.time, 'minutes').format("HH:mm:ss"))
+        setChooseStartTime(moment(selectedTime).format("HH:mm:ss"))
+        setChooseEndTime(moment(selectedTime).add(service[0]?.time, 'minutes').format("HH:mm:ss"))
 
-    }, [selectedDate]);
+
+    }, [selectedDate, selectedTime]);
 
     console.log(rowData)
+    console.log(chooseStartTime)
 
 
     // const minTime=setHours(setMinutes(new Date(), moment(rowData[0]?.from_hour, 'HH:mm').minute()), moment(rowData[0]?.from_hour, 'HH:mm').hour())
@@ -317,52 +330,10 @@ const Booking = () => {
     }
 
 
-
- 
-
-
-
-    // const do_godz = moment(data.od_godziny, 'HH:mm').hour()
-    // console.log(moment(new Date()).day())
-
-
-
-    // const tablicaDat = data.map(i => moment(i.date, 'YYYY-MM-DD').toDate())
-    // const tD = tablicaDat.filter(i => moment(i.data, 'YYYY-MM-DD').format("YYYY-MM-DD") > moment(new Date()).format("YYYY-MM-DD"))
-    // const tD = data.map(i => {
-    //     moment(i.data).format("YYYY-MM-DD") > moment(new Date()).format("YYYY-MM-DD") ?
-    //     moment(i.data, 'YYYY-MM-DD').toDate():
-    //     null
-    // })
-
-    // const dates = []
-    // data.forEach((date) => {
-    //     if(moment(date).isAfter(moment(new Date()))){
-    //         dates.push(date)
-    //     }
-    // })
-
-    // console.log(data[0])
-
-
-
     console.log(rowData)
     console.log(selectedDate)
-
-    // let slots = [
-    //     { start: new Date('2022-11-13T09:00:00'), end: new Date('2022-11-13T09:30:00') },
-    //     { start: new Date('2022-11-14T09:00:00'), end: new Date('2022-11-14T09:30:00') },
-    //     { start: new Date('2022-11-14T09:31:00'), end: new Date('2022-11-14T09:40:00') },
-    //     { start: new Date('2022-11-14T12:40:00'), end: new Date('2022-11-14T14:00:00') },
-
-    //     ]
-
-
-
-
-
     console.log(selectedDate)
-console.log(workHours)
+    console.log(workHours)
 
 
 
@@ -388,37 +359,27 @@ console.log(workHours)
         }
     };
 
-    
+    // function getTimeStops(start, end){
+    //     var startTime = moment(start, 'HH:mm');
+    //     var endTime = moment(end, 'HH:mm');
 
-    // let obj = { age: 12, name: "John Doe" };
-    // workHours.forEach((val) => console.log(val.is_day_off));
-
-
-    // const employeeDaysOf = [];
-
-    // workHours.forEach(function(item,index) {
-    //     if ( item.is_day_off === true ) { 
-    //         employeeDaysOf.push(item.weekday)
+    //     if( endTime.isBefore(startTime) ){
+    //       endTime.add(1, 'day');
     //     }
-    // })
-    // console.log(employeeDaysOf)
 
+    //     var timeStops = [];
 
-    // console.log(typeof openingHours)
+    //     while(startTime <= endTime){
+    //       timeStops.push(new moment(startTime).format('HH:mm'));
+    //       startTime.add(15, 'minutes');
+    //     }
+    //     return timeStops;
+    //   }
 
-    // for (let [key, value] of Object.entries(openingHours)) {
-    //     console.log(key, value);
-    // }
-
-
-    // const array = [];
-    
-    // for(var i in openingHours){
-    //     array.push([i, openingHours[i]]);
-    // }
-    // console.log(array)
-
-
+    //   var timeStops = getTimeStops('11:00', '02:00');
+    //   console.log('timeStops ', timeStops);
+    //   timeStops = getTimeStops('11:00', '23:59');
+    //   console.log('timeStops ', timeStops);
 
 
 
@@ -457,7 +418,7 @@ console.log(workHours)
                                 </div>
 
 
-                                <div className='mb-3'>
+                                {/* <div className='mb-3'>
                                     <DatePicker
                                         className='mt-3'
                                         // withPortal
@@ -477,22 +438,64 @@ console.log(workHours)
                                         minTime={minTime}
                                         maxTime={maxTime}
                                     // excludeTimes={selectedDate.getDate() == new Date().getDate() ? timeOff : timeOff2}
-                                    // filterTime={filterPassedTime}
+                                        filterTime={filterPassedTime}
+                                    /> */}
+
+                                <div className='mb-3'>
+                                    <DatePicker
+                                        className='mt-3'
+                                        // withPortal
+                                        inline
+                                        selected={selectedDate}
+                                        onChange={date => setSelectedDate(date)}
+                                        calendarStartDay={1}
+                                        dateFormat='yyyy/MM/dd'
+                                        minDate={new Date()}
+                                        maxDate={addDays(new Date(), 14)}
+                                        // excludeDates={holidays}
+                                        // includeDates={data}
+                                        filterDate={isWeekday}
+                                        // showTimeSelect
+                                        // timeFormat='HH:mm'
+                                        // timeIntervals={30}
+                                        // minTime={minTime}
+                                        // maxTime={maxTime}
+                                        // filterTime={filterPassedTime}
                                     />
 
+                                    <DatePicker
+                                        inline
+                                        selected={selectedTime}
+                                        onChange={(date) => setSelectedTime(date)}
+                                        showTimeSelect
+                                        showTimeSelectOnly
+                                        timeCaption="Time"
+                                        dateFormat="h:mm aa"
+                                        timeFormat='HH:mm'
+                                        timeIntervals={30}
+                                        minTime={minTime}
+                                        maxTime={maxTime}
+                                        filterTime={filterPassedTime}
+                                    />
+
+
+
                                 </div>
-                                {access ?
-                                    <button className='btn btn-primary me-1' type='submit'>Rezerwuj</button>
+
+                                {selectedDate && selectedTime ?
+                                    access ?
+                                        <button className='btn btn-primary me-1' type='submit'>Rezerwuj</button>
+                                        :
+                                        <button
+                                            type='button'
+                                            className="btn btn-primary me-1"
+                                            onClick={() => navigate(`/login`, { state: { ...props, path: location.pathname } }, { replace: true })}
+                                        >
+                                            Rezerwuj
+                                        </button>
+
                                     :
-
-
-                                    <button
-                                        type='button'
-                                        className="btn btn-primary me-1"
-                                        onClick={() => navigate(`/login`, { state: { ...props, path: location.pathname } }, { replace: true })}
-                                    >
-                                        Rezerwuj
-                                    </button>
+                                    <button className='btn btn-primary me-1' disabled>Rezerwuj</button>
                                 }
                             </form>
 

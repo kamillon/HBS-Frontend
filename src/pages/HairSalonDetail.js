@@ -8,7 +8,6 @@ import SalonContact from './SalonContact';
 import avatar from '../images/avatar.png';
 
 const HairSalonDetail = (props) => {
-    const { access } = useAuth()
     const { salonId } = useParams()
     const [data, setData] = useState([])
     const [employee, setEmployee] = useState([])
@@ -37,31 +36,27 @@ const HairSalonDetail = (props) => {
         };
 
         const getEmployee = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
 
-                try {
-                    const url = `http://127.0.0.1:8000/employee/`
-
-                    const res = await axios.get(url, config);
-
-                    setEmployee(res.data.filter(i => i.salon == salonId))
-                    console.log(res.data)
-
-                } catch (err) {
-                    setEmployee(null)
-                    console.log(err)
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const url = `http://127.0.0.1:8000/employee/`
+
+                const res = await axios.get(url, config);
+
+                setEmployee(res.data.filter(i => i.salon == salonId))
+                console.log(res.data)
+
+            } catch (err) {
                 setEmployee(null)
-                console.log("Blad")
+                console.log(err)
             }
+
         };
 
         const getSalons = async () => {
@@ -89,7 +84,7 @@ const HairSalonDetail = (props) => {
         getEmployee()
         getSalons()
 
-    }, [access, salonId])
+    }, [salonId])
 
     const filteredServices = data.filter(service => parseInt(service.salonID) === parseInt(salonId))
     const searchFilteredServices = filteredServices.filter(item => (

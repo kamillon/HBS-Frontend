@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext"
 import moment from 'moment';
 
 const SalonContact = (props) => {
-    const { access } = useAuth()
     const dayName = props.day
     const weekday = props.weekday
     const salonId = props.salonId
@@ -15,33 +14,28 @@ const SalonContact = (props) => {
 
     useEffect(() => {
         const getOpeningHours = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
-                    setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
-                    // console.log(res.data)
-                } catch (err) {
-                    setOpeningHours(null)
-                    console.log(err)
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
+                setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
+                // console.log(res.data)
+            } catch (err) {
                 setOpeningHours(null)
-                console.log("Blad")
+                console.log(err)
             }
+
         };
 
         if (salonId) {
             getOpeningHours()
         }
-    }, [salonId, access, weekday])
+    }, [salonId, weekday])
 
     return (
         <tr>

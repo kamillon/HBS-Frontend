@@ -35,7 +35,7 @@ const Signup = () => {
         password: '',
         re_password: '',
         phone: '',
-        role: 'user',
+        role: 'customer',
     });
 
     const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone, role } = formData;
