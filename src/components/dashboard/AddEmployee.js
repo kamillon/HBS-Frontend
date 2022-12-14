@@ -15,17 +15,19 @@ const AddEmployee = () => {
     const [selectedSalon, setSelectedSalon] = useState();
 
     const [formData, setFormData] = useState({
-        username: '',
-        first_name: '',
-        last_name: '',
-        is_staff: true,
-        is_superuser: true,
-        is_employee: true,
-        email: '',
-        password: 'zaq1@WSX',
-        re_password: 'zaq1@WSX',
-        phone: '',
-        role: 'employee',
+        salon: '',
+        user: {
+            username: '',
+            first_name: '',
+            last_name: '',
+            is_staff: true,
+            is_superuser: true,
+            is_employee: true,
+            email: '',
+            password: 'zaq1@WSX',
+            phone: '',
+            role: 'employee',
+        },
     });
 
 
@@ -59,38 +61,26 @@ const AddEmployee = () => {
 
 
 
-    // const { salon, user } = formData;
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formData;
+    const { salon, user } = formData;
+    const onChange = e => setFormData({
+        ...formData,
+        user: {
+            ...formData.user,
+            [e.target.name]: e.target.value ?? e.target.checked
+        }
+    });
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
-
-    // const onChange = e => setFormData({
-    //     ...formData,
-    //     user: {
-    //         ...formData.user,
-    //         [e.target.name]: e.target.value ?? e.target.checked
-    //     }
-    // });
-
-    // const handleChangeSalon = e => setFormData({
-    //     salon: e.target.value,
-    //     user: {
-    //         ...formData.user,
-    //     }
-    // });
+    const handleChangeSalon = e => setFormData({
+        salon: e.target.value,
+        user: {
+            ...formData.user,
+        }
+    });
 
     const onSubmit = async e => {
         e.preventDefault();
-        // const formErrors = validateForm()
-        // if(Object.keys(formErrors).length > 0){
-        //     setErrors(formErrors)
-        // }
-        // else{
-        //     console.log('form submitted')
-        // }
 
         if (localStorage.getItem('isAuthenticated')) {
-            if (password === re_password) {
                 const config = {
                     headers: {
                         'Content-Type': 'application/json',
@@ -100,30 +90,27 @@ const AddEmployee = () => {
                 };
 
                 let role = ''
-                if(userRole === 'admin'){
+                if (userRole === 'admin') {
                     role = 'salon_owner'
                 }
-                else if(userRole === 'salon_owner'){
+                else if (userRole === 'salon_owner') {
                     role = 'employee'
                 }
-            
-                const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
-                    email, password, re_password, phone, role });
+
+                const body = JSON.stringify({ salon, user });
 
                 try {
 
-                    const url = `http://127.0.0.1:8000/auth/users/`
+                    const url = `http://127.0.0.1:8000/employee/`
                     const res = await axios.post(url, body, config);
-        
+
                     console.log(res.data)
                     setAccountCreated(true);
-                    
-                } 
-                catch(error) {
+
+                }
+                catch (error) {
                     console.log(error)
                 }
-
-            }
         }
     };
 
@@ -141,6 +128,20 @@ const AddEmployee = () => {
 
             <Form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
                 <h1 className='mb-5'>Utwórz konto</h1>
+                <Form.Group className="mb-3" controlId="chooseSalon">
+                    <Form.Label>Salon</Form.Label>
+                    {/* <Form.Select aria-label="Default select example" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}> */}
+                    <Form.Select aria-label="Default select example" value={formData.salon} onChange={e => handleChangeSalon(e)}>
+                        <option>---Wybierz salon---</option>
+                        {salonData.map(salon => (
+                            <option key={salon.id} value={salon.id}>
+                                {salon.name} ({salon.city})
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+
+
                 <Form.Group className="mb-3" controlId="inputUsername">
                     <Form.Label>Nazwa użytkownika*</Form.Label>
                     <Form.Control
@@ -148,7 +149,7 @@ const AddEmployee = () => {
                         type='text'
                         placeholder='Nazwa użytkownika*'
                         name='username'
-                        value={formData.username}
+                        value={formData.user.username}
                         onChange={e => onChange(e)}
                     />
                 </Form.Group>
@@ -160,7 +161,7 @@ const AddEmployee = () => {
                         placeholder="Imię*"
                         className='form-control'
                         name='first_name'
-                        value={formData.first_name}
+                        value={formData.user.first_name}
                         onChange={e => onChange(e)}
                         //isInvalid={!!errors.first_name}
                         required
@@ -175,7 +176,7 @@ const AddEmployee = () => {
                         type='text'
                         placeholder='Nazwisko*'
                         name='last_name'
-                        value={formData.last_name}
+                        value={formData.user.last_name}
                         onChange={e => onChange(e)}
                     />
                 </Form.Group>
@@ -188,7 +189,7 @@ const AddEmployee = () => {
                         type='email'
                         placeholder='Email*'
                         name='email'
-                        value={formData.email}
+                        value={formData.user.email}
                         onChange={e => onChange(e)}
                     />
                 </Form.Group>
@@ -202,7 +203,7 @@ const AddEmployee = () => {
                         placeholder='Telefon*'
                         name='phone'
                         maxLength='9'
-                        value={formData.phone}
+                        value={formData.user.phone}
                         onChange={e => onChange(e)}
                     />
                 </Form.Group>
