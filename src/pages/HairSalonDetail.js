@@ -9,13 +9,13 @@ import avatar from '../images/avatar.png';
 
 const HairSalonDetail = (props) => {
     const { salonId } = useParams()
-    const [data, setData] = useState([])
+    const [services, setServices] = useState([])
     const [employee, setEmployee] = useState([])
     const [salonData, setSalonData] = useState([])
     const [search, setSearch] = useState('')
 
     useEffect(() => {
-        const listServices = async () => {
+        const getServices = async () => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,11 +26,11 @@ const HairSalonDetail = (props) => {
             try {
                 const res = await axios.get('http://127.0.0.1:8000/service/', config);
 
-                setData(res.data)
+                setServices(res.data)
                 console.log(res.data)
 
             } catch (err) {
-                setData(null)
+                setServices(null)
                 console.log(err)
             }
         };
@@ -80,13 +80,13 @@ const HairSalonDetail = (props) => {
             }
         };
 
-        listServices()
+        getServices()
         getEmployee()
         getSalons()
 
     }, [salonId])
 
-    const filteredServices = data.filter(service => parseInt(service.salonID) === parseInt(salonId))
+    const filteredServices = services.filter(service => parseInt(service.salonID) === parseInt(salonId))
     const searchFilteredServices = filteredServices.filter(item => (
         search.toLowerCase() === ''
             ? item
@@ -148,6 +148,7 @@ const HairSalonDetail = (props) => {
                                     describe={item.describe}
                                     time={item.time}
                                     price={item.price}
+                                    employee={employee}
                                 />
                             ))
                             :

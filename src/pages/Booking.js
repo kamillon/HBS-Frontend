@@ -5,58 +5,47 @@ import axios from 'axios';
 import './Booking.css';
 import { useAuth } from "../context/AuthContext"
 import ListServices from '../components/ListServices';
-import DatePicker from "react-datepicker";
+import { subDays, addDays, setHours, setMinutes } from 'date-fns';
+import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker, { registerLocale } from "react-datepicker";
+import pl from "date-fns/locale/pl";
+registerLocale("pl", pl);
+
 // import subDays from "date-fns/subDays";
 // import setHours from "date-fns/setHours";
 // import setMinutes from "date-fns/setMinutes";
 // import { addDays } from 'date-fns';
 
-import { subDays, addDays, setHours, setMinutes } from 'date-fns';
-import moment from 'moment';
 
 const Booking = () => {
+    const { access, userRole, currentUser } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation();
+    const props = location.state
+
     const { salonId } = useParams()
     const [data, setData] = useState([]);
     const [workHours, setWorkHours] = useState([]);
     const [openingHours, setOpeningHours] = useState([]);
     const [reservations, setReservations] = useState([]);
-    const [service, setService] = useState([]);
-
-    const [employee, setEmployee] = useState([]);
-    const location = useLocation();
-    const { access, userRole, currentUser } = useAuth()
-
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedTime, setSelectedTime] = useState(null);
-
+    const [employee, setEmployee] = useState(props.employee);
+    const [selectedEmployee, setSelectedEmployee] = useState([]);
+    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedTime, setSelectedTime] = useState("");
     const [rowData, setRowData] = useState({});
     const [slots2, setSlots2] = useState([]);
-
-    const props = location.state
-    // console.log(props)
-
-
-    const [formData, setFormData] = useState({
-        // customerId: currentUser.id,
-        serviceId: props.serviceId,
-        employeeId: 4,
-        // date: '',
-        // start_time: '',
-        // end_time: '',
-        is_active: false,
-    });
-
     const [chooseDate, setChooseDate] = useState()
     const [chooseStartTime, setChooseStartTime] = useState(null)
     const [chooseEndTime, setChooseEndTime] = useState()
 
+    const [formData, setFormData] = useState({
+        serviceId: props.serviceId,
+        employeeId: props.employee[0].user.id,
+        is_active: false,
+    });
 
-    console.log(chooseDate)
-    console.log(chooseStartTime)
-
-    const { customerId, serviceId, employeeId, is_active } = formData;
+    const { serviceId, employeeId, is_active } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
 
@@ -86,81 +75,15 @@ const Booking = () => {
             try {
 
                 const res = await axios.post(`http://127.0.0.1:8000/reservation/`, body, config);
-
-
                 console.log(res.data)
-
             }
             catch (error) {
                 console.log(error)
             }
-
-
         }
     };
-
-
-    const employeeDaysOff = [];
-
-    openingHours.forEach(function (item) {
-        if (item.is_closed === true) {
-            employeeDaysOff.push(item.weekday)
-        }
-    })
-
-    workHours.forEach(function (item) {
-        if (item.from_hour == null && item.to_hour == null && item.is_day_off === false) {
-            employeeDaysOff.push(item.weekday)
-        }
-
-        if (item.is_day_off === true) {
-            employeeDaysOff.push(item.weekday)
-        }
-    })
-    console.log(employeeDaysOff)
-
-
-
-    const isWeekday = (date) => {
-        const day = date.getDay();
-        // const numbers = [0, 6, 5];
-        let x = true;
-        for (const element of employeeDaysOff) {
-            if (day == element) {
-                x &&= false
-            }
-            else {
-                x &&= true
-            }
-        }
-        return x
-    };
-
-
-
 
     useEffect(() => {
-        const getEmployee = async () => {
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get('http://127.0.0.1:8000/employee/', config);
-
-                setEmployee(res.data.filter(i => parseInt(i.salon) === parseInt(salonId)))
-                console.log(res.data)
-
-            } catch (err) {
-                setEmployee(null)
-                console.log(err)
-            }
-        };
-
         const getReservation = async () => {
 
             const config = {
@@ -182,62 +105,58 @@ const Booking = () => {
             }
         };
 
-        const getService = async () => {
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get(`http://127.0.0.1:8000/service/`, config);
-
-                setService(res.data.filter(i => parseInt(i.id) === parseInt(props.serviceId)))
-                console.log(res.data)
-
-            } catch (err) {
-                setService(null)
-                console.log(err)
-            }
-        };
-
-        getEmployee()
         getReservation()
-        getService()
-
     }, [])
 
 
-    console.log(employee)
-    console.log(reservations)
-    console.log(service)
+    const employeeDaysOff = [];
+
+    openingHours.forEach(function (item) {
+        if (item.is_closed === true) {
+            employeeDaysOff.push(item.weekday)
+        }
+    })
+
+    workHours.forEach(function (item) {
+        if (item.from_hour == null && item.to_hour == null && item.is_day_off === false) {
+            employeeDaysOff.push(item.weekday)
+        }
+
+        if (item.is_day_off === true) {
+            employeeDaysOff.push(item.weekday)
+        }
+    })
 
 
-    // const [selectedEmployee, setSelectedEmployee] = useState('1')
+    const isWeekday = (date) => {
+        const day = date.getDay();
+        // const numbers = [0, 6, 5];
+        let x = true;
+        for (const element of employeeDaysOff) {
+            if (day == element) {
+                x &&= false
+            }
+            else {
+                x &&= true
+            }
+        }
+        return x
+    };
+
 
     useEffect(() => {
         const listWorkHours = async (employeeID) => {
-
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
 
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${employeeID}/`, config);
-
-                // setData(res.data.filter(i => moment(i.date).isAfter(moment(new Date()))).map(item => moment(item.date, 'YYYY-MM-DD').toDate()))
                 setWorkHours(res.data)
-                // setData(res.data.filter(i => moment(i.date).isAfter(moment(new Date()))).map(item => moment(item.date, 'YYYY-MM-DD').toDate()))
                 console.log(res.data)
-
-
-
             } catch (err) {
                 setWorkHours(null)
                 console.log(err)
@@ -259,8 +178,6 @@ const Booking = () => {
                 setOpeningHours(res.data)
                 console.log(res.data)
 
-
-
             } catch (err) {
                 setOpeningHours(null)
                 console.log(err)
@@ -274,10 +191,16 @@ const Booking = () => {
         if (salonId) {
             listOpeningHours()
         }
+
+        setSelectedEmployee(employee.filter(i => i.user.id == employeeId))
+
+        //gdy zmienimy pracownika ustalamy wybraną datę i godzinę na null
+        setSelectedDate(null)
+        setSelectedTime(null)
+
     }, [employeeId])
 
-    console.log(workHours)
-    console.log(openingHours)
+
 
     useEffect(() => {
         setRowData(workHours.filter(i => i.weekday === moment(selectedDate).day()).map(item => ({
@@ -293,30 +216,25 @@ const Booking = () => {
 
         // setChooseDate(moment(selectedDate).format("YYYY-MM-DD"))
         // setChooseStartTime(moment(selectedDate).format("HH:mm:ss"))
-        // setChooseEndTime(moment(selectedDate).add(service[0]?.time, 'minutes').format("HH:mm:ss"))
+        // setChooseEndTime(moment(selectedDate).add(props.time, 'minutes').format("HH:mm:ss"))
         setChooseDate(moment(selectedDate).format("YYYY-MM-DD"))
         setChooseStartTime(moment(selectedTime).format("HH:mm:ss"))
-        setChooseEndTime(moment(selectedTime).add(service[0]?.time, 'minutes').format("HH:mm:ss"))
+        setChooseEndTime(moment(selectedTime).add(props.time, 'minutes').format("HH:mm:ss"))
 
+    }, [workHours, reservations, selectedDate, selectedTime]);
 
-    }, [selectedDate, selectedTime]);
-
-    console.log(rowData)
-    console.log(chooseStartTime)
-
-
-    // const minTime=setHours(setMinutes(new Date(), moment(rowData[0]?.from_hour, 'HH:mm').minute()), moment(rowData[0]?.from_hour, 'HH:mm').hour())
 
     let minTime = setHours(setMinutes(new Date(),
         moment(rowData[0]?.from_hour, 'HH:mm').minute()),
         moment(rowData[0]?.from_hour, 'HH:mm').hour()
     )
 
-    const maxTime = setHours(setMinutes(new Date(), moment(rowData[0]?.to_hour, 'HH:mm').minute()), moment(rowData[0]?.to_hour, 'HH:mm').hour())
+    console.log(minTime)
+    let maxTime = setHours(setMinutes(new Date(),
+        moment(rowData[0]?.to_hour, 'HH:mm').minute()),
+        moment(rowData[0]?.to_hour, 'HH:mm').hour()
+    )
 
-
-
-    console.log(chooseEndTime)
 
     const currentTime = setHours(setMinutes(new Date(),
         moment(new Date(), 'HH:mm').minute()),
@@ -327,15 +245,17 @@ const Booking = () => {
         if (minTime < currentTime && currentTime < maxTime) {
             minTime = currentTime;
         }
+        else if (minTime < currentTime && currentTime > maxTime) {
+            minTime = currentTime;
+            maxTime = currentTime;
+        }
     }
 
-
-    console.log(rowData)
-    console.log(selectedDate)
-    console.log(selectedDate)
-    console.log(workHours)
-
-
+    console.log(moment(selectedDate).day())
+    console.log(moment(new Date()).day())
+    console.log((moment(selectedDate).day() === moment(new Date()).day()))
+    console.log(currentTime)
+    console.log(minTime)
 
 
     const filterPassedTime = (time) => {
@@ -382,30 +302,34 @@ const Booking = () => {
     //   console.log('timeStops ', timeStops);
 
 
+    console.log(chooseDate)
+    console.log(chooseStartTime)
+    console.log(employeeDaysOff)
+    console.log(employee)
+    console.log(reservations)
+    console.log(workHours)
+    console.log(openingHours)
+    console.log(rowData)
+    console.log(chooseStartTime)
+    console.log(chooseEndTime)
+    console.log(rowData)
+    console.log(selectedDate)
+    console.log(selectedTime)
+    console.log(workHours)
+
 
     return (
+
         <div className='container mt-5'>
-
             <div className='container mt-5 align-items-center justify-content-center'>
-
-
                 <div className='row p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded'>
-
                     <div className='col-12 text-center'>
                         <h1>Rezerwacja</h1>
                         <p className='mb-5'>Wybierz date</p>
                     </div>
                     <div className='row'>
-
-
-
-
                         <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
-
-
-
                             <form className='' onSubmit={e => onSubmit(e)}>
-                                {/* <h1 className='mb-5'>Rezerwacja</h1> */}
                                 <div className="mb-3">
                                     <label className="FormControlSelect">Wybierz pracownika</label>
                                     <select className="form-select mt-2" name='employeeId' value={employeeId} onChange={e => onChange(e)}>
@@ -416,33 +340,32 @@ const Booking = () => {
                                         ))}
                                     </select>
                                 </div>
-
-
                                 {/* <div className='mb-3'>
-                                    <DatePicker
-                                        className='mt-3'
-                                        // withPortal
-                                        inline
-                                        selected={selectedDate}
-                                        onChange={date => setSelectedDate(date)}
-                                        calendarStartDay={1}
-                                        dateFormat='yyyy/MM/dd'
-                                        minDate={new Date()}
-                                        maxDate={addDays(new Date(), 14)}
-                                        // excludeDates={holidays}
-                                        // includeDates={data}
-                                        filterDate={isWeekday}
-                                        showTimeSelect
-                                        timeFormat='HH:mm'
-                                        timeIntervals={30}
-                                        minTime={minTime}
-                                        maxTime={maxTime}
-                                    // excludeTimes={selectedDate.getDate() == new Date().getDate() ? timeOff : timeOff2}
-                                        filterTime={filterPassedTime}
-                                    /> */}
+                                    // <DatePicker
+                                    //     className='mt-3'
+                                    //     // withPortal
+                                    //     inline
+                                    //     selected={selectedDate}
+                                    //     onChange={date => setSelectedDate(date)}
+                                    //     calendarStartDay={1}
+                                    //     dateFormat='yyyy/MM/dd'
+                                    //     minDate={new Date()}
+                                    //     maxDate={addDays(new Date(), 14)}
+                                    //     // excludeDates={holidays}
+                                    //     // includeDates={data}
+                                    //     filterDate={isWeekday}
+                                    //     showTimeSelect
+                                    //     timeFormat='HH:mm'
+                                    //     timeIntervals={30}
+                                    //     minTime={minTime}
+                                    //     maxTime={maxTime}
+                                    // // excludeTimes={selectedDate.getDate() == new Date().getDate() ? timeOff : timeOff2}
+                                    //     filterTime={filterPassedTime}
+                                    // /> */}
 
                                 <div className='mb-3'>
                                     <DatePicker
+                                        locale="pl"
                                         className='mt-3'
                                         // withPortal
                                         inline
@@ -455,15 +378,16 @@ const Booking = () => {
                                         // excludeDates={holidays}
                                         // includeDates={data}
                                         filterDate={isWeekday}
-                                        // showTimeSelect
-                                        // timeFormat='HH:mm'
-                                        // timeIntervals={30}
-                                        // minTime={minTime}
-                                        // maxTime={maxTime}
-                                        // filterTime={filterPassedTime}
+                                    // showTimeSelect
+                                    // timeFormat='HH:mm'
+                                    // timeIntervals={30}
+                                    // minTime={minTime}
+                                    // maxTime={maxTime}
+                                    // filterTime={filterPassedTime}
                                     />
 
                                     <DatePicker
+                                        locale="pl"
                                         inline
                                         selected={selectedTime}
                                         onChange={(date) => setSelectedTime(date)}
@@ -477,41 +401,60 @@ const Booking = () => {
                                         maxTime={maxTime}
                                         filterTime={filterPassedTime}
                                     />
-
-
-
                                 </div>
 
-                                {selectedDate && selectedTime ?
+                                {employeeId && selectedDate && selectedTime ?
                                     access ?
-                                        <button className='btn btn-primary me-1' type='submit'>Rezerwuj</button>
+                                        // <button className='btn btn-primary me-1' type='submit'>Rezerwuj</button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            // onClick={() => navigate(`/hairsalon/${salonId}/booking/details/`)}
+                                            onClick={() => navigate(`/hairsalon/${salonId}/booking/details`, {
+                                                state: {
+                                                    serviceId: serviceId,
+                                                    name: props.name,
+                                                    describe: props.describe,
+                                                    price: props.price,
+                                                    time: props.time,
+                                                    chooseDate: chooseDate,
+                                                    chooseStartTime: chooseStartTime,
+                                                    chooseEndTime: chooseEndTime,
+                                                    selectedEmployee: selectedEmployee,
+                                                }
+                                            })}
+                                        >
+                                            Rezerwuj
+                                        </button>
                                         :
                                         <button
                                             type='button'
                                             className="btn btn-primary me-1"
-                                            onClick={() => navigate(`/login`, { state: { ...props, path: location.pathname } }, { replace: true })}
+                                            onClick={() => navigate(`/login`,
+                                                { state: { ...props, path: location.pathname } },
+                                                { replace: true })
+                                            }
                                         >
                                             Rezerwuj
                                         </button>
-
                                     :
                                     <button className='btn btn-primary me-1' disabled>Rezerwuj</button>
                                 }
                             </form>
-
                         </div>
 
-                        <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
-                            umow wizytę<br />
-                            id: {props.serviceId}<br />
-                            {props.name}
+                        <div className='col-12 col-md-6 col-lg-6 text-center'>
+                            <p>
+                                umow wizytę<br />
+                                id: {props.serviceId}<br />
+                                {props.name}<br />
+                                pracownik: {selectedEmployee[0]?.user.first_name + " " +
+                                    selectedEmployee[0]?.user.last_name}
+                            </p>
                         </div>
-
                     </div>
-
                 </div>
             </div>
-
         </div>
     )
 };

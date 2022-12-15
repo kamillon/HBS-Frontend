@@ -38,6 +38,7 @@ import EditService from './components/dashboard/EditService';
 import WorkHours from './components/dashboard/WorkHours';
 import AddEmployee from './components/dashboard/AddEmployee';
 import EditEmployee from './components/dashboard/EditEmployee';
+import BookingDetailsPage from './pages/BookingDetailsPage';
 
 const ROLES = {
   "customer": "customer",
@@ -63,6 +64,7 @@ function App() {
               <Route exact path='/hairsalon' element={<HairSalon/>} />
               <Route path='hairsalon/:salonId' element={<HairSalonDetail/>} />
               <Route path='hairsalon/:salonId/booking' element={<Booking/>} />
+              <Route path='hairsalon/:salonId/booking/details' element={<BookingDetailsPage/>} />
               <Route exact path='/barber' element={<Barber/>} />
               <Route exact path='/unauthorized' element={<Unauthorized/>} />
               <Route exact path='/email/reset/confirm/:uid/:token' element={<ChangeEmailConfirm/>} />

@@ -43,7 +43,8 @@ const ListServices = (props) => {
                                             name: props.name,
                                             describe: props.describe,
                                             price: props.price,
-                                            time: props.time
+                                            time: props.time,
+                                            employee: props.employee
                                         }})}
                                     >
                                         UMÓW
