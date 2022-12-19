@@ -71,6 +71,7 @@ function App() {
               <Route element={<RequireAuth allowedRole={ROLES.customer}/>}>
                 <Route exact path='/customer/' element={<CustomerDashboard/>} />
                 <Route path='/customer/account-settings/' element={<AccountSettings/>} />
+                <Route path='/customer/reservations/' element={<Reservations/>} />
               </Route>
 
               <Route element={<RequireAuth allowedRole={ROLES.admin}/>}>

@@ -107,17 +107,20 @@ const ReservationsManagement = () => {
     }, [removed])
 
 
-    const salonDataFiltered = salonData.filter(i => i.owner == currentUser.id)
+    const salonDataFiltered = salonData.filter(i => i.owner === currentUser.id)
 
     let mappedData = ({})
     if (userRole === 'admin') {
         mappedData = data
     }
     else if (userRole === 'salon_owner') {
-        mappedData = data.filter(i => i.salonId == selectedSalon)
+        mappedData = data.filter(i => i.salonId === selectedSalon)
     }
     else if (userRole === 'employee') {
-        mappedData = data.filter(i => i.employeeId == currentUser.id)
+        mappedData = data.filter(i => i.employeeId === currentUser.id)
+    }
+    else if (userRole === 'customer') {
+        mappedData = data.filter(i => i.customerId === currentUser.id)
     }
 
     return (

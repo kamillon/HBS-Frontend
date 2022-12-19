@@ -9,19 +9,6 @@ const EditUser = () => {
     const navigate = useNavigate()
     const { uid } = useParams()
 
-    // const [formData, setFormData] = useState({
-    //     username: '',
-    //     first_name: '',
-    //     last_name: '',
-    //     is_staff: '',
-    //     is_superuser: '',
-    //     is_employee: '',
-    //     email: '',
-    //     phone: '',
-    //     role: '',
-    // });
-
-
     const initialState = {
         username: '',
         first_name: '',
@@ -48,29 +35,9 @@ const EditUser = () => {
                 };
 
                 try {
-
-
-                    // let url = ''
-                    // if(userRole === 'admin'){
-                    //     url = `http://127.0.0.1:8000/auth/users/${uid}/`
-                    // }
-                    // else if(userRole === 'salon_owner'){
-                    //     url = `http://127.0.0.1:8000/pracownik/${uid}/`
-                    // }
-
                     const url = `http://127.0.0.1:8000/auth/users/${uid}/`
 
                     const res = await axios.get(url, config);
-
-
-                    // let res = ''
-                    // if(userRole == 'admin'){
-                    //     res = await axios.get(`http://127.0.0.1:8000/auth/users/${uid}/`, config);
-                    // }
-                    // else if(userRole == 'salon_owner'){
-                    //     res = await axios.get(`http://127.0.0.1:8000/pracownik/${uid}/`, config);
-                    // }
-
                     setData(res.data)
                     console.log(res.data)
 
@@ -89,8 +56,6 @@ const EditUser = () => {
         }
     }, [uid, access, userRole])
 
-
-
     const options = [
         { value: '', text: '--Choose an option--' },
         { value: 'admin', text: 'admin' },
@@ -99,26 +64,8 @@ const EditUser = () => {
         { value: 'salon_owner', text: 'właściciel salonu' },
     ];
 
-
     const [accountUpdated, setAccountUpdated] = useState(false);
-
-    // const [formData, setFormData] = useState({
-    //     username: '',
-    //     first_name: '',
-    //     last_name: '',
-    //     is_staff: '',
-    //     is_superuser: '',
-    //     is_employee: '',
-    //     email: '',
-    //     phone: '',
-    //     role: '',
-    // });
-
     const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, phone, role } = data;
-
-    // const onChange = e => setData({ ...data, [e.target.name]: e.target.value ?? e.target.checked });
-
-    // const onChange = e => setData({ ...data, [e.target.name]: e.target.value ?? e.target.checked });
 
     function onChange(event) {
         const { name, value, type, checked } = event.target
@@ -129,7 +76,6 @@ const EditUser = () => {
             }
         })
     }
-    
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -150,35 +96,14 @@ const EditUser = () => {
             });
 
             try {
-                // let url = ''
-                // if(userRole === 'admin'){
-                //     url = `http://127.0.0.1:8000/auth/users/${uid}/`
-                // }
-                // else if(userRole === 'salon_owner'){
-                //     url = `http://127.0.0.1:8000/pracownik/${uid}/`
-                // }
-
                 const url = `http://127.0.0.1:8000/auth/users/${uid}/`
-
                 const res = await axios.put(url, body, config);
-
-                // let res = ''
-                // if(userRole == 'admin'){
-                //     res = await axios.put(`http://127.0.0.1:8000/auth/users/${uid}/`, body, config);
-                // }
-                // else if(userRole == 'salon_owner'){
-                //     res = await axios.put(`http://127.0.0.1:8000/pracownik/${uid}/`, body, config);
-                // }
-
                 console.log(res.data)
                 setAccountUpdated(true);
-
             }
             catch (error) {
                 console.log(error)
             }
-
-
         }
     };
 
@@ -188,13 +113,6 @@ const EditUser = () => {
         }
     }, [accountUpdated])
 
-
-    // const optionsDependingOnUserRole = () => {
-    //     if(userRole == 'admin'){
-    //         return()
-    //     }
-
-    // }
 
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
@@ -236,14 +154,13 @@ const EditUser = () => {
                 </div>
 
 
-                {userRole === 'admin' ? 
+                {userRole === 'admin' ?
                     <div>
                         <div className="mb-3 form-check">
                             <input
                                 type="checkbox"
                                 className="form-check-input"
                                 name="is_staff"
-                                // value={is_staff}
                                 checked={data.is_staff}
                                 onChange={e => onChange(e)}
 
@@ -258,8 +175,6 @@ const EditUser = () => {
                                 type="checkbox"
                                 className="form-check-input"
                                 name="is_superuser"
-                                // value={is_superuser}
-                                // defaultChecked={data.is_superuser === "true"}
                                 checked={data.is_superuser}
                                 onChange={e => onChange(e)}
 
@@ -274,7 +189,6 @@ const EditUser = () => {
                                 type="checkbox"
                                 className="form-check-input"
                                 name="is_employee"
-                                // value={is_employee}
                                 checked={data.is_employee}
                                 onChange={e => onChange(e)}
 
@@ -294,7 +208,9 @@ const EditUser = () => {
                                 ))}
                             </select>
                         </div>
-                    </div> : <></>
+                    </div>
+                    :
+                    <></>
                 }
 
 
