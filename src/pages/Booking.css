@@ -1,3 +1,15 @@
 .react-datepicker__time-list-item--disabled{
     display: none;
 }
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list{
+    height: 175.31px;
+}
+
+.react-datepicker__header{
+    height: 64.13px;
+}
+
+.react-datepicker{
+    border-radius: 0;
+}
