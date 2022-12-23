@@ -1,71 +1,82 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import './SignUp.css';
 
 const Signup = () => {
+    const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
+    const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
-    // const options = [
-    //     {value: '', text: '--Choose an option--'},
-    //     {value: 'admin', text: 'admin'},
-    //     {value: 'customer', text: 'klient'},
-    //     {value: 'employee', text: 'pracownik'},
-    //     {value: 'salon_owner', text: 'właściciel salonu'},
-    // ];
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            first_name: '',
+            last_name: '',
+            is_staff: false,
+            is_superuser: false,
+            is_employee: false,
+            email: '',
+            password: '',
+            re_password: '',
+            phone: '',
+            role: 'customer',
+        },
+        validationSchema: Yup.object({
+            username: Yup.string()
+                .required("Pole jest wymagane"),
+            first_name: Yup.string()
+                .required("Pole jest wymagane"),
+            last_name: Yup.string()
+                .required("Pole jest wymagane"),
+            email: Yup.string()
+                .email('Wprowadź poprawny adres e-mail')
+                .required('Pole jest wymagane'),
+            password: Yup.string()
+                .required('Pole jest wymagane')
+                .matches(
+                    passwordRegExp,
+                    "Hasło musi zawierać min 8 znaków, 1 wielką literę, 1 małą literę, 1 cyfrę i 1 znak specjalny"
+                ),
+            re_password: Yup.string()
+                .required("Pole jest wymagane")
+                .oneOf([Yup.ref('password'), null], 'Hasła nie są identyczne'),
+            phone: Yup.string()
+                .matches(phoneRegExp, 'Wprowadzony numer telefonu jest nieprawidłowy')
+                .max(9, "Nr telefonu musi zawierać 9 znaków")
+                .required("Pole jest wymagane"),
+        }),
 
-     
-
-    // const [selected, setSelected] = useState(options[0].value);
-
-    // const handleChange = event => {
-    //     console.log(event.target.value);
-    //     setSelected(event.target.value);
-    // };
-
-
-    const [accountCreated, setAccountCreated] = useState(false);
-    const [formData, setFormData] = useState({
-        username: '',
-        first_name: '',
-        last_name: '',
-        is_staff: false,
-        is_superuser: false,
-        is_employee: false,
-        email: '',
-        password: '',
-        re_password: '',
-        phone: '',
-        role: 'customer',
+        onSubmit: (values, { resetForm }) => {
+            onSubmit(values)
+            resetForm();
+        },
     });
 
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone, role } = formData;
+    const [accountCreated, setAccountCreated] = useState(false);
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
+    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone, role } = formik.values;
 
     const onSubmit = async e => {
-        e.preventDefault();
-
         if (password === re_password) {
             const config = {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             };
-        
-            const body = JSON.stringify({ username, first_name, last_name, is_staff, is_superuser, is_employee, 
-                email, password, re_password, phone, role });
+
+            const body = JSON.stringify({
+                username, first_name, last_name, is_staff, is_superuser, is_employee,
+                email, password, re_password, phone, role
+            });
 
             try {
                 const res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
-    
-                console.log(res.data)
-               
-                
-            } 
-            catch(error) {
+            }
+            catch (error) {
                 console.log(error)
             }
-
             setAccountCreated(true);
         }
     };
@@ -79,143 +90,161 @@ const Signup = () => {
     }
 
     return (
-        <div className='min-vh-100 color-overlay2 d-flex justify-content-center align-items-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form text-center' onSubmit={e => onSubmit(e)}>
-                <h1>Zarejestruj się</h1>
+        <div className='min-vh-100 d-flex justify-content-center align-items-center'>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 mt-5 bg-white rounded signup-form' onSubmit={formik.handleSubmit}>
+                <h1 className='text-center'>Zarejestruj się</h1>
                 <div className='mb-3 mt-5'>
+                    <label
+                        htmlFor='inputUsername'
+                        className='form-label'>
+                        Nazwa użytkownika
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputUsername'
+                        className={`form-control ${formik.touched.username && formik.errors.username && 'is-invalid'}`}
                         type='text'
-                        placeholder='Username*'
+                        placeholder='Nazwa użytkownika'
                         name='username'
-                        value={username}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.username && formik.errors.username ? (
+                            <div>{formik.errors.username}</div>
+                        ) : null}
+                    </span>
                 </div>
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputFirstName'
+                        className='form-label'>
+                        Imię
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputFirstName'
+                        className={`form-control ${formik.touched.first_name && formik.errors.first_name && 'is-invalid'}`}
                         type='text'
-                        placeholder='First Name*'
+                        placeholder='Imię'
                         name='first_name'
-                        value={first_name}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.first_name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.first_name && formik.errors.first_name ? (
+                            <div>{formik.errors.first_name}</div>
+                        ) : null}
+                    </span>
                 </div>
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputLastName'
+                        className='form-label'>
+                        Nazwisko
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputLastName'
+                        className={`form-control ${formik.touched.last_name && formik.errors.last_name && 'is-invalid'}`}
                         type='text'
-                        placeholder='Last Name*'
+                        placeholder='Nazwisko'
                         name='last_name'
-                        value={last_name}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.last_name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.last_name && formik.errors.last_name ? (
+                            <div>{formik.errors.last_name}</div>
+                        ) : null}
+                    </span>
                 </div>
-                {/* <div className="mb-3 form-check">
-                    <input 
-                        type="checkbox" 
-                        className="form-check-input" 
-                        name="is_staff"
-                        value={is_staff}
-                        onChange={e => onChange(e)}
-                        
-                    />
-                    <label 
-                        className="form-check-label" 
-                        >is_staff
-                    </label>
-                </div> */}
-                {/* <div className="mb-3 form-check">
-                    <input 
-                        type="checkbox" 
-                        className="form-check-input" 
-                        name="is_superuser"
-                        value={is_superuser}
-                        onChange={e => onChange(e)}
-                        
-                    />
-                    <label 
-                        className="form-check-label" 
-                        >is_superuser
-                    </label>
-                </div> */}
-                {/* <div className="mb-3 form-check">
-                    <input 
-                        type="checkbox" 
-                        className="form-check-input" 
-                        name="is_employee"
-                        value={is_employee}
-                        onChange={e => onChange(e)}
-                        
-                    />
-                    <label 
-                        className="form-check-label" 
-                        >is_employee
-                    </label>
-                </div> */}
-                {/* <div className="mb-3">
-                    <label className="FormControlSelect">Typ użytkownika</label>
-                    <select className="form-control" name='role' value={role} onChange={e => onChange(e)}>
-                    {options.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.text}
-                        </option>
-                    ))}
-                    </select>
-                </div> */}
-
-                              
-
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputEmail'
+                        className='form-label'>
+                        Email
+                    </label>
                     <input
-                        className='form-control'
+                        className={`form-control ${formik.touched.email && formik.errors.email && 'is-invalid'}`}
                         type='email'
-                        placeholder='Email*'
+                        placeholder='Email'
                         name='email'
-                        value={email}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.email && formik.errors.email ? (
+                            <div>{formik.errors.email}</div>
+                        ) : null}
+                    </span>
                 </div>
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputPassword'
+                        className='form-label'>
+                        Hasło
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputPassword'
+                        className={`form-control ${formik.touched.password && formik.errors.password && 'is-invalid'}`}
                         type='password'
-                        placeholder='Password*'
+                        placeholder='Hasło'
                         name='password'
-                        value={password}
-                        onChange={e => onChange(e)}
-                        minLength='6'
-                        required
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.password && formik.errors.password ? (
+                            <div>{formik.errors.password}</div>
+                        ) : null}
+                    </span>
                 </div>
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputConfirmPassword'
+                        className='form-label'>
+                        Powtórz hasło
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputConfirmPassword'
+                        className={`form-control ${formik.touched.re_password && formik.errors.re_password && 'is-invalid'}`}
                         type='password'
-                        placeholder='Confirm Password*'
+                        placeholder='Powtórz hasło'
                         name='re_password'
-                        value={re_password}
-                        onChange={e => onChange(e)}
-                        minLength='6'
-                        required
+                        value={formik.values.re_password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.re_password && formik.errors.re_password ? (
+                            <div>{formik.errors.re_password}</div>
+                        ) : null}
+                    </span>
                 </div>
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputPhone'
+                        className='form-label'>
+                        Telefon
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputPhone'
+                        className={`form-control ${formik.touched.phone && formik.errors.phone && 'is-invalid'}`}
                         type='text'
-                        placeholder='Phone*'
+                        placeholder='Telefon'
                         name='phone'
-                        maxLength='9'
-                        value={phone}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.phone}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.phone && formik.errors.phone ? (
+                            <div>{formik.errors.phone}</div>
+                        ) : null}
+                    </span>
                 </div>
                 <div className='text-center mt-4'>
                     <button className='btn btn-primary w-100' type='submit'>Zarejestruj się</button>
@@ -224,6 +253,5 @@ const Signup = () => {
         </div>
     );
 };
-
 
 export default Signup;

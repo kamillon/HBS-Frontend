@@ -129,19 +129,16 @@ const ServiceManagement = () => {
         }
     }, [removed])
 
-  
-
-
     let mappedData = ({})
     let mappedSalons = ({})
 
     if (userRole === 'admin') {
-        mappedData = data.filter(i => i.salonID == selectedSalon)
+        mappedData = Object.values(data).filter(i => i.salonID == selectedSalon)
         mappedSalons = salonData
     }
     else if (userRole === 'salon_owner') {
-        mappedData = data.filter(i => i.salonID == selectedSalon)
-        mappedSalons = salonData.filter(i => i.owner == currentUser.id)
+        mappedData = Object.values(data).filter(i => i.salonID == selectedSalon)
+        mappedSalons = Object.values(salonData).filter(i => i.owner == currentUser.id)
     }
 
     return (
@@ -163,23 +160,23 @@ const ServiceManagement = () => {
                     </select>
                 </div>
                 <div className="col-md-6 text-center mt-3 mt-md-0">
-                    {mappedSalons.length > 0 ? 
-                    <button
-                        onClick={() => navigate(`/${userRole}/services/add/`)}
-                        type='button'
-                        className='btn btn-primary'
-                    >
-                        DODAJ USŁUGĘ
-                    </button>
-                    :
-                    <button
-                        type='button'
-                        disabled
-                        className='btn btn-primary'
-                    >
-                        DODAJ USŁUGĘ
-                    </button>
-}
+                    {mappedSalons.length > 0 ?
+                        <button
+                            onClick={() => navigate(`/${userRole}/services/add/`)}
+                            type='button'
+                            className='btn btn-primary'
+                        >
+                            DODAJ USŁUGĘ
+                        </button>
+                        :
+                        <button
+                            type='button'
+                            disabled
+                            className='btn btn-primary'
+                        >
+                            DODAJ USŁUGĘ
+                        </button>
+                    }
                 </div>
             </div>
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 
 const AddService = () => {
@@ -10,13 +12,32 @@ const AddService = () => {
     const [data, setData] = useState([]);
     const [ownerSalons, setOwnerSalons] = useState([]);
 
-    const [formData, setFormData] = useState({
-        name: '',
-        service_type: '',
-        describe: '',
-        time: '',
-        price: '',
-        salonID: '',
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            service_type: '',
+            describe: '',
+            time: '',
+            price: '',
+            salonID: '',
+        },
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .required("Pole jest wymagane"),
+            service_type: Yup.string()
+                .required("Pole jest wymagane"),
+            time: Yup.string()
+                .required("Pole jest wymagane"),
+            price: Yup.number()
+                .positive()
+                .required('Pole jest wymagane'),
+            salonID: Yup.string()
+                .required('Pole jest wymagane'),
+        }),
+
+        onSubmit: (values, { resetForm }) => {
+            onSubmit(values)
+        },
     });
 
     const options = [
@@ -25,7 +46,7 @@ const AddService = () => {
         { value: "men's", text: "Męskie" },
     ];
 
-    const { name, service_type, describe, time, price, salonID } = formData;
+    const { name, service_type, describe, time, price, salonID } = formik.values;
 
     const getSalons = async () => {
         if (access) {
@@ -65,7 +86,6 @@ const AddService = () => {
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
                 setOwnerSalons(res.data)
-                console.log(res.data)
             } catch (err) {
                 setOwnerSalons(null)
                 console.log(err)
@@ -87,12 +107,7 @@ const AddService = () => {
         }
     }, [access])
 
-
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
-
     const onSubmit = async e => {
-        e.preventDefault();
-
         if (localStorage.getItem('isAuthenticated')) {
             const config = {
                 headers: {
@@ -105,12 +120,8 @@ const AddService = () => {
             const body = JSON.stringify({ name, service_type, describe, time, price, salonID });
 
             try {
-
                 const res = await axios.post(`http://127.0.0.1:8000/service/`, body, config);
-
-                console.log(res.data)
                 setServiceCreated(true);
-
             }
             catch (error) {
                 console.log(error)
@@ -132,78 +143,141 @@ const AddService = () => {
         mappedSalons = data
     }
     else if (userRole === 'salon_owner') {
-
         mappedSalons = ownerSalons
     }
 
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={e => onSubmit(e)}>
-                <h1 className='mb-5'>Utwórz usługę</h1>
+            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={formik.handleSubmit}>
+                <h1 className='mb-5'>Dodaj usługę</h1>
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputName'
+                        className='form-label'>
+                        Nazwa usługi
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputName'
+                        className={`form-control ${formik.touched.name && formik.errors.name && 'is-invalid'}`}
                         type='text'
-                        placeholder='Nazwa usługi*'
+                        placeholder='Nazwa usługi'
                         name='name'
-                        value={name}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.name && formik.errors.name ? (
+                            <div>{formik.errors.name}</div>
+                        ) : null}
+                    </span>
                 </div>
-
-
                 <div className="mb-3">
-                    {/* <label className="FormControlSelect">Typ usługi</label> */}
-                    <select className="form-control" name='service_type' value={service_type} onChange={e => onChange(e)}>
+                    <label
+                        htmlFor='inputServiceType'
+                        className='form-label'>
+                        Typ usługi
+                    </label>
+                    <select
+                        id='inputServiceType'
+                        className={`form-control ${formik.touched.service_type && formik.errors.service_type && 'is-invalid'}`}
+                        name='service_type'
+                        value={formik.values.service_type}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    >
                         {options.map(option => (
                             <option key={option.value} value={option.value}>
                                 {option.text}
                             </option>
                         ))}
                     </select>
-
+                    <span className='text-start error'>
+                        {formik.touched.service_type && formik.errors.service_type ? (
+                            <div>{formik.errors.service_type}</div>
+                        ) : null}
+                    </span>
                 </div>
-
                 <div className='mb-3'>
-                    <input
-                        className='form-control'
+                    <label
+                        htmlFor='inputDescribe'
+                        className='form-label'>
+                        Opis usługi
+                    </label>
+                    <textarea
+                        id='inputDescribe'
+                        className={`form-control ${formik.touched.describe && formik.errors.describe && 'is-invalid'}`}
                         type='text'
-                        placeholder='Opis usługi*'
+                        placeholder='Opis usługi'
                         name='describe'
-                        value={describe}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.describe}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.describe && formik.errors.describe ? (
+                            <div>{formik.errors.describe}</div>
+                        ) : null}
+                    </span>
                 </div>
-
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputTime'
+                        className='form-label'>
+                        Czas trwania usługi (min)
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputTime'
+                        className={`form-control ${formik.touched.time && formik.errors.time && 'is-invalid'}`}
                         type='text'
-                        placeholder='Czas*'
+                        placeholder='Czas trwania usługi'
                         name='time'
-                        value={time}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.time}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.time && formik.errors.time ? (
+                            <div>{formik.errors.time}</div>
+                        ) : null}
+                    </span>
                 </div>
-
                 <div className='mb-3'>
+                    <label
+                        htmlFor='inputPrice'
+                        className='form-label'>
+                        Cena usługi
+                    </label>
                     <input
-                        className='form-control'
+                        id='inputPrice'
+                        className={`form-control ${formik.touched.price && formik.errors.price && 'is-invalid'}`}
                         type='text'
-                        placeholder='Cena*'
+                        placeholder='Cena usługi'
                         name='price'
-                        value={price}
-                        onChange={e => onChange(e)}
-                        required
+                        value={formik.values.price}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
+                    <span className='text-start error'>
+                        {formik.touched.price && formik.errors.price ? (
+                            <div>{formik.errors.price}</div>
+                        ) : null}
+                    </span>
                 </div>
-
                 <div className="mb-3">
-                    {/* <label className="FormControlSelect">SalonID</label> */}
-                    <select className="form-control" name='salonID' value={salonID} onChange={e => onChange(e)}>
+                    <label
+                        htmlFor='inputSalon'
+                        className='form-label'>
+                        Salon
+                    </label>
+                    <select
+                        id='inputSalon'
+                        className={`form-control ${formik.touched.salonID && formik.errors.salonID && 'is-invalid'}`}
+                        name='salonID'
+                        value={formik.values.salonID}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    >
                         <option value=''>
                             --Wybierz salon--
                         </option>
@@ -213,6 +287,11 @@ const AddService = () => {
                             </option>
                         ))}
                     </select>
+                    <span className='text-start error'>
+                        {formik.touched.salonID && formik.errors.salonID ? (
+                            <div>{formik.errors.salonID}</div>
+                        ) : null}
+                    </span>
                 </div>
 
                 <button className='btn btn-primary me-1' type='submit'>Utwórz</button>
@@ -221,6 +300,5 @@ const AddService = () => {
         </div>
     );
 };
-
 
 export default AddService;
