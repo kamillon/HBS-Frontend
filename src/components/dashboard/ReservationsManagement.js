@@ -114,7 +114,7 @@ const ReservationsManagement = () => {
         mappedData = data
     }
     else if (userRole === 'salon_owner') {
-        mappedData = data.filter(i => i.salonId === selectedSalon)
+        mappedData = data.filter(i => parseInt(i.salonId) === parseInt(selectedSalon))
     }
     else if (userRole === 'employee') {
         mappedData = data.filter(i => i.employeeId === currentUser.id)
@@ -123,6 +123,8 @@ const ReservationsManagement = () => {
         mappedData = data.filter(i => i.customerId === currentUser.id)
     }
 
+    console.log(mappedData)
+    console.log(selectedSalon)
     return (
         <div className='container'>
             <div className='row mb-5'>
@@ -133,18 +135,18 @@ const ReservationsManagement = () => {
             <div className="row">
                 <div className="col-md-6 text-center mb-3">
                     {currentUser.role === 'salon_owner' &&
-                    <select className="form-select" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}>
-                        <option>---Wybierz salon---</option>
-                        {salonDataFiltered.map(salon => (
-                            <option key={salon.id} value={salon.id}>
-                                {salon.name}
-                            </option>
-                        ))}
-                    </select>
+                        <select className="form-select" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}>
+                            <option>---Wybierz salon---</option>
+                            {salonDataFiltered.map(salon => (
+                                <option key={salon.id} value={salon.id}>
+                                    {salon.name}
+                                </option>
+                            ))}
+                        </select>
                     }
                 </div>
             </div>
-            
+
             {mappedData.length > 0 ?
                 <div className="table-responsive">
                     <table className="table table-hover">
@@ -175,20 +177,20 @@ const ReservationsManagement = () => {
                                     <td>{item.end_time}</td>
                                     <td>{item.is_active ? "active" : "inactive"}</td>
                                     <td>
-                                        {item.is_active ? 
-                                        <button
-                                            type="button"
-                                            style={{ width: '80px' }}
-                                            className="btn btn-danger mt-1 mt-md-0"
-                                            onClick={() => {
-                                                handleShow();
-                                                setReservationData({ id: item.id })
-                                            }}
-                                        >
-                                            ANULUJ
-                                        </button>
-                                        : 
-                                        <></>
+                                        {item.is_active ?
+                                            <button
+                                                type="button"
+                                                style={{ width: '80px' }}
+                                                className="btn btn-danger mt-1 mt-md-0"
+                                                onClick={() => {
+                                                    handleShow();
+                                                    setReservationData({ id: item.id })
+                                                }}
+                                            >
+                                                ANULUJ
+                                            </button>
+                                            :
+                                            <></>
                                         }
                                     </td>
                                 </tr>

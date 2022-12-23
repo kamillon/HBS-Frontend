@@ -287,7 +287,9 @@ const Booking = () => {
         moment(new Date(), 'HH:mm').hour()
     )
 
-    if (moment(selectedDate).day() === moment(new Date()).day()) {
+
+    // if (moment(selectedDate).day() === moment(new Date()).day()) {
+        if (moment(selectedDate).format("LL") === moment(new Date()).format("LL")) {
         if (minTime < currentTime && currentTime < maxTime) {
             minTime = currentTime;
         }
