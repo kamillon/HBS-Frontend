@@ -18,6 +18,8 @@ const WorkHoursCard = (props) => {
     const navigate = useNavigate()
 
     const weekday = props.weekday
+    const sId = props.sId
+    const employeeId = props.employeeId
 
     const initialState = {
         from_hour: props.from_hour,
@@ -31,7 +33,7 @@ const WorkHoursCard = (props) => {
 
     const [openingHour, setOpeningHour] = useState(null);
     const [closeHour, setCloseHour] = useState(null);
-    const [salonId, setSalonId] = useState(null)
+    const [salonId, setSalonId] = useState(sId)
 
     const { from_hour, to_hour, is_day_off } = workHours
 
@@ -70,7 +72,7 @@ const WorkHoursCard = (props) => {
                 };
 
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/employee/${currentUser.id}/`, config);
+                    const res = await axios.get(`http://127.0.0.1:8000/employee/${employeeId}/`, config);
                     setEmployee(res.data)
                 } catch (err) {
                     setEmployee(null)
@@ -82,8 +84,9 @@ const WorkHoursCard = (props) => {
             }
         };
 
-        
-        getEmployee()
+        if (employeeId) {
+            getEmployee()
+        }
     }, [access])
 
 
@@ -119,12 +122,12 @@ const WorkHoursCard = (props) => {
             setSalonId(employee.salon)
         }
 
-        if(salonId){
+        if (salonId) {
             getWorkHours2()
         }
 
-        
-        
+
+
     }, [employee])
 
 
@@ -194,13 +197,13 @@ const WorkHoursCard = (props) => {
         if (to_hour) {
             setCloseHour(moment(to_hour, "HH:mm").toDate())
         }
-        
 
-        
+
+
     }, [workHours])
 
     // useEffect(() => {
-    
+
 
     //     const onSubmit2 = (params) => {    
     //         const config = {
@@ -210,17 +213,17 @@ const WorkHoursCard = (props) => {
     //                 'Accept': 'application/json'
     //             }
     //         };
-    
-    
+
+
     //         const body = JSON.stringify({
     //             is_day_off: params
     //         });
-    
+
     //         try {
     //             const res = axios.patch(`http://127.0.0.1:8000/work-hours/${props.id}/`, body, config)
     //             // console.log(res.data)
     //             // setWorkHoursUpdated(true);
-    
+
     //         }
     //         catch (error) {
     //             console.log(error)
@@ -233,7 +236,7 @@ const WorkHoursCard = (props) => {
 
 
     // //    console.log(workHours2.is_closed)
-        
+
     //     if(workHours2.is_closed == true){
     //         onSubmit2(true)
     //         console.log(workHours)
@@ -241,10 +244,10 @@ const WorkHoursCard = (props) => {
     //     else if(workHours2.is_closed == false){
     //         onSubmit2(false)
     //     }
-        
+
     // }, [workHours2])
 
-    
+
 
 
     function onChange(event) {
@@ -256,15 +259,15 @@ const WorkHoursCard = (props) => {
             }
         })
     }
-    
-    let minTime=setHours(setMinutes(new Date(), 
-    moment(workHours2.from_hour, 'HH:mm').minute()), 
-    moment(workHours2.from_hour, 'HH:mm').hour()
+
+    let minTime = setHours(setMinutes(new Date(),
+        moment(workHours2.from_hour, 'HH:mm').minute()),
+        moment(workHours2.from_hour, 'HH:mm').hour()
     )
 
-    let maxTime=setHours(setMinutes(new Date(), 
-    moment(workHours2.to_hour, 'HH:mm').minute()), 
-    moment(workHours2.to_hour, 'HH:mm').hour()
+    let maxTime = setHours(setMinutes(new Date(),
+        moment(workHours2.to_hour, 'HH:mm').minute()),
+        moment(workHours2.to_hour, 'HH:mm').hour()
     )
 
     return (
@@ -276,26 +279,26 @@ const WorkHoursCard = (props) => {
                     </div>
                     <div className='col-6 text-end'>
                         {!workHours2.is_closed ?
-                        <button
-                            type="button"
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={() => {
-                                handleShow1();
-                            }}
-                        >
-                            + Edytuj
-                        </button>
-                        :
-                        <button
-                            type="button"
-                            disabled
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={() => {
-                                handleShow1();
-                            }}
-                        >
-                            + Edytuj
-                        </button>
+                            <button
+                                type="button"
+                                className="btn btn-outline-primary btn-sm"
+                                onClick={() => {
+                                    handleShow1();
+                                }}
+                            >
+                                <i className="bi bi-pencil-fill"></i> Edytuj
+                            </button>
+                            :
+                            <button
+                                type="button"
+                                disabled
+                                className="btn btn-outline-primary btn-sm"
+                                onClick={() => {
+                                    handleShow1();
+                                }}
+                            >
+                                <i className="bi bi-pencil-fill"></i> Edytuj
+                            </button>
                         }
                     </div>
                 </div>
@@ -322,20 +325,15 @@ const WorkHoursCard = (props) => {
                         } */}
 
                         {workHours2.is_closed ?
-                            "Salon zamkniety" :
+                            "Salon zamknięty" :
                             is_day_off ?
-                            "Dzień wolny" :
-                            from_hour && to_hour ?
-                                moment(from_hour, 'HH:mm:ss').format('HH:mm')
-                                + "-" +
-                                moment(to_hour, 'HH:mm:ss').format('HH:mm') :
-                                "Ustal godziny"
+                                "Dzień wolny" :
+                                from_hour && to_hour ?
+                                    moment(from_hour, 'HH:mm:ss').format('HH:mm')
+                                    + "-" +
+                                    moment(to_hour, 'HH:mm:ss').format('HH:mm') :
+                                    "Ustal godziny"
                         }
-
-                        
-                    </div>
-                    <div className='col-6 text-end'>
-                        icon
                     </div>
                 </div>
             </div>
@@ -385,7 +383,7 @@ const WorkHoursCard = (props) => {
 
                     <div className='row'>
                         <div className='col-6'>
-                            <p><b>Czy zamknięte?</b></p>
+                            <p><b>Czy dzień wolny?</b></p>
                         </div>
                         <div className='col-6'>
                             <div className="mb-3 form-check">

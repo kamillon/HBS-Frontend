@@ -161,15 +161,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-                        <li className="nav-item mb-2">
-                            <Link to={`/${userRole}/work-hours/`} className="nav-link text-secondary">
-                                <i className="bi bi-calendar-day-fill"></i>
-                                <span className="ms-3">
-                                    Godziny pracy
-                                </span>
-                            </Link>
-                        </li>
-
                         <hr />
 
                         <li className="nav-item mb-2">

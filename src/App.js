@@ -93,7 +93,7 @@ function App() {
             <Route element={<RequireAuth allowedRole={ROLES.employee} />}>
               <Route exact path='/employee/' element={<EmployeeDashboard />} />
               <Route path='/employee/reservations/' element={<Reservations />} />
-              <Route path='/employee/work-hours/' element={<WorkHours />} />
+              {/* <Route path='/employee/work-hours/' element={<WorkHours />} /> */}
               <Route path='/employee/account-settings/' element={<AccountSettings />} />
             </Route>
 

@@ -13,7 +13,8 @@ import { subDays, addDays, setHours, setMinutes } from 'date-fns';
 import moment from 'moment';
 import WorkHoursCard from './WorkHoursCard';
 
-const WorkHoursManagement = () => {
+const WorkHoursManagement = (props) => {
+    console.log(props)
 
     const { access, userRole, currentUser } = useAuth()
     const navigate = useNavigate()
@@ -46,7 +47,7 @@ const WorkHoursManagement = () => {
                 };
 
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${currentUser.id}/`, config);
+                    const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${props.uid}/`, config);
                     setWorkHours(res.data)
                     // console.log(res.data)
                 } catch (err) {
@@ -69,13 +70,20 @@ const WorkHoursManagement = () => {
     return (
         <div className='container'>
             <div className='row mb-5'>
-                <div className='col'>
+                <div className='col-6'>
                     <h2>Godziny pracy</h2>
+                </div>
+                <div className='col-6 text-end'>
+                    <button
+                        className='btn btn-danger'
+                        onClick={() => navigate(`/${userRole}/employee/`)}>
+                        Powrót
+                    </button>
                 </div>
             </div>
             <div className='row'>
                 <div className='col-12'>
-                {workHours.map((item) => (
+                    {workHours.map((item) => (
                         <WorkHoursCard
                             key={item.id}
                             id={item.id}
@@ -84,12 +92,12 @@ const WorkHoursManagement = () => {
                             to_hour={item.to_hour}
                             is_day_off={item.is_day_off}
                             employeeId={item.employeeId}
+                            sId={props.salon}
                         />
                     ))}
-     
                 </div>
             </div>
-            
+
         </div>
     )
 };
