@@ -54,9 +54,6 @@ const Navbar = () => {
                             <li className='nav-item'>
                                 <Link className='nav-link' to='/hairsalon'>Fryzjer</Link>
                             </li>
-                            <li className='nav-item'>
-                                <Link className='nav-link' to='/barber'>Barber</Link>
-                            </li>
                         </ul>
                         {access ? authLinks() : guestLinks()}
 

@@ -22,7 +22,6 @@ import ManageUsers from './pages/Admin/ManageUsers';
 import AddUser from './components/dashboard/AddUser';
 import EditUser from './components/dashboard/EditUser';
 import HairSalon from './pages/HairSalon';
-import Barber from './pages/Barber';
 import HairSalonDetail from './pages/HairSalonDetail';
 import ManageEmployee from './pages/SalonOwner/ManageEmployee';
 import Salons from './components/dashboard/Salons';
@@ -63,7 +62,6 @@ function App() {
             <Route exact path='/hairsalon' element={<HairSalon />} />
             <Route path='hairsalon/:salonId' element={<HairSalonDetail />} />
             <Route path='hairsalon/:salonId/booking' element={<Booking />} />
-            <Route exact path='/barber' element={<Barber />} />
             <Route exact path='/unauthorized' element={<Unauthorized />} />
             <Route exact path='/email/reset/confirm/:uid/:token' element={<ChangeEmailConfirm />} />
             {/* <Route exact path='/admin/dashboard' element={<RequireAuth><AdminDashboard/></RequireAuth>} /> */}

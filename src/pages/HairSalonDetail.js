@@ -182,11 +182,12 @@ const HairSalonDetail = (props) => {
                             </table>
                         </div>
 
-                        <div className='employee-container mt-4'>
-                            <h6>
-                                PRACOWNICY
-                            </h6>
-                            {employee.length > 0 ?
+                        {employee.length > 0 ?
+                            <div className='employee-container mt-4'>
+                                <h6>
+                                    PRACOWNICY
+                                </h6>
+
                                 <div className="row text-center mt-4">
                                     {employee.map((i) => (
                                         <div key={i.user.id} className='col-4 col-md-6 col-lg-4 justify-content-center'>
@@ -201,10 +202,11 @@ const HairSalonDetail = (props) => {
                                         </div>
                                     ))}
                                 </div>
-                                :
-                                <></>
-                            }
-                        </div>
+                            </div>
+                            :
+                            <></>
+                        }
+
                     </div>
                 </div>
             </div>

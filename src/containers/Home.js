@@ -6,7 +6,6 @@ import barber from '../images/barber.svg';
 import booking from '../images/booking.svg';
 import building from '../images/building.svg';
 import fryzjerIcon from '../images/fryzjer1.png';
-import barberIcon from '../images/barber1.png';
 
 
 
@@ -74,16 +73,6 @@ const Home = () => {
                                     <img src={fryzjerIcon} className="card-img-top p-4" alt="hairdresser_icon" />
                                     <div className="card-body text-center">
                                         <h4>Fryzjerstwo</h4>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-                        <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
-                            <Link to='/barber' style={{ textDecoration: 'none', color: 'black' }}>
-                                <div className="card border-0 bg-light" style={{ width: "12rem" }}>
-                                    <img src={barberIcon} className="card-img-top p-4" alt="barber_icon" />
-                                    <div className="card-body text-center">
-                                        <h4>Barber</h4>
                                     </div>
                                 </div>
                             </Link>
