@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext"
 
 const ChangeEmailConfirm = () => {
     const { uid, token } = useParams()
-    const { access, userRole, currentUser } = useAuth()
+    const { logoutUser } = useAuth()
     const navigate = useNavigate()
     const [requestSent, setRequestSent] = useState(false);
     const [error, setError] = useState(null);
@@ -40,18 +40,17 @@ const ChangeEmailConfirm = () => {
         try {
             const res = await axios.post('http://127.0.0.1:8000/auth/users/reset_email_confirm/', body, config)
             setRequestSent(true)
-            console.log(res)
         }
         catch (error) {
-            if( error.response.data.new_email[0] === "user with this email already exists."){
+            if (error.response.data.new_email[0] === "user with this email already exists.") {
                 setError("Użytkownik z tym adresem e-mail już istnieje")
             }
         }
     };
 
     useEffect(() => {
-        if (requestSent) {
-            navigate(`/${userRole}/account-settings/`)
+        if (requestSent === true) {
+            logoutUser()
         }
     }, [requestSent])
 

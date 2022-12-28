@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useAuth } from "../context/AuthContext";
 
 const ResetPasswordConfirm = () => {
+    const { logoutUser } = useAuth()
     const [requestSent, setRequestSent] = useState(false);
 
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
@@ -52,9 +54,11 @@ const ResetPasswordConfirm = () => {
         }
     };
 
-    if (requestSent) {
-        return <Navigate to='/' />
-    }
+    useEffect(() => {
+        if (requestSent === true) {
+            logoutUser()
+        }
+    }, [requestSent])
 
     return (
         <div className='min-vh-100 color-overlay d-flex justify-content-center align-items-center'>

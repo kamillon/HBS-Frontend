@@ -54,9 +54,10 @@ const UsersTable = (props) => {
                     <thead>
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Nazwa użytkownika</th>
-                            <th scope="col">Imię</th>
-                            <th scope="col">Nazwisko</th>
+                            {/* <th scope="col">Imię</th>
+                            <th scope="col">Nazwisko</th> */}
+                            <th scope="col">Imię i nazwisko</th>
+                            <th scope="col">E-mail</th>
                             <th scope="col">Status konta</th>
                             <th scope="col">Rola</th>
                             <th scope="col">Akcje</th>
@@ -66,9 +67,10 @@ const UsersTable = (props) => {
                         {props.data.map((item) => (
                             <tr key={item.id}>
                                 <th scope="row">{item.id}</th>
-                                <td>{item.username}</td>
-                                <td>{item.first_name}</td>
-                                <td>{item.last_name}</td>
+                                {/* <td>{item.first_name}</td>
+                                <td>{item.last_name}</td> */}
+                                <td>{item.first_name} {item.last_name}</td>
+                                <td>{item.email}</td>
                                 <td>{item.is_active ? "active" : "inactive"}</td>
                                 <td>{item.role}</td>
                                 <td>

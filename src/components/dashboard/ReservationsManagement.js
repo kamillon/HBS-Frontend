@@ -153,11 +153,11 @@ const ReservationsManagement = () => {
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Klient</th>
-                                <th scope="col">Salon</th>
+                                <th scope="col">Data</th>
                                 <th scope="col">Usługa</th>
                                 <th scope="col">Pracownik</th>
-                                <th scope="col">Data</th>
+                                <th scope="col">Klient</th>
+                                <th scope="col">Salon</th>
                                 <th scope="col">Czas rozpoczęcia</th>
                                 <th scope="col">Czas zakończenia</th>
                                 <th scope="col">Status</th>
@@ -168,11 +168,11 @@ const ReservationsManagement = () => {
                             {mappedData.map((item) => (
                                 <tr key={item.id}>
                                     <th scope="row">{item.id}</th>
-                                    <td>{item.customerId}</td>
-                                    <td>{item.salonId}</td>
+                                    <td>{item.date}</td>
                                     <td>{item.serviceId}</td>
                                     <td>{item.employeeId}</td>
-                                    <td>{item.date}</td>
+                                    <td>{item.customerId}</td>
+                                    <td>{item.salonId}</td>
                                     <td>{item.start_time}</td>
                                     <td>{item.end_time}</td>
                                     <td>{item.is_active ? "active" : "inactive"}</td>
@@ -200,7 +200,7 @@ const ReservationsManagement = () => {
                     </table>
                 </div>
                 :
-                <></>
+                <p>Brak rezerwacji</p>
             }
 
             <Modal show={show} onHide={handleClose}>

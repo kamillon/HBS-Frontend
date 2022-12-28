@@ -22,6 +22,13 @@ const ServiceManagement = () => {
     const [ownerSalons, setOwnerSalons] = useState([]);
 
 
+    const convertMinsToTime = (mins) => {
+        let hours = Math.floor(mins / 60);
+        let minutes = mins % 60;
+        let minutesResult = minutes < 10 ? '0' + minutes : minutes;
+        return `${hours ? `${hours}g ` : ''} ${minutes ? `${minutesResult}min ` : ''}`
+    }
+
     useEffect(() => {
         const getServices = async () => {
             if (access) {
@@ -186,10 +193,10 @@ const ServiceManagement = () => {
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Nazwa</th>
-                                <th scope="col">Typ usługi</th>
-                                <th scope="col">Opis</th>
-                                <th scope="col">Czas</th>
+                                <th scope="col">Nazwa usługi</th>
+                                <th scope="col">Typ</th>
+                                {/* <th scope="col">Opis</th> */}
+                                <th scope="col">Czas trwania</th>
                                 <th scope="col">Cena</th>
                                 <th scope="col">Akcje</th>
                             </tr>
@@ -199,10 +206,10 @@ const ServiceManagement = () => {
                                 <tr key={item.id}>
                                     <th scope="row">{item.id}</th>
                                     <td>{item.name}</td>
-                                    <td>{item.service_type}</td>
-                                    <td>{item.describe.substring(0, 20)} ...</td>
-                                    <td>{item.time}</td>
-                                    <td>{item.price}</td>
+                                    <td>{item.service_type === "men's" ? "męskie" : "damskie"}</td>
+                                    {/* <td>{item.describe.substring(0, 20)} ...</td> */}
+                                    <td>{convertMinsToTime(item.time)}</td>
+                                    <td>{item.price} zł</td>
                                     <td>
                                         <button
                                             type="button"

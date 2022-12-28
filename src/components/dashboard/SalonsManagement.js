@@ -134,14 +134,13 @@ const SalonsManagement = () => {
                             <tr>
                                 <th scope="col">Id</th>
                                 <th scope="col">Nazwa</th>
-                                <th scope="col">Ulica</th>
+                                {/* <th scope="col">Ulica</th>
                                 <th scope="col">Nr budynku</th>
-                                <th scope="col">Miejscowość</th>
-                                <th scope="col">Kod pocztowy</th>
-                                <th scope="col">Poczta</th>
+                                <th scope="col">Miejscowość</th> */}
+                                <th scope="col">Adres</th>
                                 <th scope="col">Telefon</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Właściciel</th>
+                                <th scope="col">Id właściciela</th>
                                 <th scope="col">Akcje</th>
                             </tr>
                         </thead>
@@ -150,11 +149,10 @@ const SalonsManagement = () => {
                                 <tr key={item.id}>
                                     <th scope="row">{item.id}</th>
                                     <td>{item.name}</td>
-                                    <td>{item.street}</td>
+                                    {/* <td>{item.street}</td>
                                     <td>{item.house_number}</td>
-                                    <td>{item.city}</td>
-                                    <td>{item.post_code}</td>
-                                    <td>{item.postal_code_locality}</td>
+                                    <td>{item.city}</td> */}
+                                    <td>{item.city}, ul. {item.street} {item.house_number}</td>
                                     <td>{item.phone_number}</td>
                                     <td>{item.email}</td>
                                     <td>{item.owner}</td>
