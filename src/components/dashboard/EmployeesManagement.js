@@ -136,13 +136,23 @@ const EmployeesManagement = () => {
                 </div>
 
                 <div className="col-md-6 text-center mt-3 mt-md-0">
-                    <button
-                        onClick={() => navigate(`/${userRole}/employee/add/`)}
-                        type='button'
-                        className='btn btn-primary'
-                    >
-                        DODAJ PRACOWNIKA
-                    </button>
+                    {mappedSalons.length > 0 ?
+                        <button
+                            onClick={() => navigate(`/${userRole}/employee/add/`)}
+                            type='button'
+                            className='btn btn-primary'
+                        >
+                            DODAJ PRACOWNIKA
+                        </button>
+                        :
+                        <button
+                            type='button'
+                            disabled
+                            className='btn btn-primary'
+                        >
+                            DODAJ PRACOWNIKA
+                        </button>
+                    }
                 </div>
             </div>
 

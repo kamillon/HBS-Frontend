@@ -50,7 +50,7 @@ const SalonsManagement = () => {
         }
     };
 
-   
+
 
     useEffect(() => {
         listSalons()
@@ -100,22 +100,22 @@ const SalonsManagement = () => {
         return element.owner === currentUser.id;
     });
 
-    
+
     let dataToBeMapped = ({})
-    if(userRole === 'admin'){
+    if (userRole === 'admin') {
         dataToBeMapped = data
     }
-    else if(userRole === 'salon_owner'){
+    else if (userRole === 'salon_owner') {
         dataToBeMapped = filteredData
     }
-      
 
 
-      return (
+
+    return (
         <div className='container'>
-             <h2>Salony</h2>
+            <h2>Salony</h2>
 
-            {userRole === 'admin' ? 
+            {userRole === 'admin' ?
                 <div>
                     <button
                         onClick={() => navigate(`/${userRole}/salons/add/`)}
@@ -127,67 +127,67 @@ const SalonsManagement = () => {
                 </div> : <></>
             }
 
-        {dataToBeMapped.length > 0 ?
-            <div className="table-responsive">
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Nazwa</th>
-                            <th scope="col">Ulica</th>
-                            <th scope="col">Nr budynku</th>
-                            <th scope="col">Miejscowość</th>
-                            <th scope="col">Kod pocztowy</th>
-                            <th scope="col">Poczta</th>
-                            <th scope="col">Telefon</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Właściciel</th>
-                            <th scope="col">Akcje</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {dataToBeMapped.map((item) => (
-                            <tr key={item.id}>
-                                <th scope="row">{item.id}</th>
-                                <td>{item.name}</td>
-                                <td>{item.street}</td>
-                                <td>{item.house_number}</td>
-                                <td>{item.city}</td>
-                                <td>{item.post_code}</td>
-                                <td>{item.postal_code_locality}</td>
-                                <td>{item.phone_number}</td>
-                                <td>{item.email}</td>
-                                <td>{item.owner}</td>
-                                <td>
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary me-1"
-                                        style={{width: '80px'}}
-                                        onClick={() => navigate(`/${userRole}/salons/edit/${item.id}`)}
-                                    >
-                                        EDYTUJ
-                                    </button>
-                                    <button
-                                        type="button"
-                                        style={{width: '80px'}}
-                                        className="btn btn-danger mt-1 mt-md-0"
-                                        onClick={() => {
-                                            handleShow();
-                                            setSalonData({id: item.id, name: item.name})
-                                        }}
-                                    >
-                                        USUŃ
-                                    </button>
-                                </td>
+            {dataToBeMapped.length > 0 ?
+                <div className="table-responsive">
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nazwa</th>
+                                <th scope="col">Ulica</th>
+                                <th scope="col">Nr budynku</th>
+                                <th scope="col">Miejscowość</th>
+                                <th scope="col">Kod pocztowy</th>
+                                <th scope="col">Poczta</th>
+                                <th scope="col">Telefon</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Właściciel</th>
+                                <th scope="col">Akcje</th>
                             </tr>
-                        ))
-                        }
-                    </tbody>
-                </table>
-            </div>
-            :
-            <p>Aktualnie nie posiadasz żadnego przypisanego salonu</p>
-}
+                        </thead>
+                        <tbody>
+                            {dataToBeMapped.map((item) => (
+                                <tr key={item.id}>
+                                    <th scope="row">{item.id}</th>
+                                    <td>{item.name}</td>
+                                    <td>{item.street}</td>
+                                    <td>{item.house_number}</td>
+                                    <td>{item.city}</td>
+                                    <td>{item.post_code}</td>
+                                    <td>{item.postal_code_locality}</td>
+                                    <td>{item.phone_number}</td>
+                                    <td>{item.email}</td>
+                                    <td>{item.owner}</td>
+                                    <td>
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary me-1"
+                                            style={{ width: '80px' }}
+                                            onClick={() => navigate(`/${userRole}/salons/edit/${item.id}`)}
+                                        >
+                                            EDYTUJ
+                                        </button>
+                                        <button
+                                            type="button"
+                                            style={{ width: '80px' }}
+                                            className="btn btn-danger mt-1 mt-md-0"
+                                            onClick={() => {
+                                                handleShow();
+                                                setSalonData({ id: item.id, name: item.name })
+                                            }}
+                                        >
+                                            USUŃ
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                :
+                <p>Brak salonów fryzjerskich do wyświetlenia</p>
+            }
 
             {/* <Button variant="primary" onClick={handleShow}>
                 Launch demo modal
@@ -199,21 +199,21 @@ const SalonsManagement = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className='text-center'>
-                        <img src={wykrzyknik} style={{width: "15%"}} alt="" />
+                        <img src={wykrzyknik} style={{ width: "15%" }} alt="" />
                         <h4>Jesteś pewny?</h4>
                         <p>Czy na pewno chcesz usunąć salon {salonData.name}?</p>
                     </div>
-                    </Modal.Body>
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Anuluj
                     </Button>
-                    <Button variant="danger" 
-                    onClick={() => {
-                        // onDelete(selectedItem);
-                        onDelete(salonData.id)
-                        setSalonData({})
-                        handleClose()
+                    <Button variant="danger"
+                        onClick={() => {
+                            // onDelete(selectedItem);
+                            onDelete(salonData.id)
+                            setSalonData({})
+                            handleClose()
                         }}>
                         Usuń
                     </Button>
@@ -322,7 +322,7 @@ export default SalonsManagement;
 //                     <Button variant="secondary" onClick={handleClose}>
 //                         Anuluj
 //                     </Button>
-//                     <Button variant="danger" 
+//                     <Button variant="danger"
 //                     onClick={() => {
 //                         // onDelete(selectedItem);
 //                         onDelete(salonData.id)

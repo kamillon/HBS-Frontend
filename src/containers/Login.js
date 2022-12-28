@@ -23,7 +23,6 @@ const Login = () => {
 
         onSubmit: (values, { resetForm }) => {
             onSubmit(values)
-            resetForm();
         },
     });
 
