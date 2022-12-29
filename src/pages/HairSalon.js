@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CardComponent from '../components/CardComponent';
 import hair_salon_picture from '../images/hair_salon_picture.png';
@@ -10,6 +9,7 @@ const HairSalon = () => {
 
     const navigate = useNavigate()
     const [data, setData] = useState([]);
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         const listSalons = async () => {
@@ -37,6 +37,18 @@ const HairSalon = () => {
         listSalons()
     }, [])
 
+
+
+    // const filteredServices = data.filter(salon => parseInt(salon.salonID) === parseInt(salonId))
+    const searchFilteredServices = data.filter(item => (
+        search.toLowerCase() === ''
+            ? item
+            : item.city.toLowerCase().includes(search)
+            || item.name.toLowerCase().includes(search)
+    ))
+
+
+
     return (
         <div>
             <section className="pt-5 bg-light">
@@ -55,22 +67,59 @@ const HairSalon = () => {
                 </div>
             </section>
             <div className='container'>
-            {data.length <= 0 ? (<h4 className='pt-3'>Nie znaleziono salonów</h4>) : (
-                <div className='row'>
+                {/* 
+                <div className="input-group mt-5">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Wyszukaj miasto"
+                        aria-label="Wyszukaj miasto"
+                        aria-describedby="button-addon2"
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                    <button
+                        className="btn btn-primary"
+                        type="button"
+                        id="button-addon2"
+                    >
+                        Szukaj
+                    </button>
+                </div> */}
 
-                    {data.map((item) => (
-                        <div className='col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch' key={item.id} >
-                            <CardComponent
-                                id={item.id}
-                                title={item.name}
-                                ulica={item.street}
-                                nr_budynku={item.house_number}
-                                miejscowosc={item.city}
-                            />
-                        </div>
-                    ))}
-                    
+
+                <div className='col-md-6 mb-4'>
+                    <div className='search-bar'>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Wyszukaj salon"
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
                 </div>
+
+
+                {data.length <= 0 ? (<h4 className='pt-3'>Nie znaleziono salonów</h4>) : (
+                    <div className='row'>
+
+                        {/* {data.map((item) => ( */}
+                        {searchFilteredServices.length
+                            ? searchFilteredServices.map((item) => (
+                                <div className='col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch' key={item.id} >
+                                    <CardComponent
+                                        id={item.id}
+                                        title={item.name}
+                                        ulica={item.street}
+                                        nr_budynku={item.house_number}
+                                        miejscowosc={item.city}
+                                    />
+                                </div>
+                            ))
+                            :
+                            <p className='ms-4 mb-3'>Nie znaleziono salonów</p>
+                        }
+
+                    </div>
                 )}
             </div>
         </div>

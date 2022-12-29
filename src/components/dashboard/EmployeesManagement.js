@@ -183,7 +183,10 @@ const EmployeesManagement = () => {
                                     <td>{item.user.first_name}</td>
                                     <td>{item.user.last_name}</td>
                                     <td>{item.salon}</td>
-                                    <td>{item.user.is_active ? "active" : "inactive"}</td>
+                                    <td>{item.user.is_active ?
+                                        <span className="badge bg-success">Aktywne</span> :
+                                        <span className="badge bg-danger">Nieaktywne</span>}
+                                    </td>
                                     <td>{item.user.role}</td>
                                     <td>
                                         <button

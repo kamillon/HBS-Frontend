@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from "../context/AuthContext"
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -13,6 +13,7 @@ const HairSalonDetail = (props) => {
     const [employee, setEmployee] = useState([])
     const [salonData, setSalonData] = useState([])
     const [search, setSearch] = useState('')
+    const [selectedType, setSelectedType] = useState('')
 
     useEffect(() => {
         const getServices = async () => {
@@ -93,6 +94,24 @@ const HairSalonDetail = (props) => {
             : item.name.toLowerCase().includes(search)
     ))
 
+
+    function handleTypeChange(event) {
+        setSelectedType(event.target.value);
+    }
+
+    function getFilteredList() {
+        if (!selectedType) {
+            return searchFilteredServices;
+        }
+        return searchFilteredServices.filter((item) => item.service_type === selectedType);
+    }
+
+
+    const filteredList = useMemo(getFilteredList, [selectedType, searchFilteredServices]);
+
+    console.log(selectedType)
+    console.log(filteredList)
+
     return (
         <div>
             <section className="p-5 bg-dark mb-5 text-white">
@@ -118,16 +137,33 @@ const HairSalonDetail = (props) => {
             </section>
             <div className='container'>
                 <div className='row'>
-                    <div className="col-md-8 pe-5">
+                    <div className="col-lg-8 pe-5">
                         <div className='row'>
-                            <div className='col-md-6'>
-                                <h5 className='ms-4 mb-3'>
+                            <div className='col-12 col-lg-3 mb-3 mb-lg-0'>
+                                <h5 className='ms-4 lg-3'>
                                     USŁUGI
                                 </h5>
                             </div>
 
+                            <div className='col-12 col-lg-3 mb-2 mb-lg-0'>
+                                <div>
+                                    <select
+                                        className='form-select'
+                                        name='typeList'
+                                        id='typeList'
+                                        value={selectedType}
+                                        onChange={handleTypeChange}
+                                    >
+                                        <option value="">Typ usługi</option>
+                                        <option value="women's">Damskie</option>
+                                        <option value="men's">Męskie</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                            <div className='col-md-6 mb-4'>
+
+                            <div className='col-12 col-lg-6 mb-4 float-end'>
+
                                 <div className='search-bar'>
                                     <input
                                         type="text"
@@ -139,8 +175,8 @@ const HairSalonDetail = (props) => {
                             </div>
                         </div>
 
-                        {searchFilteredServices.length
-                            ? searchFilteredServices.map((item) => (
+                        {filteredList.length
+                            ? filteredList.map((item) => (
                                 <ListServices
                                     key={item.id}
                                     id={item.id}
@@ -156,7 +192,7 @@ const HairSalonDetail = (props) => {
                         }
 
                     </div>
-                    <div className="col-md-4 bg-light">
+                    <div className="col-lg-4 bg-light">
                         <div className='contact-container mt-4'>
                             <h6>KONTAKT I GODZINY OTWARCIA</h6>
                             {employee.length > 0 ?
