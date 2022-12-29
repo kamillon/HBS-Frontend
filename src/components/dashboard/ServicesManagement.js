@@ -156,8 +156,12 @@ const ServiceManagement = () => {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-6 text-center mb-3">
-                    <select className="form-select" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}>
+                <div className="col-12 col-md-6 text-start mb-3">
+                    <select
+                        className="form-select"
+                        value={selectedSalon}
+                        onChange={e => setSelectedSalon(e.target.value)}
+                    >
                         <option>---Wybierz salon---</option>
                         {mappedSalons.map(salon => (
                             <option key={salon.id} value={salon.id}>
@@ -166,7 +170,7 @@ const ServiceManagement = () => {
                         ))}
                     </select>
                 </div>
-                <div className="col-md-6 text-center mt-3 mt-md-0">
+                <div className="col-12 col-md-6 text-center text-md-end mt-3 mt-md-0">
                     {mappedSalons.length > 0 ?
                         <button
                             onClick={() => navigate(`/${userRole}/services/add/`)}

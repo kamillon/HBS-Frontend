@@ -200,7 +200,7 @@ const ReservationsManagement = () => {
                     </table>
                 </div>
                 :
-                <p>Brak rezerwacji</p>
+                <></>
             }
 
             <Modal show={show} onHide={handleClose}>

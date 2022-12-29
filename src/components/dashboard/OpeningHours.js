@@ -158,7 +158,7 @@ const OpeningHours = (props) => {
                                 handleShow1();
                             }}
                         >
-                            + Edytuj
+                            <i className="bi bi-pencil-fill"></i> Edytuj
                         </button>
                     </div>
                 </div>
@@ -174,9 +174,6 @@ const OpeningHours = (props) => {
                                 moment(to_hour, 'HH:mm:ss').format('HH:mm') :
                                 "Ustal godziny"
                         }
-                    </div>
-                    <div className='col-6 text-end'>
-                        icon
                     </div>
                 </div>
             </div>
