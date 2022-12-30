@@ -289,7 +289,7 @@ const Booking = () => {
 
 
     // if (moment(selectedDate).day() === moment(new Date()).day()) {
-        if (moment(selectedDate).format("LL") === moment(new Date()).format("LL")) {
+    if (moment(selectedDate).format("LL") === moment(new Date()).format("LL")) {
         if (minTime < currentTime && currentTime < maxTime) {
             minTime = currentTime;
         }
@@ -301,24 +301,28 @@ const Booking = () => {
 
 
     const filterPassedTime = (time) => {
-        for (let i = 0; i < slots2.length; i++) {
-            const e = slots2[i];
-
-            if (e.reservationEmployeeId == employeeId) {
-                const x = moment(time),
-                    beforeTime = moment(e.start),
-                    afterTime = moment(e.end);
-                if (
-                    x.isBetween(beforeTime, afterTime) ||
-                    x.isSame(moment(beforeTime)) ||
-                    x.isSame(moment(afterTime))
-                ) {
-                    return false;
+        if (slots2.length > 0) {
+            for (let i = 0; i < slots2.length; i++) {
+                const e = slots2[i];
+                if (e.reservationEmployeeId == employeeId) {
+                    const x = moment(time),
+                        beforeTime = moment(e.start),
+                        afterTime = moment(e.end);
+                    if (
+                        x.isBetween(beforeTime, afterTime) ||
+                        x.isSame(moment(beforeTime)) ||
+                        x.isSame(moment(afterTime))
+                    ) {
+                        return false;
+                    }
+                }
+                if (i + 1 == slots2.length) {
+                    return true;
                 }
             }
-            if (i + 1 == slots2.length) {
-                return true;
-            }
+        }
+        else {
+            return true;
         }
     };
 
