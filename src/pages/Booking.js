@@ -457,7 +457,7 @@ const Booking = () => {
                                 </div>
                             </div>
 
-                            {employeeId && selectedDate && isTime ?
+                            {employeeId && selectedDate && isTime && userRole === "customer" ?
                                 access ?
                                     <button
                                         type="button"

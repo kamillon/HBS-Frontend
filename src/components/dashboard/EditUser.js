@@ -28,6 +28,7 @@ const EditUser = () => {
 
     const [data, setData] = useState(initialState);
 
+    console.log(data)
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
 
     const formik = useFormik({
@@ -94,7 +95,7 @@ const EditUser = () => {
     ];
 
     const [accountUpdated, setAccountUpdated] = useState(false);
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, phone, role } = formik.values;
+    const { username, first_name, last_name, email, phone, role } = formik.values;
 
     const onSubmit = async e => {
         if (localStorage.getItem('isAuthenticated')) {
@@ -105,6 +106,22 @@ const EditUser = () => {
                     'Accept': 'application/json'
                 }
             };
+
+            let is_superuser = true
+            let is_staff = true
+            let is_employee = false
+
+            if (role === "employee") {
+                is_superuser = true
+                is_staff = true
+                is_employee = true
+            }
+            else if(role === "customer"){
+                is_superuser = false
+                is_staff = false
+                is_employee = false
+            }
+
 
             const body = JSON.stringify({
                 username, first_name, last_name, is_staff, is_superuser, is_employee,
@@ -223,7 +240,7 @@ const EditUser = () => {
                     </span>
                 </div>
                 <div>
-                    <div className="mb-3 form-check">
+                    {/* <div className="mb-3 form-check">
                         <input
                             type="checkbox"
                             className="form-check-input"
@@ -261,7 +278,7 @@ const EditUser = () => {
                             className="form-check-label"
                         >is_employee
                         </label>
-                    </div>
+                    </div> */}
                     <div className="mb-3">
                         <label className="FormControlSelect">Typ użytkownika</label>
                         <select

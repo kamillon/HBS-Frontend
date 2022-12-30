@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
 import wykrzyknik from '../images/wykrzyknik.png';
 import UsersTable from './UsersTable';
+import LoadingSpinner from './LoadingSpinner';
 
 
 const UserManagement = () => {
@@ -15,9 +16,12 @@ const UserManagement = () => {
     const [data, setData] = useState([]);
     const [key, setKey] = useState('all');
     const [search, setSearch] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
+
 
 
     const listUsers = async () => {
+        setIsLoading(true)
         if (access) {
             const config = {
                 headers: {
@@ -32,10 +36,12 @@ const UserManagement = () => {
                 const res = await axios.get(url, config);
                 setData(res.data)
                 console.log(res.data)
+                setIsLoading(false)
 
             } catch (err) {
                 setData(null)
                 console.log(err)
+                setIsLoading(false)
             }
         } else {
             setData(null)
@@ -73,53 +79,59 @@ const UserManagement = () => {
 
     return (
         <div className='container'>
-            <h2>Użytkownicy</h2>
+            {isLoading ?
+                <LoadingSpinner/>
+                :
+                <>
+                    <h2>Użytkownicy</h2>
 
 
-            <div className='row'>
-                <div className='col-md-6 mt-5 mb-4 text-start'>
-                    <div className='search-bar'>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Szukaj"
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
+                    <div className='row'>
+                        <div className='col-md-6 mt-5 mb-4 text-start'>
+                            <div className='search-bar'>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Szukaj"
+                                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                                />
+                            </div>
+                        </div>
+                        <div className='col-md-6 mt-5 mb-4 d-flex justify-content-end'>
+                            <button
+                                onClick={() => navigate(`/${userRole}/users/add/`)}
+                                type='button'
+                                className='btn btn-primary'
+                            >
+                                DODAJ UŻYTKOWNIKA
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div className='col-md-6 mt-5 mb-4 d-flex justify-content-end'>
-                    <button
-                        onClick={() => navigate(`/${userRole}/users/add/`)}
-                        type='button'
-                        className='btn btn-primary'
-                    >
-                        DODAJ UŻYTKOWNIKA
-                    </button>
-                </div>
-            </div>
 
-            <Tabs
-                id="controlled-tab-example"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
-                className="mb-3"
-            >
-                <Tab eventKey="all" title="Wszyscy użytkownicy">
-                    <UsersTable data={data} search={searchFilteredServices(data)} />
-                </Tab>
-                <Tab eventKey="admin" title="Adminstratorzy">
-                    <UsersTable data={adminData} search={searchFilteredServices(adminData)} />
-                </Tab>
-                <Tab eventKey="salon_owner" title="Właściciele salonów">
-                    <UsersTable data={salon_ownerData} search={searchFilteredServices(salon_ownerData)} />
-                </Tab>
-                <Tab eventKey="employee" title="Pracownicy">
-                    <UsersTable data={employeeData} search={searchFilteredServices(employeeData)} />
-                </Tab>
-                <Tab eventKey="customer" title="Klienci">
-                    <UsersTable data={customerData} search={searchFilteredServices(customerData)} />
-                </Tab>
-            </Tabs>
+                    <Tabs
+                        id="controlled-tab-example"
+                        activeKey={key}
+                        onSelect={(k) => setKey(k)}
+                        className="mb-3"
+                    >
+                        <Tab eventKey="all" title="Wszyscy użytkownicy">
+                            <UsersTable data={data} search={searchFilteredServices(data)} />
+                        </Tab>
+                        <Tab eventKey="admin" title="Adminstratorzy">
+                            <UsersTable data={adminData} search={searchFilteredServices(adminData)} />
+                        </Tab>
+                        <Tab eventKey="salon_owner" title="Właściciele salonów">
+                            <UsersTable data={salon_ownerData} search={searchFilteredServices(salon_ownerData)} />
+                        </Tab>
+                        <Tab eventKey="employee" title="Pracownicy">
+                            <UsersTable data={employeeData} search={searchFilteredServices(employeeData)} />
+                        </Tab>
+                        <Tab eventKey="customer" title="Klienci">
+                            <UsersTable data={customerData} search={searchFilteredServices(customerData)} />
+                        </Tab>
+                    </Tabs>
+                </>
+            }
         </div>
     )
 };

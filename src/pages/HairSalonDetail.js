@@ -89,7 +89,7 @@ const HairSalonDetail = (props) => {
 
     const filteredServices = services.filter(service => parseInt(service.salonID) === parseInt(salonId))
     const searchFilteredServices = filteredServices.filter(item => (
-        search.toLowerCase() === ''
+        search === ''
             ? item
             : item.name.toLowerCase().includes(search)
     ))
@@ -169,7 +169,7 @@ const HairSalonDetail = (props) => {
                                         type="text"
                                         className="form-control"
                                         placeholder="Wyszukaj usługę"
-                                        onChange={(e) => setSearch(e.target.value)}
+                                        onChange={(e) => setSearch(e.target.value.toLowerCase())}
                                     />
                                 </div>
                             </div>

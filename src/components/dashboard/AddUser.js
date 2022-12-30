@@ -11,25 +11,34 @@ const AddUser = () => {
     const navigate = useNavigate()
     const { access, userRole } = useAuth()
     const [accountCreated, setAccountCreated] = useState(false);
+    const [salonData, setSalonData] = useState([]);
     const [errors, setErrors] = useState({
         email: '',
         username: '',
     });
 
+    const options = [
+        { value: '', text: '--Choose an option--' },
+        { value: 'admin', text: 'admin' },
+        { value: 'customer', text: 'klient' },
+        { value: 'employee', text: 'pracownik' },
+        { value: 'salon_owner', text: 'właściciel salonu' },
+    ];
+
+
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
 
     const formik = useFormik({
         initialValues: {
+            salon: '',
             username: '',
             first_name: '',
             last_name: '',
-            is_staff: true,
-            is_superuser: true,
-            is_employee: false,
             email: '',
             password: 'zaq1@WSX',
             re_password: 'zaq1@WSX',
             phone: '',
+            role: '',
         },
         validationSchema: Yup.object({
             username: Yup.string()
@@ -45,6 +54,13 @@ const AddUser = () => {
                 .matches(phoneRegExp, 'Wprowadzony numer telefonu jest nieprawidłowy')
                 .max(9, "Nr telefonu musi zawierać 9 znaków")
                 .required("Pole jest wymagane"),
+            role: Yup.string()
+                .required('Pole jest wymagane'),
+            salon: Yup.string()
+                .when('role', {
+                    is: "employee",
+                    then: Yup.string().required('Pole jest wymagane')
+                }),
         }),
 
         onSubmit: (values, { resetForm }) => {
@@ -52,7 +68,7 @@ const AddUser = () => {
         },
     });
 
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone } = formik.values;
+    const { username, first_name, last_name, email, password, re_password, phone, role, salon } = formik.values;
 
     const onSubmit = async e => {
         if (localStorage.getItem('isAuthenticated')) {
@@ -65,21 +81,47 @@ const AddUser = () => {
                     }
                 };
 
-                let role = ''
-                if (userRole === 'admin') {
-                    role = 'salon_owner'
-                }
-                else if (userRole === 'salon_owner') {
-                    role = 'employee'
-                }
+                let url = `http://127.0.0.1:8000/auth/users/`
 
-                const body = JSON.stringify({
-                    username, first_name, last_name, is_staff, is_superuser, is_employee,
+                let body = JSON.stringify({
+                    username, first_name, last_name,
                     email, password, re_password, phone, role
                 });
 
+                let is_superuser = true
+                let is_staff = true
+                let is_employee = false
+
+                if (role === "employee") {
+                    url = `http://127.0.0.1:8000/employee/`
+                    body = JSON.stringify({
+                        "salon": salon,
+                        "user": {
+                            "username": username,
+                            "first_name": first_name,
+                            "last_name": last_name,
+                            "email": email,
+                            "is_staff": false,
+                            "is_superuser": false,
+                            "is_employee": true,
+                            "phone": phone,
+                            "role": role,
+                            "password": password,
+                        }
+                    });
+                }
+                else if (role === "customer") {
+                    is_superuser = false
+                    is_staff = false
+                    is_employee = false
+                }
+
+                // const body = JSON.stringify({
+                //     username, first_name, last_name, is_staff, is_superuser, is_employee,
+                //     email, password, re_password, phone, role
+                // });
+
                 try {
-                    const url = `http://127.0.0.1:8000/auth/users/`
                     const res = await axios.post(url, body, config);
                     setAccountCreated(true);
                 }
@@ -114,6 +156,30 @@ const AddUser = () => {
     };
 
     useEffect(() => {
+        const getSalons = async () => {
+            if (access) {
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `JWT ${access}`,
+                        'Accept': 'application/json'
+                    }
+                };
+                try {
+                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                    setSalonData(res.data)
+                } catch (err) {
+                    setSalonData(null)
+                    console.log(err)
+                }
+            } else {
+                setSalonData(null)
+                console.log("Blad")
+            }
+        };
+        getSalons()
+    }, [access])
+    useEffect(() => {
         if (accountCreated) {
             navigate(`/${userRole}/users/`)
         }
@@ -122,7 +188,7 @@ const AddUser = () => {
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
             <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={formik.handleSubmit}>
-                <h1 className='text-center'>Utwórz konto</h1>
+                <h1>Utwórz konto</h1>
                 <div className='mb-3 mt-5'>
                     <label
                         htmlFor='inputUsername'
@@ -190,6 +256,56 @@ const AddUser = () => {
                         ) : null}
                     </span>
                 </div>
+                <div className="mb-3">
+                    <label className="FormControlSelect">Typ użytkownika</label>
+                    <select
+                        id='FormControlSelect'
+                        className={`form-select ${formik.touched.role && formik.errors.role && 'is-invalid'}`}
+                        name='role'
+                        value={formik.values.role}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    >
+                        {options.map(option => (
+                            <option key={option.value} value={option.value}>
+                                {option.text}
+                            </option>
+                        ))}
+                    </select>
+                    <span className='text-start error'>
+                        {formik.touched.role && formik.errors.role ? (
+                            <div>{formik.errors.role}</div>
+                        ) : null}
+                    </span>
+                </div>
+                <div className={`mb-3 ${formik.values.role !== "employee" ? "d-none" : ""}`}>
+                    <label
+                        htmlFor='inputSalon'
+                        className='form-label'>
+                        Salon
+                    </label>
+                    <select
+                        id='inputSalon'
+                        // disabled={formik.values.role !== "employee"}
+                        className={`form-select ${formik.touched.salon && formik.errors.salon && 'is-invalid'}`}
+                        name='salon'
+                        value={formik.values.salon}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    >
+                        <option value=''>---Wybierz salon---</option>
+                        {salonData.map(salon => (
+                            <option key={salon.id} value={salon.id}>
+                                {salon.name} ({salon.city})
+                            </option>
+                        ))}
+                    </select>
+                    <span className='text-start error'>
+                        {formik.touched.salon && formik.errors.salon ? (
+                            <div>{formik.errors.salon}</div>
+                        ) : null}
+                    </span>
+                </div>
                 <div className='mb-3'>
                     <label
                         htmlFor='inputEmail'
@@ -234,7 +350,7 @@ const AddUser = () => {
                         ) : null}
                     </span>
                 </div>
-                <div className='text-center mt-4'>
+                <div className='mt-4'>
                     <button
                         className='btn btn-primary me-1'
                         type='submit'>
