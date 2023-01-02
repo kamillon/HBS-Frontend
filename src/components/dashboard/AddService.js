@@ -108,24 +108,22 @@ const AddService = () => {
     }, [access])
 
     const onSubmit = async e => {
-        if (localStorage.getItem('isAuthenticated')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json',
-                }
-            };
-
-            const body = JSON.stringify({ name, service_type, describe, time, price, salonID });
-
-            try {
-                const res = await axios.post(`http://127.0.0.1:8000/service/`, body, config);
-                setServiceCreated(true);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json',
             }
-            catch (error) {
-                console.log(error)
-            }
+        };
+
+        const body = JSON.stringify({ name, service_type, describe, time, price, salonID });
+
+        try {
+            const res = await axios.post(`http://127.0.0.1:8000/service/`, body, config);
+            setServiceCreated(true);
+        }
+        catch (error) {
+            console.log(error)
         }
     };
 

@@ -73,7 +73,7 @@ const Booking = () => {
     const onSubmit = async e => {
         e.preventDefault();
 
-        if (localStorage.getItem('isAuthenticated')) {
+        if (access) {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',

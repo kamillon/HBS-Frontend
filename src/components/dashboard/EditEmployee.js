@@ -126,51 +126,49 @@ const EditEmployee = () => {
     const { salon, user } = formik.values;
 
     const onSubmit = async e => {
-        if (localStorage.getItem('isAuthenticated')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json'
-                }
-            };
-
-            const body = JSON.stringify({
-                username: user.username,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                phone: user.phone,
-                role: user.role,
-            });
-
-            try {
-                const url = `http://127.0.0.1:8000/auth/users/${uid}/`
-                const res = await axios.put(url, body, config);
-                setAccountUpdated(true);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json'
             }
-            catch (error) {
-                console.log(error)
-                setErrors(null)
-                if (error.response.data.username) {
-                    if (error.response.data.username[0] === "A user with that username already exists.") {
-                        setErrors((prevErrors) => {
-                            return {
-                                ...prevErrors,
-                                username: "Użytkownik z tą nazwą użytkownika już istnieje",
-                            }
-                        });
-                    }
+        };
+
+        const body = JSON.stringify({
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+        });
+
+        try {
+            const url = `http://127.0.0.1:8000/auth/users/${uid}/`
+            const res = await axios.put(url, body, config);
+            setAccountUpdated(true);
+        }
+        catch (error) {
+            console.log(error)
+            setErrors(null)
+            if (error.response.data.username) {
+                if (error.response.data.username[0] === "A user with that username already exists.") {
+                    setErrors((prevErrors) => {
+                        return {
+                            ...prevErrors,
+                            username: "Użytkownik z tą nazwą użytkownika już istnieje",
+                        }
+                    });
                 }
-                if (error.response.data.email) {
-                    if (error.response.data.email[0] === "user with this email already exists.") {
-                        setErrors((prevErrors) => {
-                            return {
-                                ...prevErrors,
-                                email: "Użytkownik z tym adrem e-mail już istnieje",
-                            }
-                        });
-                    }
+            }
+            if (error.response.data.email) {
+                if (error.response.data.email[0] === "user with this email already exists.") {
+                    setErrors((prevErrors) => {
+                        return {
+                            ...prevErrors,
+                            email: "Użytkownik z tym adrem e-mail już istnieje",
+                        }
+                    });
                 }
             }
         }
@@ -178,25 +176,23 @@ const EditEmployee = () => {
 
     const onSubmit2 = async e => {
         e.preventDefault();
-        if (localStorage.getItem('isAuthenticated')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json'
-                }
-            };
-
-            const body = JSON.stringify({ salon });
-
-            try {
-                const url = `http://127.0.0.1:8000/employee/${uid}/`
-                const res = await axios.patch(url, body, config);
-                setSalonUpdated(true);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json'
             }
-            catch (error) {
-                console.log(error)
-            }
+        };
+
+        const body = JSON.stringify({ salon });
+
+        try {
+            const url = `http://127.0.0.1:8000/employee/${uid}/`
+            const res = await axios.patch(url, body, config);
+            setSalonUpdated(true);
+        }
+        catch (error) {
+            console.log(error)
         }
     };
 

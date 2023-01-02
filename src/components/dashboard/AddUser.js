@@ -71,84 +71,82 @@ const AddUser = () => {
     const { username, first_name, last_name, email, password, re_password, phone, role, salon } = formik.values;
 
     const onSubmit = async e => {
-        if (localStorage.getItem('isAuthenticated')) {
-            if (password === re_password) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json',
+        if (password === re_password) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json',
+                }
+            };
+
+            let url = `http://127.0.0.1:8000/auth/users/`
+
+            let body = JSON.stringify({
+                username, first_name, last_name,
+                email, password, re_password, phone, role
+            });
+
+            let is_superuser = true
+            let is_staff = true
+            let is_employee = false
+
+            if (role === "employee") {
+                url = `http://127.0.0.1:8000/employee/`
+                body = JSON.stringify({
+                    "salon": salon,
+                    "user": {
+                        "username": username,
+                        "first_name": first_name,
+                        "last_name": last_name,
+                        "email": email,
+                        "is_staff": false,
+                        "is_superuser": false,
+                        "is_employee": true,
+                        "phone": phone,
+                        "role": role,
+                        "password": password,
                     }
-                };
-
-                let url = `http://127.0.0.1:8000/auth/users/`
-
-                let body = JSON.stringify({
-                    username, first_name, last_name,
-                    email, password, re_password, phone, role
                 });
+            }
+            else if (role === "customer") {
+                is_superuser = false
+                is_staff = false
+                is_employee = false
+            }
 
-                let is_superuser = true
-                let is_staff = true
-                let is_employee = false
+            // const body = JSON.stringify({
+            //     username, first_name, last_name, is_staff, is_superuser, is_employee,
+            //     email, password, re_password, phone, role
+            // });
 
-                if (role === "employee") {
-                    url = `http://127.0.0.1:8000/employee/`
-                    body = JSON.stringify({
-                        "salon": salon,
-                        "user": {
-                            "username": username,
-                            "first_name": first_name,
-                            "last_name": last_name,
-                            "email": email,
-                            "is_staff": false,
-                            "is_superuser": false,
-                            "is_employee": true,
-                            "phone": phone,
-                            "role": role,
-                            "password": password,
-                        }
-                    });
-                }
-                else if (role === "customer") {
-                    is_superuser = false
-                    is_staff = false
-                    is_employee = false
-                }
-
-                // const body = JSON.stringify({
-                //     username, first_name, last_name, is_staff, is_superuser, is_employee,
-                //     email, password, re_password, phone, role
-                // });
-
-                try {
-                    const res = await axios.post(url, body, config);
-                    setAccountCreated(true);
-                }
-                catch (error) {
-                    console.log(error)
-                    setErrors(null)
+            try {
+                const res = await axios.post(url, body, config);
+                setAccountCreated(true);
+            }
+            catch (error) {
+                console.log(error)
+                setErrors(null)
+                if (error.response.data.email) {
                     if (error.response.data.email) {
-                        if (error.response.data.email) {
-                            if (error.response.data.email[0] === "user with this email already exists.") {
-                                setErrors((prevErrors) => {
-                                    return {
-                                        ...prevErrors,
-                                        email: "Użytkownik z tym adrem e-mail już istnieje",
-                                    }
-                                });
-                            }
-                        }
-                    }
-                    if (error.response.data.username) {
-                        if (error.response.data.username[0] === "A user with that username already exists.") {
+                        if (error.response.data.email[0] === "user with this email already exists.") {
                             setErrors((prevErrors) => {
                                 return {
                                     ...prevErrors,
-                                    username: "Użytkownik z tą nazwą użytkownika już istnieje",
+                                    email: "Użytkownik z tym adrem e-mail już istnieje",
                                 }
                             });
                         }
+                    }
+                }
+                if (error.response.data.username) {
+                    if (error.response.data.username[0] === "A user with that username already exists.") {
+                        setErrors((prevErrors) => {
+                            return {
+                                ...prevErrors,
+                                username: "Użytkownik z tą nazwą użytkownika już istnieje",
+                            }
+                        });
                     }
                 }
             }

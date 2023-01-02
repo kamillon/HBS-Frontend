@@ -78,28 +78,26 @@ const EditAccount = () => {
     const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, phone, role } = formik.values;
 
     const onSubmit = async e => {
-        if (localStorage.getItem('isAuthenticated')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json'
-                }
-            };
-
-            const body = JSON.stringify({
-                username, first_name, last_name, is_staff, is_superuser, is_employee,
-                email, phone, role
-            });
-
-            try {
-                const res = await axios.put(`http://127.0.0.1:8000/users/me/`, body, config);
-                setAccountUpdated(true);
-
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json'
             }
-            catch (error) {
-                console.log(error)
-            }
+        };
+
+        const body = JSON.stringify({
+            username, first_name, last_name, is_staff, is_superuser, is_employee,
+            email, phone, role
+        });
+
+        try {
+            const res = await axios.put(`http://127.0.0.1:8000/users/me/`, body, config);
+            setAccountUpdated(true);
+
+        }
+        catch (error) {
+            console.log(error)
         }
     };
 

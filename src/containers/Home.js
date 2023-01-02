@@ -10,10 +10,6 @@ import fryzjerIcon from '../images/fryzjer1.png';
 
 
 const Home = () => {
-    const { currentUser, isAuthenticated } = useAuth()
-    console.log(currentUser)
-    console.log(isAuthenticated)
-
     return (
         <div>
             {/* <Slider /> */}

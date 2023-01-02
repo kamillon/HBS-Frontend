@@ -4,8 +4,10 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './SignUp.css';
+import { useAuth } from "../context/AuthContext"
 
 const Signup = () => {
+    const { isAuthenticated } = useAuth()
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
@@ -82,7 +84,7 @@ const Signup = () => {
     };
 
 
-    if (localStorage.getItem('isAuthenticated')) {
+    if (isAuthenticated) {
         return <Navigate to='/' />
     }
     if (accountCreated) {

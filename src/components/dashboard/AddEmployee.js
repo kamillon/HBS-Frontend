@@ -94,47 +94,46 @@ const AddEmployee = () => {
     const { salon, user } = formik.values;
 
     const onSubmit = async e => {
-        if (localStorage.getItem('isAuthenticated')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json',
-                }
-            };
-
-            const body = JSON.stringify({ salon, user });
-
-            try {
-                const url = `http://127.0.0.1:8000/employee/`
-                const res = await axios.post(url, body, config);
-                setAccountCreated(true);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json',
             }
-            catch (error) {
-                console.log(error)
-                setErrors(null)
-                if (error.response.data.user.username) {
-                    if (error.response.data.user.username[0] === "A user with that username already exists.") {
-                        setErrors((prevErrors) => {
-                            return {
-                                ...prevErrors,
-                                username: "Użytkownik z tą nazwą użytkownika już istnieje",
-                            }
-                        });
-                    }
+        };
+
+        const body = JSON.stringify({ salon, user });
+
+        try {
+            const url = `http://127.0.0.1:8000/employee/`
+            const res = await axios.post(url, body, config);
+            setAccountCreated(true);
+        }
+        catch (error) {
+            console.log(error)
+            setErrors(null)
+            if (error.response.data.user.username) {
+                if (error.response.data.user.username[0] === "A user with that username already exists.") {
+                    setErrors((prevErrors) => {
+                        return {
+                            ...prevErrors,
+                            username: "Użytkownik z tą nazwą użytkownika już istnieje",
+                        }
+                    });
                 }
-                if (error.response.data.user.email) {
-                    if (error.response.data.user.email[0] === "user with this email already exists.") {
-                        setErrors((prevErrors) => {
-                            return {
-                                ...prevErrors,
-                                email: "Użytkownik z tym adrem e-mail już istnieje",
-                            }
-                        });
-                    }
+            }
+            if (error.response.data.user.email) {
+                if (error.response.data.user.email[0] === "user with this email already exists.") {
+                    setErrors((prevErrors) => {
+                        return {
+                            ...prevErrors,
+                            email: "Użytkownik z tym adrem e-mail już istnieje",
+                        }
+                    });
                 }
             }
         }
+
     };
 
     useEffect(() => {

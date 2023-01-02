@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [refresh, setRefresh] = useState(() => localStorage.getItem('refresh') ? JSON.parse(localStorage.getItem('refresh')) : null)
     const [currentUser, setCurrentUser] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('isAuthenticated') ? JSON.parse(localStorage.getItem('isAuthenticated')) : false)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [userRole, setUserRole] = useState(null)
     const [error, setError] = useState(null);
 
@@ -54,7 +54,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('access')
         localStorage.removeItem('refresh')
         localStorage.removeItem('currentUser')
-        localStorage.removeItem('isAuthenticated')
         localStorage.clear();
         navigate('/', { replace: true })
 
@@ -102,7 +101,6 @@ export const AuthProvider = ({ children }) => {
 
             if (res.data.code !== 'token_not_valid') {
                 setIsAuthenticated(true)
-                localStorage.setItem('isAuthenticated', true)
             } else {
                 logoutUser()
             }

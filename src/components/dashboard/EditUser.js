@@ -98,65 +98,63 @@ const EditUser = () => {
     const { username, first_name, last_name, email, phone, role } = formik.values;
 
     const onSubmit = async e => {
-        if (localStorage.getItem('isAuthenticated')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json'
-                }
-            };
-
-            let is_superuser = true
-            let is_staff = true
-            let is_employee = false
-
-            if (role === "employee") {
-                is_superuser = true
-                is_staff = true
-                is_employee = true
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json'
             }
-            else if(role === "customer"){
-                is_superuser = false
-                is_staff = false
-                is_employee = false
-            }
+        };
+
+        let is_superuser = true
+        let is_staff = true
+        let is_employee = false
+
+        if (role === "employee") {
+            is_superuser = true
+            is_staff = true
+            is_employee = true
+        }
+        else if (role === "customer") {
+            is_superuser = false
+            is_staff = false
+            is_employee = false
+        }
 
 
-            const body = JSON.stringify({
-                username, first_name, last_name, is_staff, is_superuser, is_employee,
-                email, phone, role
-            });
+        const body = JSON.stringify({
+            username, first_name, last_name, is_staff, is_superuser, is_employee,
+            email, phone, role
+        });
 
-            try {
-                const url = `http://127.0.0.1:8000/auth/users/${uid}/`
-                const res = await axios.put(url, body, config);
-                setAccountUpdated(true);
-            }
-            catch (error) {
-                console.log(error)
-                setErrors(null)
+        try {
+            const url = `http://127.0.0.1:8000/auth/users/${uid}/`
+            const res = await axios.put(url, body, config);
+            setAccountUpdated(true);
+        }
+        catch (error) {
+            console.log(error)
+            setErrors(null)
+            if (error.response.data.email) {
                 if (error.response.data.email) {
-                    if (error.response.data.email) {
-                        if (error.response.data.email[0] === "user with this email already exists.") {
-                            setErrors((prevErrors) => {
-                                return {
-                                    ...prevErrors,
-                                    email: "Użytkownik z tym adrem e-mail już istnieje",
-                                }
-                            });
-                        }
-                    }
-                }
-                if (error.response.data.username) {
-                    if (error.response.data.username[0] === "A user with that username already exists.") {
+                    if (error.response.data.email[0] === "user with this email already exists.") {
                         setErrors((prevErrors) => {
                             return {
                                 ...prevErrors,
-                                username: "Użytkownik z tą nazwą użytkownika już istnieje",
+                                email: "Użytkownik z tym adrem e-mail już istnieje",
                             }
                         });
                     }
+                }
+            }
+            if (error.response.data.username) {
+                if (error.response.data.username[0] === "A user with that username already exists.") {
+                    setErrors((prevErrors) => {
+                        return {
+                            ...prevErrors,
+                            username: "Użytkownik z tą nazwą użytkownika już istnieje",
+                        }
+                    });
                 }
             }
         }

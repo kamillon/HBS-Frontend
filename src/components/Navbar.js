@@ -4,7 +4,7 @@ import { AuthContext, useAuth } from "../context/AuthContext"
 
 const Navbar = () => {
     const { contextState, setContextState } = useContext(AuthContext);
-    const { access, logoutUser, userRole } = useAuth()
+    const { isAuthenticated, logoutUser, userRole } = useAuth()
 
     const guestLinks = () => (
         <Fragment>
@@ -55,7 +55,7 @@ const Navbar = () => {
                                 <Link className='nav-link' to='/hairsalon'>Fryzjer</Link>
                             </li>
                         </ul>
-                        {access ? authLinks() : guestLinks()}
+                        {isAuthenticated ? authLinks() : guestLinks()}
 
                     </div>
                 </div>

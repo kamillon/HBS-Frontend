@@ -92,44 +92,42 @@ const AddSalon = () => {
     }, [access])
 
     const onSubmit = async e => {
-        if (localStorage.getItem('isAuthenticated')) {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `JWT ${access}`,
-                    'Accept': 'application/json',
-                }
-            };
-
-            const body = JSON.stringify({ name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner });
-
-            try {
-                const res = await axios.post(`http://127.0.0.1:8000/salon/`, body, config);
-                setSalonCreated(true);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json',
             }
-            catch (error) {
-                console.log(error)
-                setErrors(null)
+        };
+
+        const body = JSON.stringify({ name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner });
+
+        try {
+            const res = await axios.post(`http://127.0.0.1:8000/salon/`, body, config);
+            setSalonCreated(true);
+        }
+        catch (error) {
+            console.log(error)
+            setErrors(null)
+            if (error.response.data.email) {
                 if (error.response.data.email) {
-                    if (error.response.data.email) {
-                        if (error.response.data.email[0] === "hair salon with this email already exists.") {
-                            setErrors((prevErrors) => {
-                                return {
-                                    ...prevErrors,
-                                    email: "Salon z tym adrem e-mail już istnieje",
-                                }
-                            });
-                        }
+                    if (error.response.data.email[0] === "hair salon with this email already exists.") {
+                        setErrors((prevErrors) => {
+                            return {
+                                ...prevErrors,
+                                email: "Salon z tym adrem e-mail już istnieje",
+                            }
+                        });
                     }
-                    if (error.response.data.phone_number) {
-                        if (error.response.data.phone_number[0] === "hair salon with this phone number already exists.") {
-                            setErrors((prevErrors) => {
-                                return {
-                                    ...prevErrors,
-                                    phone_number: "Salon z tym numerem telefonu już istnieje",
-                                }
-                            });
-                        }
+                }
+                if (error.response.data.phone_number) {
+                    if (error.response.data.phone_number[0] === "hair salon with this phone number already exists.") {
+                        setErrors((prevErrors) => {
+                            return {
+                                ...prevErrors,
+                                phone_number: "Salon z tym numerem telefonu już istnieje",
+                            }
+                        });
                     }
                 }
             }
