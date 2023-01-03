@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const ServiceManagement = () => {
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
     const [servicesData, setServicesData] = useState({})
-    const [selectedSalon, setSelectedSalon] = useState();
+    const [selectedSalon, setSelectedSalon] = useState('');
     const [ownerSalons, setOwnerSalons] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
 
@@ -147,17 +147,31 @@ const ServiceManagement = () => {
         }
     }, [removed])
 
-    let mappedData = ({})
-    let mappedSalons = ({})
+    let salonDataFiltered;
 
-    if (userRole === 'admin') {
-        mappedData = Object.values(data).filter(i => i.salonID == selectedSalon)
-        mappedSalons = salonData
+    if (userRole === 'salon_owner') {
+        salonDataFiltered = salonData.filter(i => i.owner == currentUser.id)
     }
-    else if (userRole === 'salon_owner') {
-        mappedData = Object.values(data).filter(i => i.salonID == selectedSalon)
-        mappedSalons = Object.values(salonData).filter(i => i.owner == currentUser.id)
+    else if (userRole === 'admin') {
+        salonDataFiltered = salonData
     }
+
+    function getFilteredList() {
+        if (!selectedSalon) {
+            if (userRole === 'salon_owner') {
+                const filteredServices = data.filter(services => {
+                    return salonDataFiltered.find(salon => salon.id === services.salonID);
+                });
+                return filteredServices
+            }
+            else if (userRole === 'admin') {
+                return data
+            }
+        }
+        return data.filter(i => i.salonID == selectedSalon)
+    }
+
+    const filteredList = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
 
     return (
         <div className='container'>
@@ -177,8 +191,8 @@ const ServiceManagement = () => {
                                 value={selectedSalon}
                                 onChange={e => setSelectedSalon(e.target.value)}
                             >
-                                <option>---Wybierz salon---</option>
-                                {mappedSalons.map(salon => (
+                                <option value={''}>---Wybierz salon---</option>
+                                {salonDataFiltered.map(salon => (
                                     <option key={salon.id} value={salon.id}>
                                         {salon.name} ({salon.city})
                                     </option>
@@ -186,7 +200,7 @@ const ServiceManagement = () => {
                             </select>
                         </div>
                         <div className="col-12 col-md-6 text-center text-md-end mt-3 mt-md-0">
-                            {mappedSalons.length > 0 ?
+                            {salonDataFiltered.length > 0 ?
                                 <button
                                     onClick={() => navigate(`/${userRole}/services/add/`)}
                                     type='button'
@@ -206,7 +220,7 @@ const ServiceManagement = () => {
                         </div>
                     </div>
 
-                    {mappedData.length > 0 ?
+                    {filteredList.length > 0 ?
                         <div className="table-responsive">
                             <table className="table table-hover">
                                 <thead>
@@ -217,11 +231,12 @@ const ServiceManagement = () => {
                                         {/* <th scope="col">Opis</th> */}
                                         <th scope="col">Czas trwania</th>
                                         <th scope="col">Cena</th>
+                                        <th scope="col">SalonID</th>
                                         <th scope="col">Akcje</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {mappedData.map((item) => (
+                                    {filteredList.map((item) => (
                                         <tr key={item.id}>
                                             <th scope="row">{item.id}</th>
                                             <td>{item.name}</td>
@@ -229,6 +244,7 @@ const ServiceManagement = () => {
                                             {/* <td>{item.describe.substring(0, 20)} ...</td> */}
                                             <td>{convertMinsToTime(item.time)}</td>
                                             <td>{item.price} zł</td>
+                                            <td>{item.salonID}</td>
                                             <td>
                                                 <button
                                                     type="button"

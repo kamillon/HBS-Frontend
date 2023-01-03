@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const ReservationsManagement = () => {
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
     const [reservationData, setReservationData] = useState({})
-    const [selectedSalon, setSelectedSalon] = useState();
+    const [selectedSalon, setSelectedSalon] = useState('');
     const [isLoading, setIsLoading] = useState(true)
 
 
@@ -81,7 +81,7 @@ const ReservationsManagement = () => {
         };
 
         getReservation()
-        if (currentUser.role === 'salon_owner') {
+        if (currentUser.role === 'salon_owner' || currentUser.role === 'admin') {
             getSalons()
         }
     }, [access])
@@ -117,24 +117,38 @@ const ReservationsManagement = () => {
     }, [removed])
 
 
-    const salonDataFiltered = salonData.filter(i => i.owner === currentUser.id)
+    let salonDataFiltered;
 
-    let mappedData = ({})
-    if (userRole === 'admin') {
-        mappedData = data
+    if (userRole === 'salon_owner') {
+        salonDataFiltered = salonData.filter(i => i.owner === currentUser.id)
     }
-    else if (userRole === 'salon_owner') {
-        mappedData = data.filter(i => parseInt(i.salonId) === parseInt(selectedSalon))
-    }
-    else if (userRole === 'employee') {
-        mappedData = data.filter(i => i.employeeId === currentUser.id)
-    }
-    else if (userRole === 'customer') {
-        mappedData = data.filter(i => i.customerId === currentUser.id)
+    else if (userRole === 'admin') {
+        salonDataFiltered = salonData
     }
 
-    console.log(mappedData)
-    console.log(selectedSalon)
+    function getFilteredList() {
+        if (!selectedSalon) {
+            if (userRole === 'salon_owner') {
+                const filteredReservations = data.filter(reservation => {
+                    return salonDataFiltered.find(salon => salon.id === reservation.salonId);
+                });
+                return filteredReservations
+            }
+            else if (userRole === 'admin') {
+                return data
+            }
+            else if (userRole === 'employee') {
+                return data.filter(i => i.employeeId === currentUser.id)
+            }
+            else if (userRole === 'customer') {
+                return data.filter(i => i.customerId === currentUser.id)
+            }
+        }
+        return data.filter((item) => item.salonId === parseInt(selectedSalon));
+    }
+
+    const filteredList = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
+
     return (
         <div className='container'>
             {isLoading ?
@@ -148,12 +162,16 @@ const ReservationsManagement = () => {
                     </div>
                     <div className="row">
                         <div className="col-md-6 text-center mb-3">
-                            {currentUser.role === 'salon_owner' &&
-                                <select className="form-select" value={selectedSalon} onChange={e => setSelectedSalon(e.target.value)}>
-                                    <option>---Wybierz salon---</option>
+                            {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                                <select
+                                    className="form-select"
+                                    value={selectedSalon}
+                                    onChange={e => setSelectedSalon(e.target.value)}
+                                >
+                                    <option value={''}>---Wybierz salon---</option>
                                     {salonDataFiltered.map(salon => (
                                         <option key={salon.id} value={salon.id}>
-                                            {salon.name}
+                                            {salon.name} ({salon.city})
                                         </option>
                                     ))}
                                 </select>
@@ -161,7 +179,7 @@ const ReservationsManagement = () => {
                         </div>
                     </div>
 
-                    {mappedData.length > 0 ?
+                    {filteredList.length > 0 ?
                         <div className="table-responsive">
                             <table className="table table-hover">
                                 <thead>
@@ -179,7 +197,7 @@ const ReservationsManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {mappedData.map((item) => (
+                                    {filteredList.map((item) => (
                                         <tr key={item.id}>
                                             <th scope="row">{item.id}</th>
                                             <td>{item.date}</td>

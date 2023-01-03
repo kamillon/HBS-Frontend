@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const EmployeesManagement = () => {
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
     const [userData, setUserData] = useState({})
-    const [selectedSalon, setSelectedSalon] = useState();
+    const [selectedSalon, setSelectedSalon] = useState('');
     const [isLoading, setIsLoading] = useState(true)
 
 
@@ -119,8 +119,19 @@ const EmployeesManagement = () => {
         }
     }, [removed])
 
-    let mappedData = data.filter(i => i.salon == selectedSalon)
-    let mappedSalons = salonData.filter(i => i.owner == currentUser.id)
+    const salonDataFiltered = salonData.filter(i => i.owner == currentUser.id)
+
+    function getFilteredList() {
+        if (!selectedSalon) {
+            const filteredEmployee = data.filter(employee => {
+                return salonDataFiltered.find(salon => salon.id === employee.salon);
+            });
+            return filteredEmployee
+        }
+        return data.filter(i => i.salon == selectedSalon)
+    }
+
+    const filteredList = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
 
     return (
         <div className='container'>
@@ -140,9 +151,9 @@ const EmployeesManagement = () => {
                                 value={selectedSalon}
                                 onChange={e => setSelectedSalon(e.target.value)}
                             >
-                                <option>---Wybierz salon---</option>
-                                {mappedSalons ?
-                                    mappedSalons.map(salon => (
+                                <option value={''}>---Wybierz salon---</option>
+                                {salonDataFiltered ?
+                                    salonDataFiltered.map(salon => (
                                         <option key={salon.id} value={salon.id}>
                                             {salon.name} ({salon.city})
                                         </option>
@@ -154,7 +165,7 @@ const EmployeesManagement = () => {
                         </div>
 
                         <div className="col-12 col-md-6 text-center text-md-end mt-3 mt-md-0">
-                            {mappedSalons.length > 0 ?
+                            {salonDataFiltered.length > 0 ?
                                 <button
                                     onClick={() => navigate(`/${userRole}/employee/add/`)}
                                     type='button'
@@ -174,33 +185,31 @@ const EmployeesManagement = () => {
                         </div>
                     </div>
 
-                    {mappedData.length > 0 ?
+                    {filteredList.length > 0 ?
                         <div className="table-responsive">
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Id</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Imię</th>
-                                        <th scope="col">Nazwisko</th>
-                                        <th scope="col">SalonId</th>
+                                        <th scope="col">Imię i nazwisko</th>
+                                        <th scope="col">E-mail</th>
                                         <th scope="col">Status konta</th>
+                                        <th scope="col">SalonId</th>
                                         <th scope="col">Rola</th>
                                         <th scope="col">Akcje</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {mappedData.map((item) => (
+                                    {filteredList.map((item) => (
                                         <tr key={item.user.id}>
                                             <th scope="row">{item.user.id}</th>
+                                            <td>{item.user.first_name} {item.user.last_name}</td>
                                             <td>{item.user.email}</td>
-                                            <td>{item.user.first_name}</td>
-                                            <td>{item.user.last_name}</td>
-                                            <td>{item.salon}</td>
                                             <td>{item.user.is_active ?
                                                 <span className="badge bg-success">Aktywne</span> :
                                                 <span className="badge bg-danger">Nieaktywne</span>}
                                             </td>
+                                            <td>{item.salon}</td>
                                             <td>{item.user.role}</td>
                                             <td>
                                                 <button
