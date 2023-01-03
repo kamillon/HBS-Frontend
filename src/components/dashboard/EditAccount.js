@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
+import LoadingSpinner from '../LoadingSpinner';
 
 const EditAccount = () => {
     const { access, userRole } = useAuth()
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const initialState = {
         username: '',
@@ -78,6 +80,7 @@ const EditAccount = () => {
     const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, phone, role } = formik.values;
 
     const onSubmit = async e => {
+        setIsSubmitting(true)
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -94,10 +97,11 @@ const EditAccount = () => {
         try {
             const res = await axios.put(`http://127.0.0.1:8000/users/me/`, body, config);
             setAccountUpdated(true);
-
+            setIsSubmitting(false)
         }
         catch (error) {
             console.log(error)
+            setIsSubmitting(false)
         }
     };
 
@@ -200,7 +204,24 @@ const EditAccount = () => {
                         ) : null}
                     </span>
                 </div>
-                <button className='btn btn-primary me-1' type='submit'>Zapisz</button>
+                {/* <button
+                    className='btn btn-primary me-1'
+                    type='submit'>Zapisz</button> */}
+
+                <div className="d-flex align-items-center">
+                    <button
+                        className='btn btn-primary me-1'
+                        type='submit'
+                        disabled={isSubmitting}
+                    >
+                        Zapisz
+                    </button>
+                    {isSubmitting ?
+                        <LoadingSpinner text={''} />
+                        :
+                        <></>
+                    }
+                </div>
             </form>
         </div>
     );

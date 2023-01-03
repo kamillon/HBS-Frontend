@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import wykrzyknik from '../../images/wykrzyknik.png';
+import LoadingSpinner from '../LoadingSpinner';
 
 const ServiceManagement = () => {
 
@@ -20,6 +21,8 @@ const ServiceManagement = () => {
     const [servicesData, setServicesData] = useState({})
     const [selectedSalon, setSelectedSalon] = useState();
     const [ownerSalons, setOwnerSalons] = useState([]);
+    const [isLoading, setIsLoading] = useState(true)
+
 
 
     const convertMinsToTime = (mins) => {
@@ -31,6 +34,7 @@ const ServiceManagement = () => {
 
     useEffect(() => {
         const getServices = async () => {
+            setIsLoading(true)
             if (access) {
                 const config = {
                     headers: {
@@ -44,17 +48,21 @@ const ServiceManagement = () => {
                     const res = await axios.get(`http://127.0.0.1:8000/service/`, config);
                     setData(res.data)
                     console.log(res.data)
+                    setIsLoading(false)
                 } catch (err) {
                     setData(null)
                     console.log(err)
+                    setIsLoading(false)
                 }
             } else {
                 setData(null)
                 console.log("Blad")
+                setIsLoading(false)
             }
         };
 
         const getSalons = async () => {
+            setIsLoading(true)
             if (access) {
                 const config = {
                     headers: {
@@ -67,14 +75,17 @@ const ServiceManagement = () => {
                     const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
                     setSalonData(res.data)
                     console.log(res.data)
+                    setIsLoading(false)
 
                 } catch (err) {
                     setSalonData(null)
                     console.log(err)
+                    setIsLoading(false)
                 }
             } else {
                 setSalonData(null)
                 console.log("Blad")
+                setIsLoading(false)
             }
         };
 
@@ -150,126 +161,132 @@ const ServiceManagement = () => {
 
     return (
         <div className='container'>
-            <div className='row mb-5'>
-                <div className='col'>
-                    <h2>Usługi</h2>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-12 col-md-6 text-start mb-3">
-                    <select
-                        className="form-select"
-                        value={selectedSalon}
-                        onChange={e => setSelectedSalon(e.target.value)}
-                    >
-                        <option>---Wybierz salon---</option>
-                        {mappedSalons.map(salon => (
-                            <option key={salon.id} value={salon.id}>
-                                {salon.name} ({salon.city})
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="col-12 col-md-6 text-center text-md-end mt-3 mt-md-0">
-                    {mappedSalons.length > 0 ?
-                        <button
-                            onClick={() => navigate(`/${userRole}/services/add/`)}
-                            type='button'
-                            className='btn btn-primary'
-                        >
-                            DODAJ USŁUGĘ
-                        </button>
-                        :
-                        <button
-                            type='button'
-                            disabled
-                            className='btn btn-primary'
-                        >
-                            DODAJ USŁUGĘ
-                        </button>
-                    }
-                </div>
-            </div>
-
-            {mappedData.length > 0 ?
-                <div className="table-responsive">
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nazwa usługi</th>
-                                <th scope="col">Typ</th>
-                                {/* <th scope="col">Opis</th> */}
-                                <th scope="col">Czas trwania</th>
-                                <th scope="col">Cena</th>
-                                <th scope="col">Akcje</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {mappedData.map((item) => (
-                                <tr key={item.id}>
-                                    <th scope="row">{item.id}</th>
-                                    <td>{item.name}</td>
-                                    <td>{item.service_type === "men's" ? "męskie" : "damskie"}</td>
-                                    {/* <td>{item.describe.substring(0, 20)} ...</td> */}
-                                    <td>{convertMinsToTime(item.time)}</td>
-                                    <td>{item.price} zł</td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary me-1"
-                                            style={{ width: '80px' }}
-                                            onClick={() => navigate(`/${userRole}/services/edit/${item.id}`)}
-                                        >
-                                            EDYTUJ
-                                        </button>
-                                        <button
-                                            type="button"
-                                            style={{ width: '80px' }}
-                                            className="btn btn-danger mt-1 mt-md-0"
-                                            onClick={() => {
-                                                handleShow();
-                                                setServicesData({ id: item.id, name: item.name })
-                                            }}
-                                        >
-                                            USUŃ
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                            }
-                        </tbody>
-                    </table>
-                </div>
+            {isLoading ?
+                <LoadingSpinner text={"Loading..."} />
                 :
-                <></>
-            }
-
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Potwierdzenie usuwania</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className='text-center'>
-                        <img src={wykrzyknik} style={{ width: "15%" }} alt="wykrzyknik" />
-                        <h4>Jesteś pewny?</h4>
-                        <p>Czy na pewno chcesz usunąć usługę {servicesData.name}?</p>
+                <>
+                    <div className='row mb-5'>
+                        <div className='col'>
+                            <h2>Usługi</h2>
+                        </div>
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Anuluj
-                    </Button>
-                    <Button variant="danger"
-                        onClick={() => {
-                            onDelete(servicesData.id)
-                            setSalonData({})
-                            handleClose()
-                        }}>
-                        Usuń
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                    <div className="row">
+                        <div className="col-12 col-md-6 text-start mb-3">
+                            <select
+                                className="form-select"
+                                value={selectedSalon}
+                                onChange={e => setSelectedSalon(e.target.value)}
+                            >
+                                <option>---Wybierz salon---</option>
+                                {mappedSalons.map(salon => (
+                                    <option key={salon.id} value={salon.id}>
+                                        {salon.name} ({salon.city})
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-12 col-md-6 text-center text-md-end mt-3 mt-md-0">
+                            {mappedSalons.length > 0 ?
+                                <button
+                                    onClick={() => navigate(`/${userRole}/services/add/`)}
+                                    type='button'
+                                    className='btn btn-primary'
+                                >
+                                    DODAJ USŁUGĘ
+                                </button>
+                                :
+                                <button
+                                    type='button'
+                                    disabled
+                                    className='btn btn-primary'
+                                >
+                                    DODAJ USŁUGĘ
+                                </button>
+                            }
+                        </div>
+                    </div>
+
+                    {mappedData.length > 0 ?
+                        <div className="table-responsive">
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Nazwa usługi</th>
+                                        <th scope="col">Typ</th>
+                                        {/* <th scope="col">Opis</th> */}
+                                        <th scope="col">Czas trwania</th>
+                                        <th scope="col">Cena</th>
+                                        <th scope="col">Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {mappedData.map((item) => (
+                                        <tr key={item.id}>
+                                            <th scope="row">{item.id}</th>
+                                            <td>{item.name}</td>
+                                            <td>{item.service_type === "men's" ? "męskie" : "damskie"}</td>
+                                            {/* <td>{item.describe.substring(0, 20)} ...</td> */}
+                                            <td>{convertMinsToTime(item.time)}</td>
+                                            <td>{item.price} zł</td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-primary me-1"
+                                                    style={{ width: '80px' }}
+                                                    onClick={() => navigate(`/${userRole}/services/edit/${item.id}`)}
+                                                >
+                                                    EDYTUJ
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    style={{ width: '80px' }}
+                                                    className="btn btn-danger mt-1 mt-md-0"
+                                                    onClick={() => {
+                                                        handleShow();
+                                                        setServicesData({ id: item.id, name: item.name })
+                                                    }}
+                                                >
+                                                    USUŃ
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        :
+                        <></>
+                    }
+
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Potwierdzenie usuwania</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className='text-center'>
+                                <img src={wykrzyknik} style={{ width: "15%" }} alt="wykrzyknik" />
+                                <h4>Jesteś pewny?</h4>
+                                <p>Czy na pewno chcesz usunąć usługę {servicesData.name}?</p>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Anuluj
+                            </Button>
+                            <Button variant="danger"
+                                onClick={() => {
+                                    onDelete(servicesData.id)
+                                    setSalonData({})
+                                    handleClose()
+                                }}>
+                                Usuń
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
+            }
         </div>
     )
 };

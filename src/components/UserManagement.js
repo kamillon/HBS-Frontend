@@ -80,7 +80,7 @@ const UserManagement = () => {
     return (
         <div className='container'>
             {isLoading ?
-                <LoadingSpinner/>
+                <LoadingSpinner text={"Loading..."}/>
                 :
                 <>
                     <h2>Użytkownicy</h2>

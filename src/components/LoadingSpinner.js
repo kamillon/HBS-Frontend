@@ -1,15 +1,15 @@
 import React from 'react';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({text}) => {
     return (
         <div className='d-flex flex-column align-items-center justify-content-center'>
-            <div className='row'>
+            <div className=''>
                 <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
+                    <span className="visually-hidden">{text}</span>
                 </div>
             </div>
             <div className='row'>
-                <strong>Loading...</strong>
+                <strong>{text}</strong>
             </div>
         </div>
     );

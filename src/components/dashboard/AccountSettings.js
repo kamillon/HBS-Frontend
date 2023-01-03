@@ -7,6 +7,7 @@ import axios from 'axios';
 import EditAccount from './EditAccount';
 import ChangePassword from './ChangePassword';
 import ChangeEmail from './ChangeEmail';
+import LoadingSpinner from '../LoadingSpinner';
 
 
 const AccountSettings = () => {
@@ -15,11 +16,13 @@ const AccountSettings = () => {
 
     const [data, setData] = useState([]);
     const [accountUpdated, setAccountUpdated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true)
 
     const { email } = data;
 
     useEffect(() => {
         const getUser = async () => {
+            setIsLoading(true)
             if (access) {
                 const config = {
                     headers: {
@@ -30,19 +33,20 @@ const AccountSettings = () => {
                 };
 
                 try {
-
                     const res = await axios.get(`http://127.0.0.1:8000/auth/users/me/`, config);
-
                     setData(res.data)
                     console.log(res.data)
+                    setIsLoading(false)
 
                 } catch (err) {
                     setData(null)
                     console.log(err)
+                    setIsLoading(false)
                 }
             } else {
                 setData(null)
                 console.log("Blad")
+                setIsLoading(false)
             }
         };
 
@@ -55,18 +59,26 @@ const AccountSettings = () => {
             <div className="main-content row row-offcanvas row-offcanvas-left full-screen">
                 <Sidebar role={userRole} />
                 <div className="col-auto col-md-9 col-lg-10 main p-5">
-                    <div className="row">
-                        <div className='col-12'>
-                            <h2 className='ms-5'>Ustawienia konta</h2>
+                    {isLoading ?
+                        <div className='mt-5'>
+                            <LoadingSpinner text={"Loading..."} />
                         </div>
-                        <div className="col-lg-8">
-                            <EditAccount />
-                        </div>
-                        <div className="col-lg-4">
-                            <ChangePassword dataUser={data} />
-                            <ChangeEmail dataUser={data} />
-                        </div>
-                    </div>
+                        :
+                        <>
+                            <div className="row">
+                                <div className='col-12'>
+                                    <h2 className='ms-5'>Ustawienia konta</h2>
+                                </div>
+                                <div className="col-lg-8">
+                                    <EditAccount />
+                                </div>
+                                <div className="col-lg-4">
+                                    <ChangePassword dataUser={data} />
+                                    <ChangeEmail dataUser={data} />
+                                </div>
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
         </div>

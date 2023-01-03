@@ -4,11 +4,14 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
+import LoadingSpinner from '../LoadingSpinner';
 
 const EditUser = () => {
     const { access, userRole } = useAuth()
     const navigate = useNavigate()
     const { uid } = useParams()
+    const [isLoading, setIsLoading] = useState(true)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [errors, setErrors] = useState({
         email: '',
         username: '',
@@ -57,6 +60,7 @@ const EditUser = () => {
     });
     useEffect(() => {
         const getUser = async () => {
+            setIsLoading(true)
             if (access) {
                 const config = {
                     headers: {
@@ -70,14 +74,17 @@ const EditUser = () => {
                     const url = `http://127.0.0.1:8000/auth/users/${uid}/`
                     const res = await axios.get(url, config);
                     setData(res.data)
+                    setIsLoading(false)
 
                 } catch (err) {
                     setData(null)
                     console.log(err)
+                    setIsLoading(false)
                 }
             } else {
                 setData(null)
                 console.log("Blad")
+                setIsLoading(false)
             }
         };
 
@@ -98,6 +105,7 @@ const EditUser = () => {
     const { username, first_name, last_name, email, phone, role } = formik.values;
 
     const onSubmit = async e => {
+        setIsSubmitting(true)
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -131,10 +139,12 @@ const EditUser = () => {
             const url = `http://127.0.0.1:8000/auth/users/${uid}/`
             const res = await axios.put(url, body, config);
             setAccountUpdated(true);
+            setIsSubmitting(false)
         }
         catch (error) {
             console.log(error)
             setErrors(null)
+            setIsSubmitting(false)
             if (error.response.data.email) {
                 if (error.response.data.email) {
                     if (error.response.data.email[0] === "user with this email already exists.") {
@@ -168,77 +178,81 @@ const EditUser = () => {
 
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={formik.handleSubmit}>
-                <h1>Edytuj dane użytkownika</h1>
-                <div className='mb-3 mt-4'>
-                    <label
-                        htmlFor='inputUsername'
-                        className='form-label'>
-                        Nazwa użytkownika
-                    </label>
-                    <input
-                        id='inputUsername'
-                        className={`form-control ${formik.touched.username && formik.errors.username && 'is-invalid'}`}
-                        type='text'
-                        placeholder='Nazwa użytkownika'
-                        name='username'
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className='text-start error'>
-                        {formik.touched.username && formik.errors.username ? (
-                            <div>{formik.errors.username}</div>
-                        ) : null}
-                        {errors ? errors.username : <></>}
-                    </span>
-                </div>
-                <div className='mb-3'>
-                    <label
-                        htmlFor='inputFirstName'
-                        className='form-label'>
-                        Imię
-                    </label>
-                    <input
-                        id='inputFirstName'
-                        className={`form-control ${formik.touched.first_name && formik.errors.first_name && 'is-invalid'}`}
-                        type='text'
-                        placeholder='Imię'
-                        name='first_name'
-                        value={formik.values.first_name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className='text-start error'>
-                        {formik.touched.first_name && formik.errors.first_name ? (
-                            <div>{formik.errors.first_name}</div>
-                        ) : null}
-                    </span>
-                </div>
-                <div className='mb-3'>
-                    <label
-                        htmlFor='inputLastName'
-                        className='form-label'>
-                        Nazwisko
-                    </label>
-                    <input
-                        id='inputLastName'
-                        className={`form-control ${formik.touched.last_name && formik.errors.last_name && 'is-invalid'}`}
-                        type='text'
-                        placeholder='Nazwisko'
-                        name='last_name'
-                        value={formik.values.last_name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className='text-start error'>
-                        {formik.touched.last_name && formik.errors.last_name ? (
-                            <div>{formik.errors.last_name}</div>
-                        ) : null}
-                    </span>
-                </div>
-                <div>
-                    {/* <div className="mb-3 form-check">
+            {isLoading ?
+                <LoadingSpinner text={"Loading..."} />
+                :
+                <>
+                    <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={formik.handleSubmit}>
+                        <h1>Edytuj dane użytkownika</h1>
+                        <div className='mb-3 mt-4'>
+                            <label
+                                htmlFor='inputUsername'
+                                className='form-label'>
+                                Nazwa użytkownika
+                            </label>
+                            <input
+                                id='inputUsername'
+                                className={`form-control ${formik.touched.username && formik.errors.username && 'is-invalid'}`}
+                                type='text'
+                                placeholder='Nazwa użytkownika'
+                                name='username'
+                                value={formik.values.username}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            <span className='text-start error'>
+                                {formik.touched.username && formik.errors.username ? (
+                                    <div>{formik.errors.username}</div>
+                                ) : null}
+                                {errors ? errors.username : <></>}
+                            </span>
+                        </div>
+                        <div className='mb-3'>
+                            <label
+                                htmlFor='inputFirstName'
+                                className='form-label'>
+                                Imię
+                            </label>
+                            <input
+                                id='inputFirstName'
+                                className={`form-control ${formik.touched.first_name && formik.errors.first_name && 'is-invalid'}`}
+                                type='text'
+                                placeholder='Imię'
+                                name='first_name'
+                                value={formik.values.first_name}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            <span className='text-start error'>
+                                {formik.touched.first_name && formik.errors.first_name ? (
+                                    <div>{formik.errors.first_name}</div>
+                                ) : null}
+                            </span>
+                        </div>
+                        <div className='mb-3'>
+                            <label
+                                htmlFor='inputLastName'
+                                className='form-label'>
+                                Nazwisko
+                            </label>
+                            <input
+                                id='inputLastName'
+                                className={`form-control ${formik.touched.last_name && formik.errors.last_name && 'is-invalid'}`}
+                                type='text'
+                                placeholder='Nazwisko'
+                                name='last_name'
+                                value={formik.values.last_name}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            <span className='text-start error'>
+                                {formik.touched.last_name && formik.errors.last_name ? (
+                                    <div>{formik.errors.last_name}</div>
+                                ) : null}
+                            </span>
+                        </div>
+                        <div>
+                            {/* <div className="mb-3 form-check">
                         <input
                             type="checkbox"
                             className="form-check-input"
@@ -277,77 +291,96 @@ const EditUser = () => {
                         >is_employee
                         </label>
                     </div> */}
-                    <div className="mb-3">
-                        <label className="FormControlSelect">Typ użytkownika</label>
-                        <select
-                            id='FormControlSelect'
-                            className={`form-control ${formik.touched.role && formik.errors.role && 'is-invalid'}`}
-                            name='role'
-                            value={formik.values.role}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        >
-                            {options.map(option => (
-                                <option key={option.value} value={option.value}>
-                                    {option.text}
-                                </option>
-                            ))}
-                        </select>
-                        <span className='text-start error'>
-                            {formik.touched.role && formik.errors.role ? (
-                                <div>{formik.errors.role}</div>
-                            ) : null}
-                        </span>
-                    </div>
-                </div>
-                <div className='mb-3'>
-                    <label
-                        htmlFor='inputEmail'
-                        className='form-label'>
-                        Email
-                    </label>
-                    <input
-                        id='inputEmail'
-                        className={`form-control ${formik.touched.email && formik.errors.email && 'is-invalid'}`}
-                        type='email'
-                        placeholder='Email'
-                        name='email'
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className='text-start error'>
-                        {formik.touched.email && formik.errors.email ? (
-                            <div>{formik.errors.email}</div>
-                        ) : null}
-                        {errors ? errors.email : <></>}
-                    </span>
-                </div>
-                <div className='mb-3'>
-                    <label
-                        htmlFor='inputPhone'
-                        className='form-label'>
-                        Telefon
-                    </label>
-                    <input
-                        id='inputPhone'
-                        className={`form-control ${formik.touched.phone && formik.errors.phone && 'is-invalid'}`}
-                        type='text'
-                        placeholder='Telefon'
-                        name='phone'
-                        value={formik.values.phone}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className='text-start error'>
-                        {formik.touched.phone && formik.errors.phone ? (
-                            <div>{formik.errors.phone}</div>
-                        ) : null}
-                    </span>
-                </div>
-                <button className='btn btn-primary me-1' type='submit'>Edytuj</button>
-                <button className='btn btn-danger' onClick={() => navigate(`/${userRole}/users/`)}>Anuluj</button>
-            </form>
+                            <div className="mb-3">
+                                <label className="FormControlSelect">Typ użytkownika</label>
+                                <select
+                                    id='FormControlSelect'
+                                    className={`form-control ${formik.touched.role && formik.errors.role && 'is-invalid'}`}
+                                    name='role'
+                                    value={formik.values.role}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                >
+                                    {options.map(option => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.text}
+                                        </option>
+                                    ))}
+                                </select>
+                                <span className='text-start error'>
+                                    {formik.touched.role && formik.errors.role ? (
+                                        <div>{formik.errors.role}</div>
+                                    ) : null}
+                                </span>
+                            </div>
+                        </div>
+                        <div className='mb-3'>
+                            <label
+                                htmlFor='inputEmail'
+                                className='form-label'>
+                                Email
+                            </label>
+                            <input
+                                id='inputEmail'
+                                className={`form-control ${formik.touched.email && formik.errors.email && 'is-invalid'}`}
+                                type='email'
+                                placeholder='Email'
+                                name='email'
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            <span className='text-start error'>
+                                {formik.touched.email && formik.errors.email ? (
+                                    <div>{formik.errors.email}</div>
+                                ) : null}
+                                {errors ? errors.email : <></>}
+                            </span>
+                        </div>
+                        <div className='mb-3'>
+                            <label
+                                htmlFor='inputPhone'
+                                className='form-label'>
+                                Telefon
+                            </label>
+                            <input
+                                id='inputPhone'
+                                className={`form-control ${formik.touched.phone && formik.errors.phone && 'is-invalid'}`}
+                                type='text'
+                                placeholder='Telefon'
+                                name='phone'
+                                value={formik.values.phone}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            <span className='text-start error'>
+                                {formik.touched.phone && formik.errors.phone ? (
+                                    <div>{formik.errors.phone}</div>
+                                ) : null}
+                            </span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                            <button
+                                className='btn btn-danger me-1'
+                                onClick={() => navigate(`/${userRole}/users/`)}>
+                                Anuluj
+                            </button>
+                            <button
+                                className='btn btn-primary me-1'
+                                type='submit'
+                                disabled={isSubmitting}
+                            >
+                                Edytuj
+                            </button>
+                            {isSubmitting ?
+                                <LoadingSpinner text={''} />
+                                :
+                                <></>
+                            }
+                        </div>
+                    </form>
+                </>
+            }
         </div>
     );
 };

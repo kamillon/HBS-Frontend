@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import wykrzyknik from '../../images/wykrzyknik.png';
 import Sidebar from '../Sidebar';
+import LoadingSpinner from '../LoadingSpinner';
 
 const SalonsManagement = () => {
 
@@ -20,9 +21,11 @@ const SalonsManagement = () => {
     const handleClose = () => setShow(false)
 
     const [salonData, setSalonData] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
 
 
     const listSalons = async () => {
+        setIsLoading(true)
         if (access) {
             const config = {
                 headers: {
@@ -33,20 +36,20 @@ const SalonsManagement = () => {
             };
 
             try {
-
                 const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
-
-
                 setData(res.data)
                 console.log(res.data)
+                setIsLoading(false)
 
             } catch (err) {
                 setData(null)
                 console.log(err)
+                setIsLoading(false)
             }
         } else {
             setData(null)
             console.log("Blad")
+            setIsLoading(false)
         }
     };
 
@@ -113,110 +116,116 @@ const SalonsManagement = () => {
 
     return (
         <div className='container'>
-            <h2>Salony</h2>
+            {isLoading ?
+                <LoadingSpinner text={"Loading..."} />
+                :
+                <>
+                    <h2>Salony</h2>
 
-            {userRole === 'admin' ?
-                <div>
-                    <button
-                        onClick={() => navigate(`/${userRole}/salons/add/`)}
-                        type='button'
-                        className='btn btn-primary mt-5 mb-3'
-                    >
-                        DODAJ SALON
-                    </button>
-                </div> : <></>
-            }
+                    {userRole === 'admin' ?
+                        <div>
+                            <button
+                                onClick={() => navigate(`/${userRole}/salons/add/`)}
+                                type='button'
+                                className='btn btn-primary mt-5 mb-3'
+                            >
+                                DODAJ SALON
+                            </button>
+                        </div> : <></>
+                    }
 
-            {dataToBeMapped.length > 0 ?
-                <div className="table-responsive">
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nazwa</th>
-                                {/* <th scope="col">Ulica</th>
+                    {dataToBeMapped.length > 0 ?
+                        <div className="table-responsive">
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Nazwa</th>
+                                        {/* <th scope="col">Ulica</th>
                                 <th scope="col">Nr budynku</th>
                                 <th scope="col">Miejscowość</th> */}
-                                <th scope="col">Adres</th>
-                                <th scope="col">Telefon</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Id właściciela</th>
-                                <th scope="col">Akcje</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {dataToBeMapped.map((item) => (
-                                <tr key={item.id}>
-                                    <th scope="row">{item.id}</th>
-                                    <td>{item.name}</td>
-                                    {/* <td>{item.street}</td>
+                                        <th scope="col">Adres</th>
+                                        <th scope="col">Telefon</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Id właściciela</th>
+                                        <th scope="col">Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {dataToBeMapped.map((item) => (
+                                        <tr key={item.id}>
+                                            <th scope="row">{item.id}</th>
+                                            <td>{item.name}</td>
+                                            {/* <td>{item.street}</td>
                                     <td>{item.house_number}</td>
                                     <td>{item.city}</td> */}
-                                    <td>{item.city}, ul. {item.street} {item.house_number}</td>
-                                    <td>{item.phone_number}</td>
-                                    <td>{item.email}</td>
-                                    <td>{item.owner}</td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary me-1"
-                                            style={{ width: '80px' }}
-                                            onClick={() => navigate(`/${userRole}/salons/edit/${item.id}`)}
-                                        >
-                                            EDYTUJ
-                                        </button>
-                                        <button
-                                            type="button"
-                                            style={{ width: '80px' }}
-                                            className="btn btn-danger mt-1 mt-md-0"
-                                            onClick={() => {
-                                                handleShow();
-                                                setSalonData({ id: item.id, name: item.name })
-                                            }}
-                                        >
-                                            USUŃ
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                :
-                <p>Brak salonów fryzjerskich do wyświetlenia</p>
-            }
+                                            <td>{item.city}, ul. {item.street} {item.house_number}</td>
+                                            <td>{item.phone_number}</td>
+                                            <td>{item.email}</td>
+                                            <td>{item.owner}</td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-primary me-1"
+                                                    style={{ width: '80px' }}
+                                                    onClick={() => navigate(`/${userRole}/salons/edit/${item.id}`)}
+                                                >
+                                                    EDYTUJ
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    style={{ width: '80px' }}
+                                                    className="btn btn-danger mt-1 mt-md-0"
+                                                    onClick={() => {
+                                                        handleShow();
+                                                        setSalonData({ id: item.id, name: item.name })
+                                                    }}
+                                                >
+                                                    USUŃ
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        :
+                        <p>Brak salonów fryzjerskich do wyświetlenia</p>
+                    }
 
-            {/* <Button variant="primary" onClick={handleShow}>
+                    {/* <Button variant="primary" onClick={handleShow}>
                 Launch demo modal
             </Button> */}
 
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Potwierdzenie usuwania</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className='text-center'>
-                        <img src={wykrzyknik} style={{ width: "15%" }} alt="" />
-                        <h4>Jesteś pewny?</h4>
-                        <p>Czy na pewno chcesz usunąć salon {salonData.name}?</p>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Anuluj
-                    </Button>
-                    <Button variant="danger"
-                        onClick={() => {
-                            // onDelete(selectedItem);
-                            onDelete(salonData.id)
-                            setSalonData({})
-                            handleClose()
-                        }}>
-                        Usuń
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Potwierdzenie usuwania</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className='text-center'>
+                                <img src={wykrzyknik} style={{ width: "15%" }} alt="" />
+                                <h4>Jesteś pewny?</h4>
+                                <p>Czy na pewno chcesz usunąć salon {salonData.name}?</p>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Anuluj
+                            </Button>
+                            <Button variant="danger"
+                                onClick={() => {
+                                    // onDelete(selectedItem);
+                                    onDelete(salonData.id)
+                                    setSalonData({})
+                                    handleClose()
+                                }}>
+                                Usuń
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
+            }
         </div>
     )
 };
