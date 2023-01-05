@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useAuth } from "../../context/AuthContext"
 
 const ChangePassword = ({ dataUser }) => {
+    const { access } = useAuth()
     const { email } = dataUser;
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
@@ -17,7 +19,9 @@ const ChangePassword = ({ dataUser }) => {
 
         const config = {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`,
+                'Accept': 'application/json'
             }
         };
 

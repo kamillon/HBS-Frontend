@@ -461,17 +461,20 @@ const Booking = () => {
                                 </div>
                             </div>
 
-                            {employeeId && selectedDate && isTime && userRole === "customer" ?
+                            {employeeId && selectedDate && isTime ?
                                 access ?
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary w-100 mt-4"
-                                        onClick={() => {
-                                            handleShow1();
-                                        }}
-                                    >
-                                        Rezerwuj
-                                    </button>
+                                    userRole === "customer" ?
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary w-100 mt-4"
+                                            onClick={() => {
+                                                handleShow1();
+                                            }}
+                                        >
+                                            Rezerwuj
+                                        </button>
+                                        :
+                                        <button className='btn btn-primary w-100 mt-4' disabled>Rezerwuj</button>
                                     :
                                     <button
                                         type='button'

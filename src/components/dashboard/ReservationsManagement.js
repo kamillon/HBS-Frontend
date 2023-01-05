@@ -20,6 +20,8 @@ const ReservationsManagement = () => {
     const handleClose = () => setShow(false)
     const [reservationData, setReservationData] = useState({})
     const [selectedSalon, setSelectedSalon] = useState('');
+    const [search, setSearch] = useState('')
+    const [selectedType, setSelectedType] = useState('true')
     const [isLoading, setIsLoading] = useState(true)
 
 
@@ -126,28 +128,67 @@ const ReservationsManagement = () => {
         salonDataFiltered = salonData
     }
 
+
+
+    // const keys = ["date"]
+    // const searchFilteredServices = (data) => {
+    //     return data.filter(item => (
+    //         keys.some((key) => item[key].includes(search)))
+    //     );
+    // };
+
+    const searchFilter = (data) => {
+        return data.filter(item => (
+            search === ''
+                ? item
+                : item.date.includes(search)
+        ))
+    }
+
+
     function getFilteredList() {
         if (!selectedSalon) {
             if (userRole === 'salon_owner') {
                 const filteredReservations = data.filter(reservation => {
                     return salonDataFiltered.find(salon => salon.id === reservation.salonId);
                 });
-                return filteredReservations
+                return searchFilter(filteredReservations)
             }
             else if (userRole === 'admin') {
-                return data
+                return searchFilter(data)
             }
             else if (userRole === 'employee') {
-                return data.filter(i => i.employeeId === currentUser.id)
+                const result = data.filter(i => i.employeeId === currentUser.id)
+                return searchFilter(result)
             }
             else if (userRole === 'customer') {
-                return data.filter(i => i.customerId === currentUser.id)
+                const result = data.filter(i => i.customerId === currentUser.id)
+                return searchFilter(result)
             }
         }
-        return data.filter((item) => item.salonId === parseInt(selectedSalon));
+        const result = data.filter((item) => item.salonId === parseInt(selectedSalon));
+        return searchFilter(result)
     }
 
-    const filteredList = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
+    const filteredList2 = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
+
+
+
+    function handleTypeChange(event) {
+        setSelectedType(event.target.value);
+    }
+
+
+    function getFilteredList2() {
+        if (!selectedType) {
+            return filteredList2;
+        }
+        return filteredList2.filter((item) => item.is_active.toString() === selectedType);
+    }
+
+    const filteredList = useMemo(getFilteredList2, [selectedType, selectedSalon, salonDataFiltered, data]);
+
+
 
     return (
         <div className='container'>
@@ -161,8 +202,9 @@ const ReservationsManagement = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-6 text-center mb-3">
-                            {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                        {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                            <div className="col-md-4 text-center mb-3">
+
                                 <select
                                     className="form-select"
                                     value={selectedSalon}
@@ -175,7 +217,31 @@ const ReservationsManagement = () => {
                                         </option>
                                     ))}
                                 </select>
-                            }
+
+                            </div>
+                        }
+                        <div className="col-md-3 text-center mb-3">
+                            <select
+                                className='form-select'
+                                name='typeList'
+                                id='typeList'
+                                value={selectedType}
+                                onChange={handleTypeChange}
+                            >
+                                <option value=''>Wszystkie</option>
+                                <option value='true'>Aktywne</option>
+                                <option value='false'>Zakończone</option>
+                            </select>
+                        </div>
+                        <div className="col-md-5 text-center mb-3">
+                            <div className='search-bar'>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Szukaj"
+                                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -232,7 +298,7 @@ const ReservationsManagement = () => {
                             </table>
                         </div>
                         :
-                        <></>
+                        <p>Brak rezerwacji do wyświetlenia</p>
                     }
 
                     <Modal show={show} onHide={handleClose}>

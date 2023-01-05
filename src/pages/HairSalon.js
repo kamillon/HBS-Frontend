@@ -7,7 +7,7 @@ import hair_salon_picture from '../images/hair_salon_picture.png';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const HairSalon = () => {
-
+    const { access } = useAuth()
     const navigate = useNavigate()
     const [data, setData] = useState([]);
     const [search, setSearch] = useState('')
@@ -19,6 +19,7 @@ const HairSalon = () => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
+                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };

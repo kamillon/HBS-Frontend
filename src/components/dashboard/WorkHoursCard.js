@@ -28,7 +28,7 @@ const WorkHoursCard = (props) => {
     };
 
     const [workHours, setWorkHours] = useState(initialState);
-    const [workHours2, setWorkHours2] = useState(initialState);
+    const [salonOpeningHours, setSalonOpeningHours] = useState(initialState);
     const [employee, setEmployee] = useState([]);
 
     const [openingHour, setOpeningHour] = useState(null);
@@ -57,7 +57,6 @@ const WorkHoursCard = (props) => {
                 return <></>
         }
     }
-
 
 
     useEffect(() => {
@@ -91,7 +90,7 @@ const WorkHoursCard = (props) => {
 
 
     useEffect(() => {
-        const getWorkHours2 = async () => {
+        const getSalonOpeningHours = async () => {
             if (access) {
                 const config = {
                     headers: {
@@ -103,19 +102,16 @@ const WorkHoursCard = (props) => {
 
                 try {
                     const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
-                    setWorkHours2(res.data.filter(i => i.weekday === weekday)[0])
-                    // console.log(res.data)
+                    setSalonOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
                 } catch (err) {
-                    setWorkHours2(null)
+                    setSalonOpeningHours(null)
                     console.log(err)
                 }
             } else {
-                setWorkHours2(null)
+                setSalonOpeningHours(null)
                 console.log("Blad")
             }
         };
-
-
 
 
         if (employee.salon) {
@@ -123,14 +119,9 @@ const WorkHoursCard = (props) => {
         }
 
         if (salonId) {
-            getWorkHours2()
+            getSalonOpeningHours()
         }
-
-
-
     }, [employee])
-
-
 
 
     const [workHoursUpdated, setWorkHoursUpdated] = useState(false);
@@ -147,7 +138,7 @@ const WorkHoursCard = (props) => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': `JWT ${access}`,
+                'Authorization': `JWT ${access}`,
                 'Accept': 'application/json'
             }
         };
@@ -174,9 +165,7 @@ const WorkHoursCard = (props) => {
 
         try {
             const res = await axios.patch(`http://127.0.0.1:8000/work-hours/${props.id}/`, body, config)
-            // console.log(res.data)
             setWorkHoursUpdated(true);
-
         }
         catch (error) {
             console.log(error)
@@ -197,57 +186,7 @@ const WorkHoursCard = (props) => {
         if (to_hour) {
             setCloseHour(moment(to_hour, "HH:mm").toDate())
         }
-
-
-
     }, [workHours])
-
-    // useEffect(() => {
-
-
-    //     const onSubmit2 = (params) => {    
-    //         const config = {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 // 'Authorization': `JWT ${access}`,
-    //                 'Accept': 'application/json'
-    //             }
-    //         };
-
-
-    //         const body = JSON.stringify({
-    //             is_day_off: params
-    //         });
-
-    //         try {
-    //             const res = axios.patch(`http://127.0.0.1:8000/work-hours/${props.id}/`, body, config)
-    //             // console.log(res.data)
-    //             // setWorkHoursUpdated(true);
-
-    //         }
-    //         catch (error) {
-    //             console.log(error)
-    //         }
-    //     };
-
-
-
-
-
-
-    // //    console.log(workHours2.is_closed)
-
-    //     if(workHours2.is_closed == true){
-    //         onSubmit2(true)
-    //         console.log(workHours)
-    //     }
-    //     else if(workHours2.is_closed == false){
-    //         onSubmit2(false)
-    //     }
-
-    // }, [workHours2])
-
-
 
 
     function onChange(event) {
@@ -261,13 +200,13 @@ const WorkHoursCard = (props) => {
     }
 
     let minTime = setHours(setMinutes(new Date(),
-        moment(workHours2.from_hour, 'HH:mm').minute()),
-        moment(workHours2.from_hour, 'HH:mm').hour()
+        moment(salonOpeningHours.from_hour, 'HH:mm').minute()),
+        moment(salonOpeningHours.from_hour, 'HH:mm').hour()
     )
 
     let maxTime = setHours(setMinutes(new Date(),
-        moment(workHours2.to_hour, 'HH:mm').minute()),
-        moment(workHours2.to_hour, 'HH:mm').hour()
+        moment(salonOpeningHours.to_hour, 'HH:mm').minute()),
+        moment(salonOpeningHours.to_hour, 'HH:mm').hour()
     )
 
     return (
@@ -278,9 +217,13 @@ const WorkHoursCard = (props) => {
                         <h6>{switchWeekday(weekday)}</h6>
                     </div>
                     <div className='col-6 text-end'>
-                        {!workHours2.is_closed ?
+                        {salonOpeningHours.is_closed ||
+                            (!salonOpeningHours.is_closed &&
+                                salonOpeningHours.from_hour === null &&
+                                salonOpeningHours.to_hour === null) ?
                             <button
                                 type="button"
+                                disabled
                                 className="btn btn-outline-primary btn-sm"
                                 onClick={() => {
                                     handleShow1();
@@ -291,7 +234,6 @@ const WorkHoursCard = (props) => {
                             :
                             <button
                                 type="button"
-                                disabled
                                 className="btn btn-outline-primary btn-sm"
                                 onClick={() => {
                                     handleShow1();
@@ -306,25 +248,7 @@ const WorkHoursCard = (props) => {
 
                 <div className='row'>
                     <div className='col-6 text-start'>
-                        {/* {is_day_off ?
-                            "Dzień wolny" :
-                            from_hour && to_hour ?
-                                moment(from_hour, 'HH:mm:ss').format('HH:mm')
-                                + "-" +
-                                moment(to_hour, 'HH:mm:ss').format('HH:mm') :
-                                "Ustal godziny"
-                        } */}
-
-                        {/* {workHours2.is_closed ?
-                            "Dzień wolny" :
-                            from_hour && to_hour ?
-                                moment(from_hour, 'HH:mm:ss').format('HH:mm')
-                                + "-" +
-                                moment(to_hour, 'HH:mm:ss').format('HH:mm') :
-                                "Ustal godziny"
-                        } */}
-
-                        {workHours2.is_closed ?
+                        {salonOpeningHours.is_closed ?
                             "Salon zamknięty" :
                             is_day_off ?
                                 "Dzień wolny" :

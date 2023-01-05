@@ -9,6 +9,7 @@ import avatar from '../images/avatar.png';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const HairSalonDetail = (props) => {
+    const { access } = useAuth()
     const { salonId } = useParams()
     const [services, setServices] = useState([])
     const [employee, setEmployee] = useState([])
@@ -72,6 +73,7 @@ const HairSalonDetail = (props) => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
+                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };

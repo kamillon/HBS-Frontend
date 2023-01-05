@@ -79,7 +79,7 @@ const OpeningHours = (props) => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': `JWT ${access}`,
+                'Authorization': `JWT ${access}`,
                 'Accept': 'application/json'
             }
         };
