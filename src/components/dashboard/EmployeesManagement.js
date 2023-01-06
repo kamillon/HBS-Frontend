@@ -160,65 +160,80 @@ const EmployeesManagement = () => {
                 <LoadingSpinner text={"Loading..."} />
                 :
                 <>
-                    <div className='row mb-5'>
-                        <div className='col'>
-                            <h2>Pracownicy</h2>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-12 col-md-4 text-start mb-3">
-                            <select
-                                className="form-select"
-                                value={selectedSalon}
-                                onChange={e => setSelectedSalon(e.target.value)}
-                            >
-                                <option value={''}>---Wybierz salon---</option>
-                                {salonDataFiltered ?
-                                    salonDataFiltered.map(salon => (
-                                        <option key={salon.id} value={salon.id}>
-                                            {salon.name} ({salon.city})
-                                        </option>
-                                    ))
-                                    :
-                                    <></>
-                                }
-                            </select>
-                        </div>
-
-                        <div className="col-12 col-md-5 text-start mb-3">
-                            <div className='search-bar'>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Szukaj"
-                                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
-                                />
+                    <div className='p-3 mb-3 bg-dark text-white'>
+                        <div className="row align-items-end">
+                            <div className="col-md-6">
+                                <h2>Pracownicy</h2>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="d-block flex-nowrap justify-content-end d-sm-flex">
+                                    <div className="p-2">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Szukaj"
+                                            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                                        />
+                                    </div>
+                                    <div className="p-2">
+                                        {salonDataFiltered.length > 0 ?
+                                            <button
+                                                onClick={() => navigate(`/${userRole}/employee/add/`)}
+                                                type='button'
+                                                className='btn btn-primary'
+                                            >
+                                                DODAJ PRACOWNIKA
+                                            </button>
+                                            :
+                                            <button
+                                                type='button'
+                                                disabled
+                                                className='btn btn-primary'
+                                            >
+                                                DODAJ PRACOWNIKA
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div className="col-12 col-md-3 text-center text-md-end mt-3 mt-md-0">
-                            {salonDataFiltered.length > 0 ?
-                                <button
-                                    onClick={() => navigate(`/${userRole}/employee/add/`)}
-                                    type='button'
-                                    className='btn btn-primary'
-                                >
-                                    DODAJ PRACOWNIKA
-                                </button>
-                                :
-                                <button
-                                    type='button'
-                                    disabled
-                                    className='btn btn-primary'
-                                >
-                                    DODAJ PRACOWNIKA
-                                </button>
-                            }
+                    </div>
+                    <div className='mb-3'>
+                        <div className="row">
+                            <div className="col-12">
+                                <div>
+                                    <label
+                                        htmlFor="chooseSalon"
+                                        className="form-label text-secondary">
+                                        Wybierz salon
+                                    </label>
+                                    <select
+                                        id="chooseSalon"
+                                        className="form-select"
+                                        value={selectedSalon}
+                                        onChange={e => setSelectedSalon(e.target.value)}
+                                    >
+                                        <option value=''>
+                                            Wszystkie
+                                        </option>
+                                        {salonDataFiltered ?
+                                            salonDataFiltered.map(salon => (
+                                                <option key={salon.id} value={salon.id}>
+                                                    {salon.name} ({salon.city})
+                                                </option>
+                                            ))
+                                            :
+                                            <></>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+
                     {filteredList.length > 0 ?
-                        <div className="table-responsive">
+                        <div className="table-responsive" style={{maxHeight: '430px'}}>
                             <table className="table table-hover">
                                 <thead>
                                     <tr>

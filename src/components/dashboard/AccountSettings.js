@@ -65,16 +65,22 @@ const AccountSettings = () => {
                         </div>
                         :
                         <>
-                            <div className="row">
-                                <div className='col-12'>
-                                    <h2 className='ms-5'>Ustawienia konta</h2>
+                            <div className='container'>
+                                <div className='p-4 bg-dark text-white'>
+                                    <div className="row align-items-end">
+                                        <div className="col-md-6">
+                                            <h2>Ustawienia konta</h2>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col-lg-8">
-                                    <EditAccount />
-                                </div>
-                                <div className="col-lg-4">
-                                    <ChangePassword dataUser={data} />
-                                    <ChangeEmail dataUser={data} />
+                                <div className="row">
+                                    <div className="col-lg-8">
+                                        <EditAccount />
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <ChangePassword dataUser={data} />
+                                        <ChangeEmail dataUser={data} />
+                                    </div>
                                 </div>
                             </div>
                         </>

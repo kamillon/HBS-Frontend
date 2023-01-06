@@ -11,11 +11,16 @@ const CardComponent = (props) => {
 
     return (
         <>
-            <div className="card shadow-sm my-5 mx-2" onClick={() => navigate(`/hairsalon/${props.id}`)} style={{ cursor: "pointer" }}>
+            <div
+                className="card shadow-sm my-5 mx-2"
+                onClick={() => navigate(`/hairsalon/${props.id}`)}
+                style={{ cursor: "pointer" }}
+            >
                 <img
                     src={hair_salon}
                     className="card-img-top card-img"
                     alt="hair_salon_picture"
+                    height={"250px"}
                 />
                 <div className="card-body d-flex flex-column">
                     <h5 className="card-title">{props.title}</h5>

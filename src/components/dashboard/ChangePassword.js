@@ -37,7 +37,7 @@ const ChangePassword = ({ dataUser }) => {
 
     return (
         <div className='container mt-5 d-flex align-items-center justify-content-center'>
-            <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form'>
+            <form className='p-4 p-sm-4 shadow p-3 mb-3 bg-white rounded signup-form'>
                 <h3>Zmień hasło</h3>
                 <p>Zmień hasło do swojego konta</p>
                 <button

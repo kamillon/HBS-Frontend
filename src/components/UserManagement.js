@@ -59,17 +59,7 @@ const UserManagement = () => {
     const employeeData = data.filter(i => i.role === "employee")
     const customerData = data.filter(i => i.role === "customer")
 
-
     const keys = ["first_name", "last_name", "email"]
-
-    // const searchFilteredServices = (data) => {
-    //     return data.filter(item => (
-    //         search.toLowerCase() === ''
-    //             ? item
-    //             : item.first_name.toLowerCase().includes(search)
-    //             || item.last_name.toLowerCase().includes(search)
-    //     ))
-    // };
 
     const searchFilteredServices = (data) => {
         return data.filter(item => (
@@ -80,31 +70,35 @@ const UserManagement = () => {
     return (
         <div className='container'>
             {isLoading ?
-                <LoadingSpinner text={"Loading..."}/>
+                <LoadingSpinner text={"Loading..."} />
                 :
                 <>
-                    <h2>Użytkownicy</h2>
-
-
-                    <div className='row'>
-                        <div className='col-md-6 mt-5 mb-4 text-start'>
-                            <div className='search-bar'>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Szukaj"
-                                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
-                                />
+                    <div className='p-3 mb-3 bg-dark text-white'>
+                        <div className="row align-items-end">
+                            <div className="col-md-6">
+                                <h2>Użytkownicy</h2>
                             </div>
-                        </div>
-                        <div className='col-md-6 mt-5 mb-4 d-flex justify-content-end'>
-                            <button
-                                onClick={() => navigate(`/${userRole}/users/add/`)}
-                                type='button'
-                                className='btn btn-primary'
-                            >
-                                DODAJ UŻYTKOWNIKA
-                            </button>
+                            <div className='col-md-6'>
+                                <div className="d-block flex-nowrap justify-content-end d-sm-flex">
+                                    <div className="p-2">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Szukaj"
+                                            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                                        />
+                                    </div>
+                                    <div className="p-2">
+                                        <button
+                                            onClick={() => navigate(`/${userRole}/users/add/`)}
+                                            type='button'
+                                            className='btn btn-primary'
+                                        >
+                                            DODAJ UŻYTKOWNIKA
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

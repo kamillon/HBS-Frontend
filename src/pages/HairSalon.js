@@ -64,7 +64,6 @@ const HairSalon = () => {
                         <div className='container'>
                             <div className='row'>
                                 <div className='col-md'>
-                                    {/* <img src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/5282.png" className="img-fluid" alt="" /> */}
                                     <img src={hair_salon_picture} className="img-fluid w-75 d-none d-sm-block" alt="hair_salon_picture" />
                                 </div>
                                 <div className='col-md'>
@@ -76,26 +75,6 @@ const HairSalon = () => {
                         </div>
                     </section>
                     <div className='container'>
-                        {/* 
-                <div className="input-group mt-5">
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Wyszukaj miasto"
-                        aria-label="Wyszukaj miasto"
-                        aria-describedby="button-addon2"
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button
-                        className="btn btn-primary"
-                        type="button"
-                        id="button-addon2"
-                    >
-                        Szukaj
-                    </button>
-                </div> */}
-
-
                         <div className='col-md-6 mb-4'>
                             <div className='search-bar'>
                                 <input
@@ -110,8 +89,6 @@ const HairSalon = () => {
 
                         {data.length <= 0 ? (<h4 className='pt-3'>Nie znaleziono salonów</h4>) : (
                             <div className='row'>
-
-                                {/* {data.map((item) => ( */}
                                 {searchFilteredServices.length
                                     ? searchFilteredServices.map((item) => (
                                         <div className='col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch' key={item.id} >
@@ -127,7 +104,6 @@ const HairSalon = () => {
                                     :
                                     <p className='ms-4 mb-3'>Nie znaleziono salonów</p>
                                 }
-
                             </div>
                         )}
                     </div>

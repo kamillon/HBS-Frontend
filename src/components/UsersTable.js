@@ -53,7 +53,7 @@ const UsersTable = (props) => {
         <>
             {data && search.length > 0
                 ?
-                <div className="table-responsive">
+                <div className="table-responsive" style={{maxHeight: '430px'}}>
                     <table className="table table-hover">
                         <thead>
                             <tr>

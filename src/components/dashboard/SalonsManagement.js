@@ -123,30 +123,42 @@ const SalonsManagement = () => {
                 <LoadingSpinner text={"Loading..."} />
                 :
                 <>
-                    <h2>Salony</h2>
-                    <div>
-                        <SearchBar
-                            keys={['name', 'city', 'street', 'phone_number', 'email']}
-                            data={dataToBeMapped}
-                            placeholder={"Szukaj"}
-                            setSearch={setSearch}
-                        />
+                    <div className='p-3 mb-3 bg-dark text-white'>
+                        <div className="row align-items-end">
+                            <div className="col-md-6">
+                                <h2>Salony</h2>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="d-block flex-nowrap justify-content-end d-sm-flex">
+                                    <div className="p-2">
+                                        <SearchBar
+                                            keys={['name', 'city', 'street', 'phone_number', 'email']}
+                                            data={dataToBeMapped}
+                                            placeholder={"Szukaj"}
+                                            setSearch={setSearch}
+                                        />
+                                    </div>
+                                    {userRole === 'admin' ?
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => navigate(`/${userRole}/salons/add/`)}
+                                                type='button'
+                                                className='btn btn-primary'
+                                            >
+                                                DODAJ SALON
+                                            </button>
+                                        </div>
+                                        :
+                                        <></>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {userRole === 'admin' ?
-                        <div>
-                            <button
-                                onClick={() => navigate(`/${userRole}/salons/add/`)}
-                                type='button'
-                                className='btn btn-primary mt-5 mb-3'
-                            >
-                                DODAJ SALON
-                            </button>
-                        </div> : <></>
-                    }
 
                     {search.length > 0 ?
-                        <div className="table-responsive">
+                        <div className="table-responsive" style={{maxHeight: '430px'}}>
                             <table className="table table-hover">
                                 <thead>
                                     <tr>

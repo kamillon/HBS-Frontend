@@ -193,57 +193,82 @@ const ReservationsManagement = () => {
                 <LoadingSpinner text={"Loading..."} />
                 :
                 <>
-                    <div className='row mb-5'>
-                        <div className='col'>
-                            <h2>Rezerwacje</h2>
+
+                    <div className='p-3 mb-3 bg-dark text-white'>
+                        <div className="row align-items-end">
+                            <div className="col-md-6">
+                                <h2>Rezerwacje</h2>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className="d-block flex-nowrap justify-content-end d-sm-flex">
+                                    <div className="p-2">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Szukaj"
+                                            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="row">
-                        {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
-                            <div className="col-md-4 text-center mb-3">
 
-                                <select
-                                    className="form-select"
-                                    value={selectedSalon}
-                                    onChange={e => setSelectedSalon(e.target.value)}
-                                >
-                                    <option value={''}>---Wybierz salon---</option>
-                                    {salonDataFiltered.map(salon => (
-                                        <option key={salon.id} value={salon.id}>
-                                            {salon.name} ({salon.city})
-                                        </option>
-                                    ))}
-                                </select>
+                    <div className='mb-3'>
+                        <div className="row">
 
+                            <div className="col-md-6">
+                                {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                                    <div>
+                                        <label
+                                            htmlFor="chooseSalon"
+                                            className="form-label text-secondary">
+                                            Wybierz salon
+                                        </label>
+                                        <select
+                                            id="chooseSalon"
+                                            className="form-select"
+                                            value={selectedSalon}
+                                            onChange={e => setSelectedSalon(e.target.value)}
+                                        >
+                                            <option value=''>
+                                                Wszystkie
+                                            </option>
+                                            {salonDataFiltered.map(salon => (
+                                                <option key={salon.id} value={salon.id}>
+                                                    {salon.name} ({salon.city})
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                }
                             </div>
-                        }
-                        <div className="col-md-3 text-center mb-3">
-                            <select
-                                className='form-select'
-                                name='typeList'
-                                id='typeList'
-                                value={selectedType}
-                                onChange={handleTypeChange}
-                            >
-                                <option value=''>Wszystkie</option>
-                                <option value='true'>Aktywne</option>
-                                <option value='false'>Zakończone</option>
-                            </select>
-                        </div>
-                        <div className="col-md-5 text-center mb-3">
-                            <div className='search-bar'>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Szukaj"
-                                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
-                                />
+                            <div className='col-md-6'>
+                                <div>
+                                    <label
+                                        htmlFor="chooseType"
+                                        className="form-label text-secondary">
+                                        Status rezerwacji
+                                    </label>
+                                    <select
+                                        className='form-select'
+                                        name='typeList'
+                                        id='chooseType'
+                                        value={selectedType}
+                                        onChange={handleTypeChange}
+                                    >
+                                        <option value=''>Wszystkie</option>
+                                        <option value='true'>Aktywne</option>
+                                        <option value='false'>Zakończone</option>
+                                    </select>
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
                     {filteredList.length > 0 ?
-                        <div className="table-responsive">
+                        <div className="table-responsive" style={{ maxHeight: '430px' }}>
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
@@ -270,7 +295,10 @@ const ReservationsManagement = () => {
                                             <td>{item.salonId.name}</td>
                                             <td>{item.start_time}</td>
                                             <td>{item.end_time}</td>
-                                            <td>{item.is_active ? "active" : "inactive"}</td>
+                                            <td>{item.is_active ?
+                                                <span className="badge bg-success">Aktywne</span> :
+                                                <span className="badge bg-danger">Zakończone</span>}
+                                            </td>
                                             <td>
                                                 {item.is_active ?
                                                     <button
