@@ -38,7 +38,7 @@ const ReservationsManagement = () => {
                 };
 
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/reservation/`, config);
+                    const res = await axios.get(`http://127.0.0.1:8000/reservation-all/`, config);
                     setData(res.data)
                     console.log(res.data)
                     setIsLoading(false)
@@ -129,49 +129,47 @@ const ReservationsManagement = () => {
     }
 
 
-
-    // const keys = ["date"]
-    // const searchFilteredServices = (data) => {
-    //     return data.filter(item => (
-    //         keys.some((key) => item[key].includes(search)))
-    //     );
-    // };
-
     const searchFilter = (data) => {
         return data.filter(item => (
             search === ''
                 ? item
-                : item.date.includes(search)
+                : item.date.includes(search) ||
+                item.serviceId.name.toLowerCase().includes(search) ||
+                item.salonId.name.toLowerCase().includes(search) ||
+                item.employeeId.user.first_name.toLowerCase().includes(search) ||
+                item.employeeId.user.last_name.toLowerCase().includes(search) ||
+                item.customerId.user.first_name.toLowerCase().includes(search) ||
+                item.customerId.user.last_name.toLowerCase().includes(search)
         ))
     }
 
-
-    function getFilteredList() {
+    function getFilteredListOfSalons() {
         if (!selectedSalon) {
             if (userRole === 'salon_owner') {
                 const filteredReservations = data.filter(reservation => {
-                    return salonDataFiltered.find(salon => salon.id === reservation.salonId);
+                    return salonDataFiltered.find(salon => salon.id === reservation.salonId.id);
                 });
                 return searchFilter(filteredReservations)
             }
             else if (userRole === 'admin') {
-                return searchFilter(data)
+                return data
             }
             else if (userRole === 'employee') {
-                const result = data.filter(i => i.employeeId === currentUser.id)
-                return searchFilter(result)
+                const result = data.filter(i => i.employeeId.user.id === currentUser.id)
+                return result
             }
             else if (userRole === 'customer') {
-                const result = data.filter(i => i.customerId === currentUser.id)
-                return searchFilter(result)
+                const result = data.filter(i => i.customerId.user.id === currentUser.id)
+                return result
             }
         }
-        const result = data.filter((item) => item.salonId === parseInt(selectedSalon));
-        return searchFilter(result)
+        else {
+            const result = data.filter((item) => item.salonId.id === parseInt(selectedSalon));
+            return result
+        }
     }
 
-    const filteredList2 = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
-
+    const filteredListOfSalons = useMemo(getFilteredListOfSalons, [selectedSalon, salonDataFiltered, data]);
 
 
     function handleTypeChange(event) {
@@ -179,15 +177,14 @@ const ReservationsManagement = () => {
     }
 
 
-    function getFilteredList2() {
+    function getFilteredListByType() {
         if (!selectedType) {
-            return filteredList2;
+            return searchFilter(filteredListOfSalons);
         }
-        return filteredList2.filter((item) => item.is_active.toString() === selectedType);
+        return searchFilter(filteredListOfSalons).filter((item) => item.is_active.toString() === selectedType);
     }
 
-    const filteredList = useMemo(getFilteredList2, [selectedType, selectedSalon, salonDataFiltered, data]);
-
+    const filteredList = useMemo(getFilteredListByType, [selectedType, selectedSalon, salonDataFiltered, data, searchFilter(filteredListOfSalons)]);
 
 
     return (
@@ -267,10 +264,10 @@ const ReservationsManagement = () => {
                                         <tr key={item.id}>
                                             <th scope="row">{item.id}</th>
                                             <td>{item.date}</td>
-                                            <td>{item.serviceId}</td>
-                                            <td>{item.employeeId}</td>
-                                            <td>{item.customerId}</td>
-                                            <td>{item.salonId}</td>
+                                            <td>{item.serviceId.name}</td>
+                                            <td>{item.employeeId.user.first_name} {item.employeeId.user.last_name}</td>
+                                            <td>{item.customerId.user.first_name} {item.customerId.user.last_name}</td>
+                                            <td>{item.salonId.name}</td>
                                             <td>{item.start_time}</td>
                                             <td>{item.end_time}</td>
                                             <td>{item.is_active ? "active" : "inactive"}</td>
@@ -335,5 +332,3 @@ const ReservationsManagement = () => {
 
 
 export default ReservationsManagement;
-
-

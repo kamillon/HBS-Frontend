@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import wykrzyknik from '../../images/wykrzyknik.png';
 import Sidebar from '../Sidebar';
 import LoadingSpinner from '../LoadingSpinner';
+import SearchBar from '../SearchBar';
 
 const SalonsManagement = () => {
 
@@ -22,6 +23,7 @@ const SalonsManagement = () => {
 
     const [salonData, setSalonData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
+    const [search, setSearch] = useState('')
 
 
     const listSalons = async () => {
@@ -38,6 +40,7 @@ const SalonsManagement = () => {
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
                 setData(res.data)
+                setSearch(res.data)
                 console.log(res.data)
                 setIsLoading(false)
 
@@ -121,6 +124,14 @@ const SalonsManagement = () => {
                 :
                 <>
                     <h2>Salony</h2>
+                    <div>
+                        <SearchBar
+                            keys={['name', 'city', 'street', 'phone_number', 'email']}
+                            data={dataToBeMapped}
+                            placeholder={"Szukaj"}
+                            setSearch={setSearch}
+                        />
+                    </div>
 
                     {userRole === 'admin' ?
                         <div>
@@ -134,7 +145,7 @@ const SalonsManagement = () => {
                         </div> : <></>
                     }
 
-                    {dataToBeMapped.length > 0 ?
+                    {search.length > 0 ?
                         <div className="table-responsive">
                             <table className="table table-hover">
                                 <thead>
@@ -152,7 +163,7 @@ const SalonsManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {dataToBeMapped.map((item) => (
+                                    {search.map((item) => (
                                         <tr key={item.id}>
                                             <th scope="row">{item.id}</th>
                                             <td>{item.name}</td>

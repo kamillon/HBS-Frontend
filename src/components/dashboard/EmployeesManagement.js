@@ -21,6 +21,7 @@ const EmployeesManagement = () => {
     const [userData, setUserData] = useState({})
     const [selectedSalon, setSelectedSalon] = useState('');
     const [isLoading, setIsLoading] = useState(true)
+    const [search, setSearch] = useState('')
 
 
     useEffect(() => {
@@ -121,14 +122,34 @@ const EmployeesManagement = () => {
 
     const salonDataFiltered = salonData.filter(i => i.owner == currentUser.id)
 
+
+
+
+
+    const searchFilter = (data) => {
+        return data.filter(item => (
+            search === ''
+                ? item
+                : item.user.first_name.toLowerCase().includes(search) ||
+                item.user.last_name.toLowerCase().includes(search) ||
+                item.user.email.toLowerCase().includes(search)
+        ))
+    }
+
+
+
+
     function getFilteredList() {
         if (!selectedSalon) {
             const filteredEmployee = data.filter(employee => {
                 return salonDataFiltered.find(salon => salon.id === employee.salon);
             });
-            return filteredEmployee
+            return searchFilter(filteredEmployee)
         }
-        return data.filter(i => i.salon == selectedSalon)
+        else {
+            const result = data.filter(i => i.salon == selectedSalon)
+            return searchFilter(result)
+        }
     }
 
     const filteredList = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
@@ -145,7 +166,7 @@ const EmployeesManagement = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-12 col-md-6 text-start mb-3">
+                        <div className="col-12 col-md-4 text-start mb-3">
                             <select
                                 className="form-select"
                                 value={selectedSalon}
@@ -164,7 +185,18 @@ const EmployeesManagement = () => {
                             </select>
                         </div>
 
-                        <div className="col-12 col-md-6 text-center text-md-end mt-3 mt-md-0">
+                        <div className="col-12 col-md-5 text-start mb-3">
+                            <div className='search-bar'>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Szukaj"
+                                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-12 col-md-3 text-center text-md-end mt-3 mt-md-0">
                             {salonDataFiltered.length > 0 ?
                                 <button
                                     onClick={() => navigate(`/${userRole}/employee/add/`)}

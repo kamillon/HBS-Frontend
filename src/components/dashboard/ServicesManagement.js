@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import wykrzyknik from '../../images/wykrzyknik.png';
 import LoadingSpinner from '../LoadingSpinner';
+import SearchBar from '../SearchBar';
 
 const ServiceManagement = () => {
 
@@ -22,6 +23,7 @@ const ServiceManagement = () => {
     const [selectedSalon, setSelectedSalon] = useState('');
     const [ownerSalons, setOwnerSalons] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
+    const [search, setSearch] = useState('')
 
 
 
@@ -47,6 +49,7 @@ const ServiceManagement = () => {
                 try {
                     const res = await axios.get(`http://127.0.0.1:8000/service/`, config);
                     setData(res.data)
+                    setSearch(res.data)
                     console.log(res.data)
                     setIsLoading(false)
                 } catch (err) {
@@ -168,10 +171,16 @@ const ServiceManagement = () => {
                 return data
             }
         }
-        return data.filter(i => i.salonID == selectedSalon)
+        else {
+            return data.filter(i => i.salonID == selectedSalon)
+        }
     }
 
-    const filteredList = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
+    const filteredList = useMemo(getFilteredList, [selectedSalon, data]);
+
+    useEffect(() => {
+        setSearch(filteredList)
+    }, [filteredList])
 
     return (
         <div className='container'>
@@ -218,9 +227,15 @@ const ServiceManagement = () => {
                                 </button>
                             }
                         </div>
+                        <SearchBar
+                            keys={['name']}
+                            data={filteredList}
+                            placeholder={"Szukaj"}
+                            setSearch={setSearch}
+                        />
                     </div>
 
-                    {filteredList.length > 0 ?
+                    {search.length > 0 ?
                         <div className="table-responsive">
                             <table className="table table-hover">
                                 <thead>
@@ -236,7 +251,7 @@ const ServiceManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredList.map((item) => (
+                                    {search.map((item) => (
                                         <tr key={item.id}>
                                             <th scope="row">{item.id}</th>
                                             <td>{item.name}</td>
