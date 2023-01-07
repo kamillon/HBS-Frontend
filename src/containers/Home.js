@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Slider from '../components/Slider';
 import { AuthContext, useAuth } from "../context/AuthContext"
 import barber from '../images/barber.svg';
@@ -8,12 +8,17 @@ import building from '../images/building.svg';
 import fryzjerIcon from '../images/fryzjer1.png';
 
 
-
 const Home = () => {
+    const navigate = useNavigate()
+    const [search, setSearch] = useState('')
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        navigate(`/hairsalon/?city=${search}`)
+    };
+
     return (
         <div>
-            {/* <Slider /> */}
-
             <section className='bg-dark text-light p-5 text-center text-sm-start'>
                 <div className='container'>
                     <div className='d-sm-flex align-items-center justify-content-between'>
@@ -21,22 +26,23 @@ const Home = () => {
                             <h1>Umów się<br />
                                 na nowy look</h1>
                             <span>Odkryj najlepsze salony w okolicy i umów się na wizytę</span>
-                            <div className="input-group mt-5">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Wyszukaj miasto"
-                                    aria-label="Wyszukaj miasto"
-                                    aria-describedby="button-addon2"
-                                />
-                                <button
-                                    className="btn btn-primary"
-                                    type="button"
-                                    id="button-addon2"
-                                >
-                                    Szukaj
-                                </button>
-                            </div>
+                            <form className='search-bar' onSubmit={onSubmit}>
+                                <div className="input-group mt-5">
+                                    <input
+                                        type="search"
+                                        className="form-control"
+                                        placeholder="Wyszukaj miasto"
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                    />
+                                    <button
+                                        className="btn btn-primary"
+                                        type="submit"
+                                    >
+                                        Szukaj
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                         <img src={barber} className="img-fluid w-50 d-none d-sm-block" alt="barber_image" />
                     </div>
