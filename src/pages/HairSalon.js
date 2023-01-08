@@ -15,7 +15,6 @@ const HairSalon = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [searchParams, setSearchParams] = useSearchParams();
     const city = searchParams.get('city')
-    console.log(city)
 
     useEffect(() => {
         const listSalons = async () => {
@@ -29,14 +28,12 @@ const HairSalon = () => {
 
             try {
                 let url = `http://127.0.0.1:8000/salon/`
+                
                 if (city) {
                     url = `http://127.0.0.1:8000/salon/?city=${city}`
                 }
-
                 const res = await axios.get(url, config);
-
                 setData(res.data)
-                console.log(res.data)
                 setIsLoading(false)
 
             } catch (err) {
@@ -70,7 +67,7 @@ const HairSalon = () => {
                 </div>
                 :
                 <>
-                    <section className="bg-light">
+                    <section className="bg-dark text-white">
                         <div className='container'>
                             <div className='row'>
                                 <div className='col-md-6'>

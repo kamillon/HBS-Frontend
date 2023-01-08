@@ -30,9 +30,7 @@ const HairSalonDetail = (props) => {
 
             try {
                 const res = await axios.get('http://127.0.0.1:8000/service/', config);
-
                 setServices(res.data)
-                console.log(res.data)
                 setIsLoading(false)
 
             } catch (err) {
@@ -53,11 +51,8 @@ const HairSalonDetail = (props) => {
 
             try {
                 const url = `http://127.0.0.1:8000/employee/`
-
                 const res = await axios.get(url, config);
-
                 setEmployee(res.data.filter(i => i.salon == salonId))
-                console.log(res.data)
                 setIsLoading(false)
 
             } catch (err) {
@@ -73,16 +68,13 @@ const HairSalonDetail = (props) => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `JWT ${access}`,
                     'Accept': 'application/json'
                 }
             };
 
             try {
                 const res = await axios.get('http://127.0.0.1:8000/salon/', config);
-
                 setSalonData(res.data.filter(i => i.id == salonId))
-                console.log(res.data)
                 setIsLoading(false)
 
             } catch (err) {
@@ -120,8 +112,6 @@ const HairSalonDetail = (props) => {
 
     const filteredList = useMemo(getFilteredList, [selectedType, searchFilteredServices]);
 
-    console.log(selectedType)
-    console.log(filteredList)
 
     return (
         <div>
@@ -135,15 +125,19 @@ const HairSalonDetail = (props) => {
                         <div className='container'>
                             <div className='row'>
                                 <div className='col-md'>
-                                    <img src={hair_salon} className="img-fluid w-50 d-none d-sm-block" alt="hair_salon" />
+                                    <img 
+                                    src={hair_salon} 
+                                    className="img-fluid w-50 d-none d-sm-block" 
+                                    alt="hair_salon" 
+                                    />
                                 </div>
                                 {employee.length > 0 ?
                                     salonData.map((salon) => (
                                         <div key={salon.id} className='col-md px-sm-0 px-md-5 py-sm-3 py-md-0'>
                                             <h2>{salon.name}</h2>
-                                            <p>Contrart to populat belief, Lorem Ipsumasdsd
-                                                asdsadsadsadsadasdsadasdasdsadsadsad
-                                            </p>
+                                            <span>
+                                                ul. {salon.street} {salon.house_number}, {salon.city}
+                                            </span>
                                         </div>
                                     ))
                                     :
