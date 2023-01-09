@@ -23,7 +23,6 @@ const EditUser = () => {
         last_name: '',
         is_staff: '',
         is_superuser: '',
-        is_employee: '',
         email: '',
         phone: '',
         role: '',
@@ -116,22 +115,19 @@ const EditUser = () => {
 
         let is_superuser = true
         let is_staff = true
-        let is_employee = false
 
         if (role === "employee") {
             is_superuser = true
             is_staff = true
-            is_employee = true
         }
         else if (role === "customer") {
             is_superuser = false
             is_staff = false
-            is_employee = false
         }
 
 
         const body = JSON.stringify({
-            username, first_name, last_name, is_staff, is_superuser, is_employee,
+            username, first_name, last_name, is_staff, is_superuser,
             email, phone, role
         });
 
@@ -252,45 +248,6 @@ const EditUser = () => {
                             </span>
                         </div>
                         <div>
-                            {/* <div className="mb-3 form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="is_staff"
-                            checked={formik.values.is_staff}
-                            onChange={formik.handleChange}
-                        />
-                        <label
-                            className="form-check-label"
-                        >is_staff
-                        </label>
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="is_superuser"
-                            checked={formik.values.is_superuser}
-                            onChange={formik.handleChange}
-                        />
-                        <label
-                            className="form-check-label"
-                        >is_superuser
-                        </label>
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="is_employee"
-                            checked={formik.values.is_employee}
-                            onChange={formik.handleChange}
-                        />
-                        <label
-                            className="form-check-label"
-                        >is_employee
-                        </label>
-                    </div> */}
                             <div className="mb-3">
                                 <label className="FormControlSelect">Typ użytkownika</label>
                                 <select

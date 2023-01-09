@@ -9,15 +9,18 @@ import checkmark from '../images/checkmark.png';
 import { format } from 'date-fns'
 import { subDays, addDays, setHours, setMinutes } from 'date-fns';
 import { Modal, Button, Col, Row, Container } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import moment from 'moment';
 import 'moment/locale/pl';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
+import LoadingSpinner from '../components/LoadingSpinner';
 registerLocale("pl", pl);
 
 const Booking = () => {
-    const { access, userRole, currentUser } = useAuth()
+    const { access, userRole, currentUser, isAuthenticated } = useAuth()
     const navigate = useNavigate()
     const location = useLocation();
     const props = location.state
@@ -39,17 +42,37 @@ const Booking = () => {
     const [salonData, setSalonData] = useState([]);
 
     const [isTime, setIsTime] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
 
-    const [formData, setFormData] = useState({
-        serviceId: props.serviceId,
-        employeeId: props.employee[0].user.id,
-        is_active: false,
+    const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
+
+    const formik = useFormik({
+        initialValues: {
+            serviceId: props.serviceId,
+            employeeId: props.employee[0].user.id,
+            is_active: false,
+            phone: currentUser?.phone,
+            email: currentUser?.email,
+            price: props.price,
+        },
+        validationSchema: Yup.object({
+            email: Yup.string()
+                .email('Wprowadź poprawny adres e-mail')
+                .required('Pole jest wymagane'),
+            phone: Yup.string()
+                .matches(phoneRegExp, 'Wprowadzony numer telefonu jest nieprawidłowy')
+                .max(9, "Nr telefonu musi zawierać 9 znaków")
+                .required("Pole jest wymagane"),
+        }),
+        onSubmit: (values, { resetForm }) => {
+            onSubmit(values)
+        },
     });
 
 
-    const { serviceId, employeeId, is_active } = formData;
+    const { serviceId, employeeId, is_active, phone, email, price } = formik.values;
 
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
+    // const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
 
 
     const [show1, setShow1] = useState(false)
@@ -72,8 +95,9 @@ const Booking = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
+        setIsLoading(true)
 
-        if (access) {
+        if (isAuthenticated) {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,17 +114,22 @@ const Booking = () => {
                 date: chooseDate,
                 start_time: chooseStartTime,
                 end_time: chooseEndTime,
-                is_active: is_active
+                is_active: is_active,
+                phone: phone,
+                email: email,
+                price: price
             });
 
             try {
 
                 const res = await axios.post(`http://127.0.0.1:8000/reservation/`, body, config);
                 console.log(res.data)
+                setIsLoading(false)
                 handleShow2()
             }
             catch (error) {
                 console.log(error)
+                setIsLoading(false)
             }
         }
     };
@@ -328,25 +357,33 @@ const Booking = () => {
 
     return (
         <div className='container mt-5'>
-            <div className='mt-5 align-items-center justify-content-center'>
-                <div className='row p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded'>
-                    <div className='col-12 text-center'>
-                        <h1 className='mb-5'>Rezerwacja</h1>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12 col-md-6 col-lg-7 d-flex'>
-                            <form id='bookingForm' className='' onSubmit={e => onSubmit(e)}>
-                                <div className="mb-3">
-                                    <label className="FormControlSelect">Wybierz pracownika</label>
-                                    <select className="form-select mt-2" name='employeeId' value={employeeId} onChange={e => onChange(e)}>
-                                        {employee.map(employee => (
-                                            <option key={employee.user.id} value={employee.user.id}>
-                                                {employee.user.first_name + ' ' + employee.user.last_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                {/* <div className='mb-3'>
+            {isLoading ?
+                <LoadingSpinner />
+                :
+                <>
+                    <div className='mt-5 align-items-center justify-content-center'>
+                        <div className='row p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded'>
+                            <div className='col-12 text-center'>
+                                <h1 className='mb-5'>Rezerwacja</h1>
+                            </div>
+                            <div className='row'>
+                                <div className='col-12 col-md-6 col-lg-7 d-flex'>
+                                    <form id='bookingForm' className='' onSubmit={e => onSubmit(e)}>
+                                        <div className="mb-3">
+                                            <label className="FormControlSelect">Wybierz pracownika</label>
+                                            <select className="form-select mt-2"
+                                                name='employeeId'
+                                                value={employeeId}
+                                                onChange={formik.handleChange}
+                                            >
+                                                {employee.map(employee => (
+                                                    <option key={employee.user.id} value={employee.user.id}>
+                                                        {employee.user.first_name + ' ' + employee.user.last_name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        {/* <div className='mb-3'>
                                     // <DatePicker
                                     //     className='mt-3'
                                     //     // withPortal
@@ -369,243 +406,302 @@ const Booking = () => {
                                     //     filterTime={filterPassedTime}
                                     // /> */}
 
-                                <div className='mb-3 d-flex flex-row'>
-                                    <div>
-                                        <DatePicker
-                                            locale="pl"
-                                            className='mt-3'
-                                            // withPortal
-                                            inline
-                                            selected={selectedDate}
-                                            onChange={date => { setSelectedDate(date); setSelectedTime(date) }}
-                                            calendarStartDay={1}
-                                            dateFormat='yyyy/MM/dd'
-                                            minDate={new Date()}
-                                            maxDate={addDays(new Date(), 14)}
-                                            filterDate={isWeekday}
-                                        />
-                                    </div>
-                                    <div>
-                                        <DatePicker
-                                            locale="pl"
-                                            inline
-                                            selected={selectedTime}
-                                            onChange={(date) => { setSelectedTime(date); setIsTime(true) }}
-                                            showTimeSelect
-                                            showTimeSelectOnly
-                                            timeCaption="Godzina"
-                                            dateFormat="h:mm aa"
-                                            timeFormat='HH:mm'
-                                            timeIntervals={15}
-                                            minTime={minTime}
-                                            maxTime={maxTime}
-                                            filterTime={filterPassedTime}
-                                        />
-                                    </div>
+                                        <div className='mb-3 d-flex flex-row'>
+                                            <div>
+                                                <DatePicker
+                                                    locale="pl"
+                                                    className='mt-3'
+                                                    // withPortal
+                                                    inline
+                                                    selected={selectedDate}
+                                                    onChange={date => { setSelectedDate(date); setSelectedTime(date) }}
+                                                    calendarStartDay={1}
+                                                    dateFormat='yyyy/MM/dd'
+                                                    minDate={new Date()}
+                                                    maxDate={addDays(new Date(), 14)}
+                                                    filterDate={isWeekday}
+                                                />
+                                            </div>
+                                            <div>
+                                                <DatePicker
+                                                    locale="pl"
+                                                    inline
+                                                    selected={selectedTime}
+                                                    onChange={(date) => { setSelectedTime(date); setIsTime(true) }}
+                                                    showTimeSelect
+                                                    showTimeSelectOnly
+                                                    timeCaption="Godzina"
+                                                    dateFormat="h:mm aa"
+                                                    timeFormat='HH:mm'
+                                                    timeIntervals={15}
+                                                    minTime={minTime}
+                                                    maxTime={maxTime}
+                                                    filterTime={filterPassedTime}
+                                                />
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
 
-                        <div className='col-12 col-md-6 col-lg-5 ps-5'>
-                            <h5>Szczegóły rezerwacji</h5>
-                            <hr />
-                            <div className="row">
-                                <div className="col-12 text-start">
-                                    <div className='fw-bold'>Usługa</div>
-                                    <div className='row'>
-                                        <div className='col-6'>
-                                            {props.name}
-                                        </div>
-                                        <div className='col-6 text-end'>
-                                            {props.price} zł
-                                        </div>
+                                <div className='col-12 col-md-6 col-lg-5 ps-5'>
+                                    <h5>Szczegóły rezerwacji</h5>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-12 text-start">
+                                            <div className='fw-bold'>Usługa</div>
+                                            <div className='row'>
+                                                <div className='col-6'>
+                                                    {props.name}
+                                                </div>
+                                                <div className='col-6 text-end'>
+                                                    {props.price} zł
+                                                </div>
 
-                                    </div>
-                                    <div className='text-muted'><small>{convertMinsToTime(props.time)}</small></div>
-                                </div>
-                            </div>
-                            <hr />
-                            <div className="row">
-                                <div className="col-12 text-start">
-                                    <div><b>Data i godzina</b></div>
-                                    <div>
-                                        {selectedDate && isTime ?
-                                            moment(chooseDate).format("DD-MM-YYYY")
-                                            + ", " +
-                                            moment(chooseStartTime, 'HH:mm:ss').format('HH:mm') :
-                                            <></>}
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <div className="row">
-                                <div className="col-12 text-start">
-                                    <div><b>Pracownik</b></div>
-                                    <div>
-                                        {selectedEmployee[0]?.user.first_name + " " +
-                                            selectedEmployee[0]?.user.last_name}
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <div className="row">
-                                <div className="col-12 text-start">
-                                    <div className='row'>
-                                        <div className='col-6'>
-                                            <b>Razem</b>
-                                        </div>
-                                        <div className='col-6 text-end'>
-                                            {props.price} zł
+                                            </div>
+                                            <div className='text-muted'><small>{convertMinsToTime(props.time)}</small></div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-12 text-start">
+                                            <div><b>Data i godzina</b></div>
+                                            <div>
+                                                {selectedDate && isTime ?
+                                                    moment(chooseDate).format("DD-MM-YYYY")
+                                                    + ", " +
+                                                    moment(chooseStartTime, 'HH:mm:ss').format('HH:mm') :
+                                                    <></>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-12 text-start">
+                                            <div><b>Pracownik</b></div>
+                                            <div>
+                                                {selectedEmployee[0]?.user.first_name + " " +
+                                                    selectedEmployee[0]?.user.last_name}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-12 text-start">
+                                            <div className='row'>
+                                                <div className='col-6'>
+                                                    <b>Razem</b>
+                                                </div>
+                                                <div className='col-6 text-end'>
+                                                    {props.price} zł
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            {employeeId && selectedDate && isTime ?
-                                access ?
-                                    userRole === "customer" ?
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary w-100 mt-4"
-                                            onClick={() => {
-                                                handleShow1();
-                                            }}
-                                        >
-                                            Rezerwuj
-                                        </button>
+                                    {employeeId && selectedDate && isTime ?
+                                        access ?
+                                            userRole === "customer" ?
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-primary w-100 mt-4"
+                                                    onClick={() => {
+                                                        handleShow1();
+                                                    }}
+                                                >
+                                                    Rezerwuj
+                                                </button>
+                                                :
+                                                <button className='btn btn-primary w-100 mt-4' disabled>Rezerwuj</button>
+                                            :
+                                            <button
+                                                type='button'
+                                                className="btn btn-primary w-100 mt-4"
+                                                onClick={() => navigate(`/login`,
+                                                    { state: { ...props, path: location.pathname } },
+                                                    { replace: true })
+                                                }
+                                            >
+                                                Rezerwuj
+                                            </button>
                                         :
                                         <button className='btn btn-primary w-100 mt-4' disabled>Rezerwuj</button>
-                                    :
-                                    <button
-                                        type='button'
-                                        className="btn btn-primary w-100 mt-4"
-                                        onClick={() => navigate(`/login`,
-                                            { state: { ...props, path: location.pathname } },
-                                            { replace: true })
-                                        }
-                                    >
-                                        Rezerwuj
-                                    </button>
-                                :
-                                <button className='btn btn-primary w-100 mt-4' disabled>Rezerwuj</button>
-                            }
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <Modal show={show1} onHide={handleClose1} size="lg" >
-                <Modal.Header closeButton>
-                    <Modal.Title>Potwierdzenie rezerwacji</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <h5 className='text-center'>
-                        {selectedDate &&
-                            format(new Date(selectedDate), 'EEEE, dd MMMM yyyy', {
-                                locale: pl,
-                            })}
-                    </h5>
-                    <div className='text-center'>
-                        {moment(chooseStartTime, 'HH:mm:ss').format('HH:mm')} -
-                        {moment(chooseEndTime, 'HH:mm:ss').format('HH:mm')}
-                    </div>
-                    <div className='text-center text-muted mb-5'>
-                        {salonData[0]?.name}
-                    </div>
+                    <Modal show={show1} onHide={handleClose1} size="lg" >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Potwierdzenie rezerwacji</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <h5 className='text-center'>
+                                {selectedDate &&
+                                    format(new Date(selectedDate), 'EEEE, dd MMMM yyyy', {
+                                        locale: pl,
+                                    })}
+                            </h5>
+                            <div className='text-center'>
+                                {moment(chooseStartTime, 'HH:mm:ss').format('HH:mm')} -
+                                {moment(chooseEndTime, 'HH:mm:ss').format('HH:mm')}
+                            </div>
+                            <div className='text-center text-muted'>
+                                {salonData[0]?.name}
+                            </div>
 
-                    <h6>Wybrane usługi</h6>
-                    <Container className='p-4 shadow-sm bg-light rounded'>
-                        <Row>
-                            <Col xs={12} md={4}>
-                                <div>
-                                    {selectedEmployee[0]?.user.first_name + " " +
-                                        selectedEmployee[0]?.user.last_name}
+                            <h6>Wybrane usługi</h6>
+                            <Container className='p-4 shadow-sm bg-light rounded'>
+                                <Row>
+                                    <Col xs={12} md={4}>
+                                        <div>
+                                            {selectedEmployee[0]?.user.first_name + " " +
+                                                selectedEmployee[0]?.user.last_name}
+                                        </div>
+                                    </Col>
+                                    <Col xs={12} md={4}>
+                                        <div>{props.name}</div>
+                                        <div className='text-muted'><small>{convertMinsToTime(props.time)}</small></div>
+                                    </Col>
+                                    <Col xs={12} md={4} className='text-end'>
+                                        <div>{props.price} zł</div>
+                                    </Col>
+                                </Row>
+                            </Container>
+                            <hr />
+                            <h6>Metody płatności</h6>
+                            <Container className='p-4 shadow-sm bg-light rounded'>
+                                <Row>
+                                    <Col>
+                                        <div className="form-check">
+                                            <input
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="flexRadioPaymentMethod"
+                                                id="paymentMethod"
+                                                defaultChecked />
+                                            <label
+                                                className="form-check-label"
+                                                htmlFor="paymentMethod">
+                                                Płatność w salonie
+                                            </label>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Container>
+
+                            <hr />
+                            <h6>Dane</h6>
+                            <Container>
+                                <Row>
+                                    <Col>
+                                        <div className='mb-3'>
+                                            <label
+                                                htmlFor='inputEmail'
+                                                className='form-label'>
+                                                Email
+                                            </label>
+                                            <input
+                                                className={`form-control ${formik.touched.email && formik.errors.email && 'is-invalid'}`}
+                                                // className='form-control'
+                                                type='email'
+                                                placeholder='Email'
+                                                name='email'
+                                                value={formik.values.email}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                            />
+                                            <span className='text-start error'>
+                                                {formik.touched.email && formik.errors.email ? (
+                                                    <div>{formik.errors.email}</div>
+                                                ) : null}
+                                            </span>
+                                        </div>
+
+                                        <div className='mb-3'>
+                                            <label
+                                                htmlFor='inputPhone'
+                                                className='form-label'>
+                                                Telefon
+                                            </label>
+                                            <input
+                                                id='inputPhone'
+                                                className={`form-control ${formik.touched.phone && formik.errors.phone && 'is-invalid'}`}
+                                                // className='form-control'
+                                                type='text'
+                                                placeholder='Telefon'
+                                                name='phone'
+                                                value={formik.values.phone}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                            />
+                                            <span className='text-start error'>
+                                                {formik.touched.phone && formik.errors.phone ? (
+                                                    <div>{formik.errors.phone}</div>
+                                                ) : null}
+                                            </span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Container>
+
+
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Container className='p-2 text-end'>
+                                <Row>
+                                    <Col>
+                                        Łącznie do zapłaty:
+                                        <h5>{props.price} zł</h5>
+                                    </Col>
+                                </Row>
+                            </Container>
+
+                            <Button
+                                type='submit'
+                                variant='primary'
+                                form='bookingForm'
+                                className='w-100'
+                                onClick={(e) => {
+                                    handleClose1()
+                                }}>
+                                Potwierdź i umów
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
+
+                    <Modal show={show2} onHide={handleClose2}>
+                        <Modal.Body>
+                            <div className='text-center'>
+                                <img src={checkmark} style={{ width: "15%" }} alt="checkmark" />
+                                <h5 className='mt-3'>Wizyta potwierdzona</h5>
+                                <h5 className='text-center'>
+                                    {selectedDate &&
+                                        format(new Date(selectedDate), 'EEEE, dd MMMM yyyy', {
+                                            locale: pl,
+                                        })}
+                                </h5>
+                                <div className='text-center'>
+                                    {moment(chooseStartTime, 'HH:mm:ss').format('HH:mm')} -
+                                    {moment(chooseEndTime, 'HH:mm:ss').format('HH:mm')}
                                 </div>
-                            </Col>
-                            <Col xs={12} md={4}>
-                                <div>{props.name}</div>
-                                <div className='text-muted'><small>{convertMinsToTime(props.time)}</small></div>
-                            </Col>
-                            <Col xs={12} md={4} className='text-end'>
-                                <div>{props.price} zł</div>
-                            </Col>
-                        </Row>
-                    </Container>
-                    <hr />
-                    <h6>Metody płatności</h6>
-                    <Container className='p-4 shadow-sm bg-light rounded'>
-                        <Row>
-                            <Col>
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        name="flexRadioPaymentMethod"
-                                        id="paymentMethod"
-                                        defaultChecked />
-                                    <label
-                                        className="form-check-label"
-                                        htmlFor="paymentMethod">
-                                        Płatność w salonie
-                                    </label>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Container className='p-2 text-end'>
-                        <Row>
-                            <Col>
-                                Łącznie do zapłaty:
-                                <h5>{props.price} zł</h5>
-                            </Col>
-                        </Row>
-                    </Container>
-
-                    <Button
-                        type='submit'
-                        variant='primary'
-                        form='bookingForm'
-                        className='w-100'
-                        onClick={(e) => {
-                            handleClose1()
-                        }}>
-                        Potwierdź i umów
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-
-            <Modal show={show2} onHide={handleClose2}>
-                <Modal.Body>
-                    <div className='text-center'>
-                        <img src={checkmark} style={{ width: "15%" }} alt="checkmark" />
-                        <h5 className='mt-3'>Wizyta potwierdzona</h5>
-                        <h5 className='text-center'>
-                            {selectedDate &&
-                                format(new Date(selectedDate), 'EEEE, dd MMMM yyyy', {
-                                    locale: pl,
-                                })}
-                        </h5>
-                        <div className='text-center'>
-                            {moment(chooseStartTime, 'HH:mm:ss').format('HH:mm')} -
-                            {moment(chooseEndTime, 'HH:mm:ss').format('HH:mm')}
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="success"
-                        onClick={(e) => {
-                            handleClose2()
-                            navigate(`/`)
-                        }}
-                        className='w-100'>
-                        OK
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                variant="success"
+                                onClick={(e) => {
+                                    handleClose2()
+                                    navigate(`/`)
+                                }}
+                                className='w-100'>
+                                OK
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
+            }
         </div>
     )
 };

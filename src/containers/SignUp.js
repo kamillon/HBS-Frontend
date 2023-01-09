@@ -18,7 +18,6 @@ const Signup = () => {
             last_name: '',
             is_staff: false,
             is_superuser: false,
-            is_employee: false,
             email: '',
             password: '',
             re_password: '',
@@ -58,7 +57,7 @@ const Signup = () => {
 
     const [accountCreated, setAccountCreated] = useState(false);
 
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, password, re_password, phone, role } = formik.values;
+    const { username, first_name, last_name, is_staff, is_superuser, email, password, re_password, phone, role } = formik.values;
 
     const onSubmit = async e => {
         if (password === re_password) {
@@ -69,7 +68,7 @@ const Signup = () => {
             };
 
             const body = JSON.stringify({
-                username, first_name, last_name, is_staff, is_superuser, is_employee,
+                username, first_name, last_name, is_staff, is_superuser,
                 email, password, re_password, phone, role
             });
 

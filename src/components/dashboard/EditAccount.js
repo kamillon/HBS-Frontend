@@ -15,7 +15,6 @@ const EditAccount = () => {
         last_name: '',
         is_staff: '',
         is_superuser: '',
-        is_employee: '',
         email: '',
         phone: '',
     };
@@ -77,7 +76,7 @@ const EditAccount = () => {
     }, [access, userRole])
 
     const [accountUpdated, setAccountUpdated] = useState(false);
-    const { username, first_name, last_name, is_staff, is_superuser, is_employee, email, phone, role } = formik.values;
+    const { username, first_name, last_name, is_staff, is_superuser, email, phone, role } = formik.values;
 
     const onSubmit = async e => {
         setIsSubmitting(true)
@@ -90,7 +89,7 @@ const EditAccount = () => {
         };
 
         const body = JSON.stringify({
-            username, first_name, last_name, is_staff, is_superuser, is_employee,
+            username, first_name, last_name, is_staff, is_superuser,
             email, phone, role
         });
 

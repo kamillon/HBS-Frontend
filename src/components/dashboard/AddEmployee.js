@@ -34,7 +34,6 @@ const AddEmployee = () => {
                 last_name: '',
                 is_staff: true,
                 is_superuser: true,
-                is_employee: true,
                 email: '',
                 password: 'zaq1@WSX',
                 phone: '',

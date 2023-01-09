@@ -93,7 +93,6 @@ const AddUser = () => {
 
             let is_superuser = true
             let is_staff = true
-            let is_employee = false
 
             if (role === "employee") {
                 url = `http://127.0.0.1:8000/employee/`
@@ -106,7 +105,6 @@ const AddUser = () => {
                         "email": email,
                         "is_staff": false,
                         "is_superuser": false,
-                        "is_employee": true,
                         "phone": phone,
                         "role": role,
                         "password": password,
@@ -116,13 +114,7 @@ const AddUser = () => {
             else if (role === "customer") {
                 is_superuser = false
                 is_staff = false
-                is_employee = false
             }
-
-            // const body = JSON.stringify({
-            //     username, first_name, last_name, is_staff, is_superuser, is_employee,
-            //     email, password, re_password, phone, role
-            // });
 
             try {
                 const res = await axios.post(url, body, config);

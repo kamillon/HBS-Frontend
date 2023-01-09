@@ -30,7 +30,6 @@ const EditEmployee = () => {
             last_name: '',
             is_staff: '',
             is_superuser: '',
-            is_employee: '',
             email: '',
             phone: '',
         },
