@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext"
-import avatar from '../images/avatar.png';
 
 const Sidebar = (props) => {
     const { userRole, currentUser } = useAuth()
@@ -212,9 +211,9 @@ const Sidebar = (props) => {
 
     return (
         <div className="col-md-3 col-lg-2 sidebar-offcanvas ps-0" id="sidebar" role="navigation" style={{ backgroundColor: "#e9ecef" }}>
-            <ul className="nav flex-column sticky-top ps-0 pt-5 p-3">
+            <ul className="nav flex-column sticky-top ps-0p-3">
                 <li className="nav-item mb-2 text-center">
-                    <img src={avatar} className="p-3" alt="avatar" style={{ width: "150px" }} />
+                    <i className="bi bi-person-circle" style={{ fontSize: "7rem" }}></i>
                     <h5 className='text-center mt-2'>
                         {currentUser?.first_name} {currentUser?.last_name}
                     </h5>

@@ -5,7 +5,6 @@ import axios from 'axios';
 import ListServices from '../components/ListServices';
 import hair_salon from '../images/hair_salon.png';
 import SalonContact from './SalonContact';
-import avatar from '../images/avatar.png';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const HairSalonDetail = (props) => {
@@ -112,7 +111,7 @@ const HairSalonDetail = (props) => {
 
     const filteredList = useMemo(getFilteredList, [selectedType, searchFilteredServices]);
 
-
+console.log(salonData)
     return (
         <div>
             {isLoading ?
@@ -131,7 +130,7 @@ const HairSalonDetail = (props) => {
                                     alt="hair_salon" 
                                     />
                                 </div>
-                                {employee.length > 0 ?
+                                {salonData ?
                                     salonData.map((salon) => (
                                         <div key={salon.id} className='col-md px-sm-0 px-md-5 py-sm-3 py-md-0'>
                                             <h2>{salon.name}</h2>
@@ -238,12 +237,7 @@ const HairSalonDetail = (props) => {
                                         <div className="row text-center mt-4">
                                             {employee.map((i) => (
                                                 <div key={i.user.id} className='col-4 col-md-6 col-lg-4 justify-content-center'>
-                                                    <img
-                                                        className="rounded-circle"
-                                                        alt="10x10"
-                                                        src={avatar}
-                                                        data-holder-rendered="true"
-                                                        width={64} />
+                                                        <i className="bi bi-person-circle" style={{ fontSize: "64px" }}></i>
                                                     <p><strong>{i.user.first_name}</strong></p>
 
                                                 </div>

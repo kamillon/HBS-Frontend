@@ -116,11 +116,7 @@ const EditUser = () => {
         let is_superuser = true
         let is_staff = true
 
-        if (role === "employee") {
-            is_superuser = true
-            is_staff = true
-        }
-        else if (role === "customer") {
+        if (role === "employee" || role === "customer") {
             is_superuser = false
             is_staff = false
         }

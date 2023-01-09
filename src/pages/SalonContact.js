@@ -52,7 +52,7 @@ const SalonContact = (props) => {
                             moment(from_hour, 'HH:mm:ss').format('HH:mm')
                             + "-" +
                             moment(to_hour, 'HH:mm:ss').format('HH:mm') :
-                            "Nie ustalono"
+                            "Zamknięte"
                     }
                 </div>
             </td>
