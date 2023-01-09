@@ -31,9 +31,9 @@ const Navbar = () => {
 
     return (
         <Fragment>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+            <nav className="navbar navbar-expand-lg navbar-dark py-3 bg-primary" >
                 <div className="container">
-                    <Link className='navbar-brand' to='/'>IBOOKING</Link>
+                    <Link className='navbar-brand' to='/'>Salonfy</Link>
                     <button
                         className='navbar-toggler'
                         type='button'

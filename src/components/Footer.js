@@ -8,7 +8,7 @@ const Footer = () => {
                 <div className="container">
                     <div className="row mt-3">
                         <div className="col-md-6 text-white text-center text-md-start">
-                            IBOOKING
+                            Salonfy
                         </div>
                         <div className="col-md-6 text-center text-md-end">
                             <p className="mb-0 list-unstyled">

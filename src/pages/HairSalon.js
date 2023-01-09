@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from "../context/AuthContext"
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import './HairSalon.css';
 import CardComponent from '../components/CardComponent';
-import hair_salon_picture from '../images/hair_salon_picture.png';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const HairSalon = () => {
@@ -28,7 +28,7 @@ const HairSalon = () => {
 
             try {
                 let url = `http://127.0.0.1:8000/salon/`
-                
+
                 if (city) {
                     url = `http://127.0.0.1:8000/salon/?city=${city}`
                 }
@@ -67,17 +67,10 @@ const HairSalon = () => {
                 </div>
                 :
                 <>
-                    <section className="bg-dark text-white">
+                    <section className="bg-dark text-white pt-5">
                         <div className='container'>
                             <div className='row'>
-                                <div className='col-md-6'>
-                                    <img
-                                        src={hair_salon_picture}
-                                        className="img-fluid w-50 d-none d-sm-block"
-                                        alt="hair_salon_picture"
-                                    />
-                                </div>
-                                <div className='col-md-6 pt-5'>
+                                <div className='col-md-12 pt-5 text-center'>
                                     <h2>Znajdź odpowiedni salon dla siebie</h2>
                                     <p>Przeglądaj z setek dostępnych salonów i umów się na wizytę już dziś.
                                     </p>
@@ -85,27 +78,28 @@ const HairSalon = () => {
                             </div>
                         </div>
                     </section>
-
-                    <section className="bg-dark text-light p-5">
-                        <div className='container'>
-                            <div className='d-md-flex justify-content-between align-items-center'>
-                                <form className='input-group' onSubmit={onSubmit}>
-                                    <div className="input-group w-md-75 mx-auto">
-                                        <input
-                                            type="search"
-                                            className="form-control p-2"
-                                            placeholder="Wyszukaj salon"
-                                            value={search}
-                                            onChange={handleChange}
-                                        />
-                                        <button
-                                            className="btn btn-primary"
-                                            type="submit"
-                                        >
-                                            Szukaj
-                                        </button>
+                    <section className="bg-dark p-5">
+                        <div className="container">
+                            <div className="row height d-flex justify-content-center align-items-center">
+                                <div className="col-md-8">
+                                    <div className="search">
+                                        <form onSubmit={onSubmit}>
+                                            <input
+                                                type="search"
+                                                className="form-control p-2"
+                                                placeholder="Wyszukaj salon"
+                                                value={search}
+                                                onChange={handleChange}
+                                            />
+                                            <button
+                                                className="btn btn-primary"
+                                                type="submit"
+                                            >
+                                                Szukaj
+                                            </button>
+                                        </form>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </section>

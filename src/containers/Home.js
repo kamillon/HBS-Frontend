@@ -1,11 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Slider from '../components/Slider';
 import { AuthContext, useAuth } from "../context/AuthContext"
 import barber from '../images/barber.svg';
-import booking from '../images/booking.svg';
-import building from '../images/building.svg';
-import fryzjerIcon from '../images/fryzjer1.png';
+import searchSalon from '../images/searchSalon.svg';
+import chooseService from '../images/chooseService.svg';
+import schedule from '../images/schedule.svg';
 
 
 const Home = () => {
@@ -49,125 +48,122 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className='py-5'>
-                <div className='container'>
-                    <div className='row'>
-                        <div className='col-md-12'>
-                            <h4>Our Company</h4>
-                            <div className='underline'></div>
-                            <p>
-                                Lorem ipsum asdsadsadsadsad
-                                asdsadsadsadsadasdsad
-                                asdsadasdasssssssssssssad
-                                asdassdsd lorem asdsadsadsadsadasdsadasdasdsadsadsadasd
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <section className='py-5 bg-light'>
+
+            <section className='py-4'>
                 <div className='container'>
                     <div className='row'>
-                        <div className='col-12 col-md-6 col-lg-6 d-flex justify-content-center'>
-                            <Link to='/hairsalon' style={{ textDecoration: 'none', color: 'black' }}>
-                                <div className="card border-0 bg-light" style={{ width: "12rem" }}>
-                                    <img src={fryzjerIcon} className="card-img-top p-4" alt="hairdresser_icon" />
-                                    <div className="card-body text-center">
-                                        <h4>Fryzjerstwo</h4>
-                                    </div>
+                        <div className='col-12 col-md-4 d-flex justify-content-center'>
+                            <div className='row'>
+                                <div className='col-12 text-center'>
+                                    <i className="bi bi-clock" style={{ fontSize: "7rem" }}></i>
                                 </div>
-                            </Link>
+                                <div className='col-12 text-center'>
+                                    <h5>Szybko znajdziesz</h5>
+                                    <p>salon w okolicy</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='col-12 col-md-4 d-flex justify-content-center'>
+                            <div className='row'>
+                                <div className='col-12 text-center'>
+                                    <i className="bi bi-laptop" style={{ fontSize: "7rem" }}></i>
+                                </div>
+                                <div className='col-12 text-center'>
+                                    <h5>Wygodnie przez</h5>
+                                    <p>telefon lub laptop</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='col-12 col-md-4 d-flex justify-content-center'>
+                            <div className='row'>
+                                <div className='col-12 text-center'>
+                                    <i className="bi bi-calendar-check" style={{ fontSize: "7rem" }}></i>
+                                </div>
+                                <div className='col-12 text-center'>
+                                    <h5>Szybko umówisz</h5>
+                                    <p>termin wizyty</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section className="p-5">
-                <div className='container py-5'>
-                    <div className='row'>
-                        <div className='col-md'>
-                            <h1 className='mb-5'>Umów się online</h1>
-                            <p>
-                                Chcesz umówić się do fryzjera, barbera, stylistki paznokci lub salonu masażu w okolicy? Szukasz miejsca, w którym najlepsi specjaliści zadbają o Twoją brodę, brwi lub zrobią relaksujący masaż?
-                            </p>
-                            <p>
-                                Booksy to darmowa aplikacja do rezerwacji, dzięki której z łatwością znajdziesz wolny termin i wygodnie umówisz się na wizytę. Bez dzwonienia — rezerwujesz o każdej porze i z dowolnego miejsca.
-                            </p>
-                        </div>
-                        <div className='col-md text-center'>
-                            <img src={building} className="img-fluid w-50" alt="building_image" />
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <section className="p-5">
-                <div className='container py-5'>
-                    <div className='row'>
-                        <div className='col-md text-center'>
-                            <img src={booking} className="img-fluid w-50" alt="booking_image" />
-                        </div>
-                        <div className='col-md'>
-                            <h1 className='mb-5'>Coś Ci wypadło? Nie szkodzi!</h1>
-                            <p>
-                                Pobierz Booksy, darmową aplikację do rezerwacji, i zarządzaj swoimi wizytami, gdziekolwiek jesteś. Zmień termin wizyty lub odwołaj rezerwację bez dzwonienia.
-                            </p>
-                            <p>
-                                Wiemy, że każdego dnia dużo się u Ciebie dzieje, dlatego będziemy wysyłać Ci przypomnienia o nadchodzących wizytach. Dzięki nim nigdy nie przegapisz terminu!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section className='p-5 pb-1 bg-dark text-white'>
+            <section className='py-5' style={{backgroundColor: "#fbe2b1"}}>
                 <div className='container'>
-                    <h2 className='text-center mb-4'>Znajdź specjalistę według miasta</h2>
-                    <div className='row py-5'>
-                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
-                            <ul className="nav flex-column">
-                                <li className="nav-item">
-                                    <a className="nav-link " href="/">Warszawa</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">Kraków</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">Poznań</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
-                            <ul className="nav flex-column">
-                                <li className="nav-item">
-                                    <a className="nav-link " href="/">Warszawa</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">Kraków</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">Poznań</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className='col-12 col-md-6 col-lg-4 d-flex justify-content-center'>
-                            <ul className="nav flex-column">
-                                <li className="nav-item">
-                                    <a className="nav-link " href="/">Warszawa</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">Kraków</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/">Poznań</a>
-                                </li>
-                            </ul>
+                    <div className='row'>
+                        <div className='col-md-12 text-center'>
+                            <h1>Jak to działa?</h1>
+                            <div className='fs-3' style={{ color: "#e06c5c" }}>Jak łatwo i szybko zarezerwować wizytę w salonie fryzjerskim?</div>
+                            <div className='fs-3 fw-bold' style={{ color: "#e06c5c" }}>To proste! Wystarczą tylko 3 kroki!</div>
                         </div>
                     </div>
                 </div>
-                <hr />
             </section>
+
+
+
+            <section className="p-5">
+                <div className='container py-5'>
+                    <div className='row'>
+                        <div className='col-md'>
+                            <h2 className='mb-5'>Znajdź salon</h2>
+                            <p>
+                                Wpisz w wyszukiwarkę nazwę miejscowości, w której chcesz znaleźć salon fryzjerski.
+                                {/* Możesz rówież wybrać z menu zakładkę "Fryzjer". System przekieruje Cię na stronę ze wszystkimi dostępnymi salonami fryzjerskimi. */}
+                            </p>
+                            <p>
+                                Możesz rówież wybrać z menu zakładkę "Fryzjer". System przekieruje Cię na stronę ze wszystkimi dostępnymi salonami fryzjerskimi.
+                            </p>
+                        </div>
+                        <div className='col-md text-center'>
+                            <img src={searchSalon} className="img-fluid w-75" alt="searchSalonImage" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="p-5">
+                <div className='container py-5'>
+                    <div className='row'>
+                        <div className='col-md text-center'>
+                            <img src={chooseService} className="img-fluid w-50" alt="chooseServiceImage" />
+                        </div>
+                        <div className='col-md'>
+                            <h2 className='mb-5'>Wybierz interesującą Cię usługę</h2>
+                            <p>
+                                Przeglądaj listę usług, jakie oferuje wybrany salon. Spośród nich wybierz tą, która Cię interesuje.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section className="p-5">
+                <div className='container py-5'>
+                    <div className='row'>
+                        <div className='col-md-4'>
+                            <h2 className='mb-5'>Rezerwuj wizytę</h2>
+                            <p>
+                                Wybierz pracownika, do którego chcesz się zapisać. Następnie z kalendarza wybierz dzień oraz godzinę.
+                                {/* Zarezerwuj termin i poczekaj już tylko na potwierdzenie rezerwacji, które przyjdzie do Ciebie mailem. */}
+                            </p>
+                            <p>
+                                To wszystko. Poczekaj na potwierdzenie rezerwacji, które przyjdzie do Ciebie mailem.
+                            </p>
+                        </div>
+                        <div className='col-md text-center'>
+                            <img src={schedule} className="img-fluid w-50" alt="scheduleImage" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
         </div>
     )
 };
