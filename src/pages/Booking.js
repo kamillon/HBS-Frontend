@@ -84,6 +84,10 @@ const Booking = () => {
     const handleShow2 = () => setShow2(true)
     const handleClose2 = () => setShow2(false)
 
+    const [show3, setShow3] = useState(false)
+    const handleShow3 = () => setShow3(true)
+    const handleClose3 = () => setShow3(false)
+
 
     const convertMinsToTime = (mins) => {
         let hours = Math.floor(mins / 60);
@@ -130,6 +134,7 @@ const Booking = () => {
             catch (error) {
                 console.log(error)
                 setIsLoading(false)
+                handleShow3()
             }
         }
     };
@@ -674,7 +679,7 @@ const Booking = () => {
                     <Modal show={show2} onHide={handleClose2}>
                         <Modal.Body>
                             <div className='text-center'>
-                                <img src={checkmark} style={{ width: "15%" }} alt="checkmark" />
+                                <i className="bi bi-check2-circle" style={{ fontSize: "7rem", color: "green" }}></i>
                                 <h5 className='mt-3'>Wizyta potwierdzona</h5>
                                 <h5 className='text-center'>
                                     {selectedDate &&
@@ -697,6 +702,30 @@ const Booking = () => {
                                 }}
                                 className='w-100'>
                                 OK
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                    <Modal show={show3} onHide={handleClose3}>
+                        <Modal.Body>
+                            <div className='text-center'>
+                                <h5 className='mt-3'>Oops! Coś poszło nie tak</h5>
+                                <i className="bi bi-x-circle" style={{ fontSize: "7rem", color: "red" }}></i>
+                                <div className='text-center mt-2'>
+                                    Prawdopodonie wybrany termin został już zarezerwowany.
+                                    Prosimy spróbować jeszcze raz
+                                </div>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                variant="danger"
+                                onClick={(e) => {
+                                    handleClose3()
+                                    window.location.reload(false);
+                                }}
+                                className='w-100'>
+                                Powrót
                             </Button>
                         </Modal.Footer>
                     </Modal>
