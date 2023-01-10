@@ -219,7 +219,16 @@ const EditEmployee = () => {
 
 
     return (
-        <div className='container mt-5'>
+        <div className='container mt-3'>
+            <div className='row'>
+                <div className='col-12 mb-4'>
+                    <button
+                        className='btn btn-secondary me-1'
+                        onClick={() => navigate(`/${userRole}/employee/`)}>
+                        Powrót
+                    </button>
+                </div>
+            </div>
             <Tabs
                 id="controlled-tab-example"
                 activeKey={key}
@@ -236,8 +245,8 @@ const EditEmployee = () => {
                             <LoadingSpinner text={"Loading..."} />
                             :
                             <>
-                                <div className="col-lg-7">
-                                    <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded' onSubmit={formik.handleSubmit}>
+                                <div className='col-12 mt-2 d-flex align-items-center justify-content-center'>
+                                    <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white signup-form rounded' onSubmit={formik.handleSubmit}>
                                         <h1 className='text-start'>Edytuj dane pracownika</h1>
                                         <div className='mb-3 mt-4'>
                                             <label
@@ -352,11 +361,6 @@ const EditEmployee = () => {
                                         </div>
                                         <div className="d-flex align-items-center">
                                             <button
-                                                className='btn btn-danger me-1'
-                                                onClick={() => navigate(`/${userRole}/employee/`)}>
-                                                Anuluj
-                                            </button>
-                                            <button
                                                 className='btn btn-primary me-1'
                                                 type='submit'
                                                 disabled={isSubmitting}
@@ -371,8 +375,20 @@ const EditEmployee = () => {
                                         </div>
                                     </form>
                                 </div>
-                                <div className="col-lg-5 mt-5 mt-md-0 ">
-                                    <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded' onSubmit={e => onSubmit2(e)}>
+                            </>
+                        }
+                    </div>
+
+
+                </Tab>
+                <Tab eventKey="assignSalon" title="Przypisz salon">
+                    <div className="row">
+                        {isLoading ?
+                            <LoadingSpinner text={"Loading..."} />
+                            :
+                            <>
+                                <div className='col-12 mt-2 d-flex align-items-center justify-content-center'>
+                                    <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white signup-form rounded' onSubmit={e => onSubmit2(e)}>
                                         <h1 className='text-start'>Salon</h1>
                                         <div className='mb-3 mt-4'>
                                             <label
@@ -403,11 +419,6 @@ const EditEmployee = () => {
                                         </div>
                                         <div className="d-flex align-items-center">
                                             <button
-                                                className='btn btn-danger me-1'
-                                                onClick={() => navigate(`/${userRole}/employee/`)}>
-                                                Anuluj
-                                            </button>
-                                            <button
                                                 className='btn btn-primary me-1'
                                                 type='submit'
                                                 disabled={isSubmitting2}
@@ -425,9 +436,13 @@ const EditEmployee = () => {
                             </>
                         }
                     </div>
-
-
                 </Tab>
+
+
+
+
+
+
                 <Tab eventKey="workHours" title="Godziny pracy">
                     <WorkHoursManagement uid={uid} salon={salon} />
                 </Tab>

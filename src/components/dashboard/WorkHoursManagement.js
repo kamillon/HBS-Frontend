@@ -70,15 +70,8 @@ const WorkHoursManagement = (props) => {
     return (
         <div className='container'>
             <div className='row mb-5'>
-                <div className='col-6'>
-                    <h2>Godziny pracy</h2>
-                </div>
-                <div className='col-6 text-end'>
-                    <button
-                        className='btn btn-danger'
-                        onClick={() => navigate(`/${userRole}/employee/`)}>
-                        Powrót
-                    </button>
+                <div className='col-12 text-center'>
+                    <h1>Godziny pracy</h1>
                 </div>
             </div>
             <div className='row'>

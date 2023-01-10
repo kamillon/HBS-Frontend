@@ -193,7 +193,16 @@ const EditSalon = () => {
 
 
     return (
-        <div className='container mt-5'>
+        <div className='container mt-3'>
+            <div className='row'>
+                <div className='col-12 mb-4'>
+                    <button
+                        className='btn btn-secondary me-1'
+                        onClick={() => navigate(`/${userRole}/salons/`)}>
+                        Powrót
+                    </button>
+                </div>
+            </div>
             <Tabs
                 id="controlled-tab-example"
                 activeKey={key}
@@ -201,13 +210,13 @@ const EditSalon = () => {
                 className="mb-3"
             >
                 <Tab eventKey="general" title="Ogólne">
-                    <div>
+                    <div className='container mt-5 d-flex align-items-center justify-content-center'>
                         {isLoading ?
                             <LoadingSpinner text={"Loading..."} />
                             :
                             <>
-                                <h1 className='mb-5'>Edytuj dane salonu</h1>
                                 <form className='p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded signup-form' onSubmit={formik.handleSubmit}>
+                                    <h1 className='mb-5'>Edytuj dane salonu</h1>
                                     <div className='mb-3'>
                                         <label
                                             htmlFor='inputName'
@@ -421,11 +430,6 @@ const EditSalon = () => {
                                     </div>
                                     <div className="d-flex align-items-center">
                                         <button
-                                            className='btn btn-danger me-1'
-                                            onClick={() => navigate(`/${userRole}/salons/`)}>
-                                            Anuluj
-                                        </button>
-                                        <button
                                             className='btn btn-primary me-1'
                                             type='submit'
                                             disabled={isSubmitting}
@@ -446,15 +450,10 @@ const EditSalon = () => {
                 </Tab>
                 <Tab eventKey="openingHours" title="Godziny otwarcia">
                     <div className='row'>
-                        <div className='col-6'>
-                            <h1 className='ms-4 mb-5'>Godziny otwarcia</h1>
-                        </div>
-                        <div className='col-6 text-end'>
-                            <button
-                                className='btn btn-danger'
-                                onClick={() => navigate(`/${userRole}/salons/`)}>
-                                Powrót
-                            </button>
+                        <div className='col-12'>
+                            <h1 className='mb-5 text-center'>
+                                Godziny otwarcia salonu
+                            </h1>
                         </div>
                     </div>
                     <div className='row'>

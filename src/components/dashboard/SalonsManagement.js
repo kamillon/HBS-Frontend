@@ -103,7 +103,7 @@ const SalonsManagement = () => {
 
 
     const filteredData = data.filter(element => {
-        return element.owner === currentUser.id;
+        return element.owner === parseInt(currentUser.id);
     });
 
 
@@ -116,6 +116,10 @@ const SalonsManagement = () => {
     }
 
 
+    useEffect(() => {
+        setSearch(dataToBeMapped)
+    }, [data])
+    
 
     return (
         <div className='container'>
