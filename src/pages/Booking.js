@@ -305,21 +305,42 @@ const Booking = () => {
     }, [workHours, reservations, selectedDate, selectedTime]);
 
 
-    let minTime = setHours(setMinutes(new Date(),
-        moment(rowData[0]?.from_hour, 'HH:mm').minute()),
-        moment(rowData[0]?.from_hour, 'HH:mm').hour()
-    )
+    // let minTime = setHours(setMinutes(new Date(),
+    //     moment(rowData[0]?.from_hour, 'HH:mm').minute()),
+    //     moment(rowData[0]?.from_hour, 'HH:mm').hour()
+    // )
 
-    let maxTime = setHours(setMinutes(new Date(),
-        moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').minute()),
-        moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').hour()
-    )
+    // let maxTime = setHours(setMinutes(new Date(),
+    //     moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').minute()),
+    //     moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').hour()
+    // )
 
+
+    // const currentTime = setHours(setMinutes(new Date(),
+    //     moment(new Date(), 'HH:mm').minute()),
+    //     moment(new Date(), 'HH:mm').hour()
+    // )
 
     const currentTime = setHours(setMinutes(new Date(),
         moment(new Date(), 'HH:mm').minute()),
         moment(new Date(), 'HH:mm').hour()
     )
+
+
+    let minTime = currentTime
+    let maxTime = currentTime
+
+    if (rowData.length > 0) {
+        minTime = setHours(setMinutes(new Date(),
+            moment(rowData[0]?.from_hour, 'HH:mm').minute()),
+            moment(rowData[0]?.from_hour, 'HH:mm').hour()
+        )
+        maxTime = setHours(setMinutes(new Date(),
+            moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').minute()),
+            moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').hour()
+        )
+    }
+    console.log(minTime)
 
 
     // if (moment(selectedDate).day() === moment(new Date()).day()) {
@@ -427,23 +448,25 @@ const Booking = () => {
                                                     filterDate={isWeekday}
                                                 />
                                             </div>
-                                            <div>
-                                                <DatePicker
-                                                    locale="pl"
-                                                    inline
-                                                    selected={selectedTime}
-                                                    onChange={(date) => { setSelectedTime(date); setIsTime(true) }}
-                                                    showTimeSelect
-                                                    showTimeSelectOnly
-                                                    timeCaption="Godzina"
-                                                    dateFormat="h:mm aa"
-                                                    timeFormat='HH:mm'
-                                                    timeIntervals={15}
-                                                    minTime={minTime}
-                                                    maxTime={maxTime}
-                                                    filterTime={filterPassedTime}
-                                                />
-                                            </div>
+                                            {selectedDate &&
+                                                <div>
+                                                    <DatePicker
+                                                        locale="pl"
+                                                        inline
+                                                        selected={selectedTime}
+                                                        onChange={(date) => { setSelectedTime(date); setIsTime(true) }}
+                                                        showTimeSelect
+                                                        showTimeSelectOnly
+                                                        timeCaption="Godzina"
+                                                        dateFormat="h:mm aa"
+                                                        timeFormat='HH:mm'
+                                                        timeIntervals={15}
+                                                        minTime={minTime}
+                                                        maxTime={maxTime}
+                                                        filterTime={filterPassedTime}
+                                                    />
+                                                </div>
+                                            }
                                         </div>
                                     </form>
                                 </div>

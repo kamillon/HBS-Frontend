@@ -17,77 +17,83 @@ const HairSalonDetail = (props) => {
     const [selectedType, setSelectedType] = useState('')
     const [isLoading, setIsLoading] = useState(true)
 
+
+    const getServices = async () => {
+        setIsLoading(true)
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        try {
+            const res = await axios.get('http://127.0.0.1:8000/service/', config);
+            setServices(res.data)
+            setIsLoading(false)
+
+        } catch (err) {
+            setServices(null)
+            console.log(err)
+            setIsLoading(false)
+        }
+    };
+
+    const getEmployee = async () => {
+        setIsLoading(true)
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        try {
+            const url = `http://127.0.0.1:8000/employee/`
+            const res = await axios.get(url, config);
+            setEmployee(res.data.filter(i => i.salon == salonId))
+            setIsLoading(false)
+
+        } catch (err) {
+            setEmployee(null)
+            console.log(err)
+            setIsLoading(false)
+        }
+
+    };
+
+    const getSalons = async () => {
+        setIsLoading(true)
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        try {
+            const res = await axios.get('http://127.0.0.1:8000/salon/', config);
+            setSalonData(res.data.filter(i => i.id == salonId))
+            setIsLoading(false)
+
+        } catch (err) {
+            setSalonData(null)
+            console.log(err)
+            setIsLoading(false)
+        }
+    };
+
     useEffect(() => {
-        const getServices = async () => {
-            setIsLoading(true)
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get('http://127.0.0.1:8000/service/', config);
-                setServices(res.data)
-                setIsLoading(false)
-
-            } catch (err) {
-                setServices(null)
-                console.log(err)
-                setIsLoading(false)
-            }
-        };
-
-        const getEmployee = async () => {
-            setIsLoading(true)
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const url = `http://127.0.0.1:8000/employee/`
-                const res = await axios.get(url, config);
-                setEmployee(res.data.filter(i => i.salon == salonId))
-                setIsLoading(false)
-
-            } catch (err) {
-                setEmployee(null)
-                console.log(err)
-                setIsLoading(false)
-            }
-
-        };
-
-        const getSalons = async () => {
-            setIsLoading(true)
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get('http://127.0.0.1:8000/salon/', config);
-                setSalonData(res.data.filter(i => i.id == salonId))
-                setIsLoading(false)
-
-            } catch (err) {
-                setSalonData(null)
-                console.log(err)
-                setIsLoading(false)
-            }
-        };
-
         getServices()
         getEmployee()
         getSalons()
 
     }, [salonId])
+    
+
+
+
+
 
     const filteredServices = services.filter(service => parseInt(service.salonID) === parseInt(salonId))
     const searchFilteredServices = filteredServices.filter(item => (
@@ -111,7 +117,8 @@ const HairSalonDetail = (props) => {
 
     const filteredList = useMemo(getFilteredList, [selectedType, searchFilteredServices]);
 
-console.log(salonData)
+    console.log(salonData)
+
     return (
         <div>
             {isLoading ?
@@ -124,10 +131,10 @@ console.log(salonData)
                         <div className='container'>
                             <div className='row'>
                                 <div className='col-md'>
-                                    <img 
-                                    src={hair_salon} 
-                                    className="img-fluid w-50 d-none d-sm-block" 
-                                    alt="hair_salon" 
+                                    <img
+                                        src={hair_salon}
+                                        className="img-fluid w-50 d-none d-sm-block"
+                                        alt="hair_salon"
                                     />
                                 </div>
                                 {salonData ?
@@ -237,7 +244,7 @@ console.log(salonData)
                                         <div className="row text-center mt-4">
                                             {employee.map((i) => (
                                                 <div key={i.user.id} className='col-4 col-md-6 col-lg-4 justify-content-center'>
-                                                        <i className="bi bi-person-circle" style={{ fontSize: "64px" }}></i>
+                                                    <i className="bi bi-person-circle" style={{ fontSize: "64px" }}></i>
                                                     <p><strong>{i.user.first_name}</strong></p>
 
                                                 </div>
