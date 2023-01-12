@@ -28,7 +28,7 @@ const HairSalonDetail = (props) => {
         };
 
         try {
-            const res = await axios.get('http://127.0.0.1:8000/service/', config);
+            const res = await axios.get(`http://127.0.0.1:8000/list-of-salon-services/${salonId}/`, config);
             setServices(res.data)
             setIsLoading(false)
 
@@ -49,9 +49,9 @@ const HairSalonDetail = (props) => {
         };
 
         try {
-            const url = `http://127.0.0.1:8000/employee/`
+            const url = `http://127.0.0.1:8000/list-of-salon-employees/${salonId}/`
             const res = await axios.get(url, config);
-            setEmployee(res.data.filter(i => i.salon == salonId))
+            setEmployee(res.data)
             setIsLoading(false)
 
         } catch (err) {
@@ -91,12 +91,7 @@ const HairSalonDetail = (props) => {
     }, [salonId])
     
 
-
-
-
-
-    const filteredServices = services.filter(service => parseInt(service.salonID) === parseInt(salonId))
-    const searchFilteredServices = filteredServices.filter(item => (
+    const searchFilteredServices = services.filter(item => (
         search === ''
             ? item
             : item.name.toLowerCase().includes(search)

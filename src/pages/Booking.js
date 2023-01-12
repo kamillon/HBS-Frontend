@@ -173,9 +173,9 @@ const Booking = () => {
             };
 
             try {
-                const res = await axios.get('http://127.0.0.1:8000/salon/', config);
+                const res = await axios.get(`http://127.0.0.1:8000/salon/${salonId}/`, config);
 
-                setSalonData(res.data.filter(i => i.id === parseInt(salonId)))
+                setSalonData(res.data)
                 console.log(res.data)
 
             } catch (err) {
@@ -188,6 +188,7 @@ const Booking = () => {
         getSalon()
     }, [])
 
+    console.log(salonData)
 
     const employeeDaysOff = [];
 
