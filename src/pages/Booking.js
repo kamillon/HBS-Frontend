@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './Booking.css';
 import { useAuth } from "../context/AuthContext"
-import ListServices from '../components/ListServices';
-import checkmark from '../images/checkmark.png';
-import { format } from 'date-fns'
+// import ListServices from '../components/ListServices';
+// import { format } from 'date-fns'
 import { subDays, addDays, setHours, setMinutes } from 'date-fns';
-import { Modal, Button, Col, Row, Container } from 'react-bootstrap';
+// import { Modal, Button, Col, Row, Container } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import moment from 'moment';
@@ -17,6 +16,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
 import LoadingSpinner from '../components/LoadingSpinner';
+import BookingSummaryModal from '../components/Booking/BookingSummaryModal';
+import SuccessModal from '../components/Booking/SuccessModal';
+import ErrorModal from '../components/Booking/ErrorModal';
 registerLocale("pl", pl);
 
 const Booking = () => {
@@ -26,7 +28,7 @@ const Booking = () => {
     const props = location.state
 
     const { salonId } = useParams()
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     const [workHours, setWorkHours] = useState([]);
     const [openingHours, setOpeningHours] = useState([]);
     const [reservations, setReservations] = useState([]);
@@ -173,7 +175,7 @@ const Booking = () => {
             try {
                 const res = await axios.get('http://127.0.0.1:8000/salon/', config);
 
-                setSalonData(res.data.filter(i => i.id == salonId))
+                setSalonData(res.data.filter(i => i.id === parseInt(salonId)))
                 console.log(res.data)
 
             } catch (err) {
@@ -559,199 +561,33 @@ const Booking = () => {
                         </div>
                     </div>
 
-                    <Modal show={show1} onHide={handleClose1} size="lg" >
-                        <Modal.Header closeButton>
-                            <Modal.Title>Potwierdzenie rezerwacji</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <h5 className='text-center'>
-                                {selectedDate &&
-                                    format(new Date(selectedDate), 'EEEE, dd MMMM yyyy', {
-                                        locale: pl,
-                                    })}
-                            </h5>
-                            <div className='text-center'>
-                                {moment(chooseStartTime, 'HH:mm:ss').format('HH:mm')} -
-                                {moment(chooseEndTime, 'HH:mm:ss').format('HH:mm')}
-                            </div>
-                            <div className='text-center text-muted'>
-                                {salonData[0]?.name}
-                            </div>
+                    <BookingSummaryModal
+                        show1={show1}
+                        handleClose1={handleClose1}
+                        selectedDate={selectedDate}
+                        chooseStartTime={chooseStartTime}
+                        chooseEndTime={chooseEndTime}
+                        salonData={salonData}
+                        selectedEmployee={selectedEmployee}
+                        name={props.name}
+                        time={props.time}
+                        price={props.price}
+                        formik={formik}
+                        convertMinsToTime={convertMinsToTime}
+                    />
 
-                            <h6>Wybrane usługi</h6>
-                            <Container className='p-4 shadow-sm bg-light rounded'>
-                                <Row>
-                                    <Col xs={12} md={4}>
-                                        <div>
-                                            {selectedEmployee[0]?.user.first_name + " " +
-                                                selectedEmployee[0]?.user.last_name}
-                                        </div>
-                                    </Col>
-                                    <Col xs={12} md={4}>
-                                        <div>{props.name}</div>
-                                        <div className='text-muted'><small>{convertMinsToTime(props.time)}</small></div>
-                                    </Col>
-                                    <Col xs={12} md={4} className='text-end'>
-                                        <div>{props.price} zł</div>
-                                    </Col>
-                                </Row>
-                            </Container>
-                            <hr />
-                            <h6>Metody płatności</h6>
-                            <Container className='p-4 shadow-sm bg-light rounded'>
-                                <Row>
-                                    <Col>
-                                        <div className="form-check">
-                                            <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="flexRadioPaymentMethod"
-                                                id="paymentMethod"
-                                                defaultChecked />
-                                            <label
-                                                className="form-check-label"
-                                                htmlFor="paymentMethod">
-                                                Płatność w salonie
-                                            </label>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Container>
+                    <SuccessModal
+                        show2={show2}
+                        handleClose2={handleClose2}
+                        selectedDate={selectedDate}
+                        chooseStartTime={chooseStartTime}
+                        chooseEndTime={chooseEndTime}
+                    />
 
-                            <hr />
-                            <h6>Dane</h6>
-                            <Container>
-                                <Row>
-                                    <Col>
-                                        <div className='mb-3'>
-                                            <label
-                                                htmlFor='inputEmail'
-                                                className='form-label'>
-                                                Email
-                                            </label>
-                                            <input
-                                                className={`form-control ${formik.touched.email && formik.errors.email && 'is-invalid'}`}
-                                                // className='form-control'
-                                                type='email'
-                                                placeholder='Email'
-                                                name='email'
-                                                value={formik.values.email}
-                                                onChange={formik.handleChange}
-                                                onBlur={formik.handleBlur}
-                                            />
-                                            <span className='text-start error'>
-                                                {formik.touched.email && formik.errors.email ? (
-                                                    <div>{formik.errors.email}</div>
-                                                ) : null}
-                                            </span>
-                                        </div>
-
-                                        <div className='mb-3'>
-                                            <label
-                                                htmlFor='inputPhone'
-                                                className='form-label'>
-                                                Telefon
-                                            </label>
-                                            <input
-                                                id='inputPhone'
-                                                className={`form-control ${formik.touched.phone && formik.errors.phone && 'is-invalid'}`}
-                                                // className='form-control'
-                                                type='text'
-                                                placeholder='Telefon'
-                                                name='phone'
-                                                value={formik.values.phone}
-                                                onChange={formik.handleChange}
-                                                onBlur={formik.handleBlur}
-                                            />
-                                            <span className='text-start error'>
-                                                {formik.touched.phone && formik.errors.phone ? (
-                                                    <div>{formik.errors.phone}</div>
-                                                ) : null}
-                                            </span>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Container>
-
-
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Container className='p-2 text-end'>
-                                <Row>
-                                    <Col>
-                                        Łącznie do zapłaty:
-                                        <h5>{props.price} zł</h5>
-                                    </Col>
-                                </Row>
-                            </Container>
-
-                            <Button
-                                type='submit'
-                                variant='primary'
-                                form='bookingForm'
-                                className='w-100'
-                                onClick={(e) => {
-                                    handleClose1()
-                                }}>
-                                Potwierdź i umów
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
-
-                    <Modal show={show2} onHide={handleClose2}>
-                        <Modal.Body>
-                            <div className='text-center'>
-                                <i className="bi bi-check2-circle" style={{ fontSize: "7rem", color: "green" }}></i>
-                                <h5 className='mt-3'>Wizyta potwierdzona</h5>
-                                <h5 className='text-center'>
-                                    {selectedDate &&
-                                        format(new Date(selectedDate), 'EEEE, dd MMMM yyyy', {
-                                            locale: pl,
-                                        })}
-                                </h5>
-                                <div className='text-center'>
-                                    {moment(chooseStartTime, 'HH:mm:ss').format('HH:mm')} -
-                                    {moment(chooseEndTime, 'HH:mm:ss').format('HH:mm')}
-                                </div>
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button
-                                variant="success"
-                                onClick={(e) => {
-                                    handleClose2()
-                                    navigate(`/`)
-                                }}
-                                className='w-100'>
-                                OK
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
-                    <Modal show={show3} onHide={handleClose3}>
-                        <Modal.Body>
-                            <div className='text-center'>
-                                <h5 className='mt-3'>Oops! Coś poszło nie tak</h5>
-                                <i className="bi bi-x-circle" style={{ fontSize: "7rem", color: "red" }}></i>
-                                <div className='text-center mt-2'>
-                                    Prawdopodonie wybrany termin został już zarezerwowany.
-                                    Prosimy spróbować jeszcze raz
-                                </div>
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button
-                                variant="danger"
-                                onClick={(e) => {
-                                    handleClose3()
-                                    window.location.reload(false);
-                                }}
-                                className='w-100'>
-                                Powrót
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
+                    <ErrorModal
+                        show3={show3}
+                        handleClose3={handleClose3}
+                    />
                 </>
             }
         </div>
