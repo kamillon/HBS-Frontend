@@ -67,62 +67,62 @@ const EditEmployee = () => {
         },
     });
 
-    useEffect(() => {
-        const getEmployee = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const url = `http://127.0.0.1:8000/employee/${uid}/`
-
-                    const res = await axios.get(url, config);
-                    setFormData(res.data)
-                    setIsLoading(false)
-                } catch (err) {
-                    setFormData(null)
-                    console.log(err)
-                    setIsLoading(false)
+    const getEmployee = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const url = `http://127.0.0.1:8000/employee/${uid}/`
+
+                const res = await axios.get(url, config);
+                setFormData(res.data)
+                setIsLoading(false)
+            } catch (err) {
                 setFormData(null)
-                console.log("Blad")
+                console.log(err)
                 setIsLoading(false)
             }
-        };
+        } else {
+            setFormData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
-        const getSalons = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
-                    setSalonData(res.data.filter(i => i.owner == currentUser.id))
-                    setIsLoading(false)
-                } catch (err) {
-                    setSalonData(null)
-                    console.log(err)
-                    setIsLoading(false)
+    const getSalons = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                setSalonData(res.data.filter(i => i.owner == currentUser.id))
+                setIsLoading(false)
+            } catch (err) {
                 setSalonData(null)
-                console.log("Blad")
+                console.log(err)
                 setIsLoading(false)
             }
-        };
+        } else {
+            setSalonData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
+    useEffect(() => {
         if (uid) {
             getEmployee()
             getSalons()
@@ -211,13 +211,27 @@ const EditEmployee = () => {
         }
     };
 
-    useEffect(() => {
-        if (accountUpdated || salonUpdated) {
-            navigate(`/${userRole}/employee/`)
+    // useEffect(() => {
+    //     if (accountUpdated || salonUpdated) {
+    //         navigate(`/${userRole}/employee/`)
+    //     }
+    // }, [accountUpdated, salonUpdated])
+
+     useEffect(() => {
+        if (accountUpdated) {
+            getEmployee()
+            setAccountUpdated(false)
         }
-    }, [accountUpdated, salonUpdated])
+    }, [accountUpdated])
 
+    useEffect(() => {
+        if (salonUpdated) {
+            getSalons()
+            setSalonUpdated(false)
+        }
+    }, [salonUpdated])
 
+    console.log(salonData)
     return (
         <div className='container mt-3'>
             <div className='row'>

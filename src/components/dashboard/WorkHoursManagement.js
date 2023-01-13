@@ -14,8 +14,6 @@ import moment from 'moment';
 import WorkHoursCard from './WorkHoursCard';
 
 const WorkHoursManagement = (props) => {
-    console.log(props)
-
     const { access, userRole, currentUser } = useAuth()
     const navigate = useNavigate()
 
@@ -34,38 +32,35 @@ const WorkHoursManagement = (props) => {
 
     const { from_hour, to_hour, is_day_off } = workHours
 
+    const getWorkHours = async () => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${props.uid}/`, config);
+                setWorkHours(res.data)
+                // console.log(res.data)
+            } catch (err) {
+                setWorkHours(null)
+                console.log(err)
+            }
+        } else {
+            setWorkHours(null)
+            console.log("Blad")
+        }
+    };
+
 
     useEffect(() => {
-        const getWorkHours = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${props.uid}/`, config);
-                    setWorkHours(res.data)
-                    // console.log(res.data)
-                } catch (err) {
-                    setWorkHours(null)
-                    console.log(err)
-                }
-            } else {
-                setWorkHours(null)
-                console.log("Blad")
-            }
-        };
-
         getWorkHours()
-
     }, [access])
 
-
-    console.log(workHours)
 
     return (
         <div className='container'>

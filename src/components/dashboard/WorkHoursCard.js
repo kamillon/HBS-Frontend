@@ -58,31 +58,53 @@ const WorkHoursCard = (props) => {
         }
     }
 
+    const getEmployee = async () => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/employee/${employeeId}/`, config);
+                setEmployee(res.data)
+            } catch (err) {
+                setEmployee(null)
+                console.log(err)
+            }
+        } else {
+            setEmployee(null)
+            console.log("Blad")
+        }
+    };
+
+    const getSalonOpeningHours = async () => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
+                setSalonOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
+            } catch (err) {
+                setSalonOpeningHours(null)
+                console.log(err)
+            }
+        } else {
+            setSalonOpeningHours(null)
+            console.log("Blad")
+        }
+    };
 
     useEffect(() => {
-        const getEmployee = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/employee/${employeeId}/`, config);
-                    setEmployee(res.data)
-                } catch (err) {
-                    setEmployee(null)
-                    console.log(err)
-                }
-            } else {
-                setEmployee(null)
-                console.log("Blad")
-            }
-        };
-
         if (employeeId) {
             getEmployee()
         }
@@ -90,30 +112,6 @@ const WorkHoursCard = (props) => {
 
 
     useEffect(() => {
-        const getSalonOpeningHours = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
-                    setSalonOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
-                } catch (err) {
-                    setSalonOpeningHours(null)
-                    console.log(err)
-                }
-            } else {
-                setSalonOpeningHours(null)
-                console.log("Blad")
-            }
-        };
-
-
         if (employee.salon) {
             setSalonId(employee.salon)
         }

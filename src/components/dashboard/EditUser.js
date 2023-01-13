@@ -57,36 +57,38 @@ const EditUser = () => {
             onSubmit(values)
         },
     });
-    useEffect(() => {
-        const getUser = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
 
-                try {
-                    const url = `http://127.0.0.1:8000/auth/users/${uid}/`
-                    const res = await axios.get(url, config);
-                    setData(res.data)
-                    setIsLoading(false)
-
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
-                    setIsLoading(false)
+    const getUser = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const url = `http://127.0.0.1:8000/auth/users/${uid}/`
+                const res = await axios.get(url, config);
+                setData(res.data)
+                setIsLoading(false)
+
+            } catch (err) {
                 setData(null)
-                console.log("Blad")
+                console.log(err)
                 setIsLoading(false)
             }
-        };
+        } else {
+            setData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
+
+    useEffect(() => {
         if (uid) {
             getUser()
         }
@@ -164,7 +166,8 @@ const EditUser = () => {
 
     useEffect(() => {
         if (accountUpdated) {
-            navigate(`/${userRole}/users/`)
+            getUser()
+            setAccountUpdated(false)
         }
     }, [accountUpdated])
 

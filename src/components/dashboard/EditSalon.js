@@ -103,35 +103,36 @@ const EditSalon = () => {
         }
     };
 
-    useEffect(() => {
-        const getSalon = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/${uid}/`, config);
-                    setData(res.data)
-                    setIsLoading(false)
-
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
-                    setIsLoading(false)
+    const getSalon = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/salon/${uid}/`, config);
+                setData(res.data)
+                setIsLoading(false)
+
+            } catch (err) {
                 setData(null)
-                console.log("Blad")
+                console.log(err)
                 setIsLoading(false)
             }
-        };
+        } else {
+            setData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
+
+    useEffect(() => {
         if (uid) {
             getSalon()
             listOwners()
@@ -187,7 +188,8 @@ const EditSalon = () => {
 
     useEffect(() => {
         if (salonUpdated) {
-            navigate(`/${userRole}/salons/`)
+            getSalon()
+            setSalonUpdated(false)
         }
     }, [salonUpdated])
 

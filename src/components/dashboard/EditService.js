@@ -57,90 +57,91 @@ const EditService = () => {
 
     const { name, service_type, describe, time, price, salonID } = formik.values;
 
-    useEffect(() => {
-        const getServices = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/service/${uid}/`, config);
-                    setData(res.data)
-                    setIsLoading(false)
-
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
-                    setIsLoading(false)
+    const getServices = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/service/${uid}/`, config);
+                setData(res.data)
+                setIsLoading(false)
+
+            } catch (err) {
                 setData(null)
-                console.log("Blad")
+                console.log(err)
                 setIsLoading(false)
             }
-        };
+        } else {
+            setData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
-        const getSalons = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
-                    setSalonData(res.data)
-                    setIsLoading(false)
-
-                } catch (err) {
-                    setSalonData(null)
-                    console.log(err)
-                    setIsLoading(false)
+    const getSalons = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                setSalonData(res.data)
+                setIsLoading(false)
+
+            } catch (err) {
                 setSalonData(null)
-                console.log("Blad")
+                console.log(err)
                 setIsLoading(false)
             }
-        };
+        } else {
+            setSalonData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
-        const listOfSalonsOwners = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
-                    setOwnerSalons(res.data)
-                    setIsLoading(false)
-                } catch (err) {
-                    setOwnerSalons(null)
-                    console.log(err)
-                    setIsLoading(false)
+    const listOfSalonsOwners = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
+                setOwnerSalons(res.data)
+                setIsLoading(false)
+            } catch (err) {
                 setOwnerSalons(null)
-                console.log("Blad")
+                console.log(err)
                 setIsLoading(false)
             }
-        };
+        } else {
+            setOwnerSalons(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
+
+    useEffect(() => {
         if (uid) {
             getServices()
             if (currentUser.role === 'admin') {
@@ -177,7 +178,8 @@ const EditService = () => {
 
     useEffect(() => {
         if (serviceUpdated) {
-            navigate(`/${userRole}/services/`)
+            getServices()
+            setServiceUpdated(false)
         }
     }, [serviceUpdated])
 

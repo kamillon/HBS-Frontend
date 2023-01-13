@@ -290,7 +290,7 @@ const EmployeesManagement = () => {
                             </table>
                         </div>
                         :
-                        <></>
+                        <p>Brak pracowników do wyświetlenia</p>
                     }
 
                     <Modal show={show} onHide={handleClose}>

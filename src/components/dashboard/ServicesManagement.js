@@ -284,7 +284,7 @@ const ServiceManagement = () => {
                             </table>
                         </div>
                         :
-                        <></>
+                        <p>Brak usług do wyświetlenia</p>
                     }
 
                     <Modal show={show} onHide={handleClose}>

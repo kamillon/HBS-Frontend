@@ -13,7 +13,6 @@ import moment from 'moment';
 
 
 const OpeningHours = (props) => {
-
     const { uid } = useParams()
     const { access, userRole, currentUser } = useAuth()
     const navigate = useNavigate()
@@ -34,30 +33,30 @@ const OpeningHours = (props) => {
     const { from_hour, to_hour, is_closed } = openingHours
 
 
-    useEffect(() => {
-        const getOpeningHours = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${uid}/`, config);
-                    setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
-                    // console.log(res.data)
-                } catch (err) {
-                    setOpeningHours(null)
-                    console.log(err)
+    const getOpeningHours = async () => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
+            };
+
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${uid}/`, config);
+                setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
+            } catch (err) {
                 setOpeningHours(null)
-                console.log("Blad")
+                console.log(err)
             }
-        };
+        } else {
+            setOpeningHours(null)
+            console.log("Blad")
+        }
+    };
+
+    useEffect(() => {
 
         if (uid) {
             getOpeningHours()
@@ -106,7 +105,6 @@ const OpeningHours = (props) => {
 
         try {
             const res = await axios.patch(`http://127.0.0.1:8000/opening-hours/${openingHours.id}/`, body, config)
-            // console.log(res.data)
             setOpeningHoursUpdated(true);
 
         }
@@ -117,7 +115,8 @@ const OpeningHours = (props) => {
 
     useEffect(() => {
         if (openingHoursUpdated) {
-            window.location.reload(false);
+            getOpeningHours()
+            setOpeningHoursUpdated(false);
         }
     }, [openingHoursUpdated])
 
