@@ -211,13 +211,7 @@ const EditEmployee = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (accountUpdated || salonUpdated) {
-    //         navigate(`/${userRole}/employee/`)
-    //     }
-    // }, [accountUpdated, salonUpdated])
-
-     useEffect(() => {
+    useEffect(() => {
         if (accountUpdated) {
             getEmployee()
             setAccountUpdated(false)
@@ -231,7 +225,6 @@ const EditEmployee = () => {
         }
     }, [salonUpdated])
 
-    console.log(salonData)
     return (
         <div className='container mt-3'>
             <div className='row'>
@@ -250,10 +243,6 @@ const EditEmployee = () => {
                 className="mb-3"
             >
                 <Tab eventKey="general" title="Ogólne">
-
-
-
-
                     <div className="row">
                         {isLoading ?
                             <LoadingSpinner text={"Loading..."} />
@@ -392,8 +381,6 @@ const EditEmployee = () => {
                             </>
                         }
                     </div>
-
-
                 </Tab>
                 <Tab eventKey="assignSalon" title="Przypisz salon">
                     <div className="row">
@@ -451,12 +438,6 @@ const EditEmployee = () => {
                         }
                     </div>
                 </Tab>
-
-
-
-
-
-
                 <Tab eventKey="workHours" title="Godziny pracy">
                     <WorkHoursManagement uid={uid} salon={salon} />
                 </Tab>

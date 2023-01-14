@@ -23,69 +23,62 @@ const EmployeesManagement = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [search, setSearch] = useState('')
 
+    const listUsers = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+            try {
+                const url = `http://127.0.0.1:8000/employee/`
+                const res = await axios.get(url, config);
+                setData(res.data)
+                setIsLoading(false)
+
+            } catch (err) {
+                setData(null)
+                console.log(err)
+                setIsLoading(false)
+            }
+        } else {
+            setData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
+
+    const getSalons = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                setSalonData(res.data)
+                setIsLoading(false)
+
+            } catch (err) {
+                setSalonData(null)
+                console.log(err)
+                setIsLoading(false)
+            }
+        } else {
+            setSalonData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
     useEffect(() => {
-        const listUsers = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const url = `http://127.0.0.1:8000/employee/`
-
-                    const res = await axios.get(url, config);
-
-                    setData(res.data)
-                    console.log(res.data)
-                    setIsLoading(false)
-
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
-                    setIsLoading(false)
-                }
-            } else {
-                setData(null)
-                console.log("Blad")
-                setIsLoading(false)
-            }
-        };
-
-        const getSalons = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
-                    setSalonData(res.data)
-                    console.log(res.data)
-                    setIsLoading(false)
-
-                } catch (err) {
-                    setSalonData(null)
-                    console.log(err)
-                    setIsLoading(false)
-                }
-            } else {
-                setSalonData(null)
-                console.log("Blad")
-                setIsLoading(false)
-            }
-        };
-
-
         listUsers()
         getSalons()
     }, [access])
@@ -100,10 +93,8 @@ const EmployeesManagement = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
-                console.log(res.data)
                 setRemoved(true)
 
             } catch (err) {
@@ -122,10 +113,6 @@ const EmployeesManagement = () => {
 
     const salonDataFiltered = salonData.filter(i => i.owner == currentUser.id)
 
-
-
-
-
     const searchFilter = (data) => {
         return data.filter(item => (
             search === ''
@@ -135,9 +122,6 @@ const EmployeesManagement = () => {
                 item.user.email.toLowerCase().includes(search)
         ))
     }
-
-
-
 
     function getFilteredList() {
         if (!selectedSalon) {
@@ -233,16 +217,16 @@ const EmployeesManagement = () => {
 
 
                     {filteredList.length > 0 ?
-                        <div className="table-responsive" style={{maxHeight: '430px'}}>
+                        <div className="table-responsive" style={{ maxHeight: '430px' }}>
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Id</th>
                                         <th scope="col">Imię i nazwisko</th>
                                         <th scope="col">E-mail</th>
+                                        <th scope="col">Telefon</th>
                                         <th scope="col">Status konta</th>
                                         <th scope="col">SalonId</th>
-                                        <th scope="col">Rola</th>
                                         <th scope="col">Akcje</th>
                                     </tr>
                                 </thead>
@@ -252,12 +236,12 @@ const EmployeesManagement = () => {
                                             <th scope="row">{item.user.id}</th>
                                             <td>{item.user.first_name} {item.user.last_name}</td>
                                             <td>{item.user.email}</td>
+                                            <td>{item.user.phone}</td>
                                             <td>{item.user.is_active ?
                                                 <span className="badge bg-success">Aktywne</span> :
                                                 <span className="badge bg-danger">Nieaktywne</span>}
                                             </td>
                                             <td>{item.salon}</td>
-                                            <td>{item.user.role}</td>
                                             <td>
                                                 <button
                                                     type="button"

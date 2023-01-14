@@ -11,26 +11,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import { subDays, addDays, setHours, setMinutes } from 'date-fns';
 import moment from 'moment';
 
-
 const WorkHoursCard = (props) => {
-
     const { access, userRole, currentUser } = useAuth()
     const navigate = useNavigate()
-
     const weekday = props.weekday
     const sId = props.sId
     const employeeId = props.employeeId
-
-    const initialState = {
-        from_hour: props.from_hour,
-        to_hour: props.to_hour,
-        is_day_off: props.is_day_off,
-    };
-
-    const [workHours, setWorkHours] = useState(initialState);
-    const [salonOpeningHours, setSalonOpeningHours] = useState(initialState);
+    const [workHours, setWorkHours] = useState('');
+    const [salonOpeningHours, setSalonOpeningHours] = useState('');
     const [employee, setEmployee] = useState([]);
-
     const [openingHour, setOpeningHour] = useState(null);
     const [closeHour, setCloseHour] = useState(null);
     const [salonId, setSalonId] = useState(sId)
@@ -121,8 +110,14 @@ const WorkHoursCard = (props) => {
         }
     }, [employee])
 
+    useEffect(() => {
+        setWorkHours({
+            from_hour: props.from_hour,
+            to_hour: props.to_hour,
+            is_day_off: props.is_day_off,
+        })
+    }, [props])
 
-    const [workHoursUpdated, setWorkHoursUpdated] = useState(false);
     const [show1, setShow1] = useState(false)
     const handleShow1 = () => setShow1(true)
     const handleClose1 = () => setShow1(false)
@@ -160,22 +155,14 @@ const WorkHoursCard = (props) => {
             to_hour: tHour,
             is_day_off: is_day_off
         });
-
         try {
             const res = await axios.patch(`http://127.0.0.1:8000/work-hours/${props.id}/`, body, config)
-            setWorkHoursUpdated(true);
+            props.setWorkHoursUpdated(true)
         }
         catch (error) {
             console.log(error)
         }
     };
-
-    useEffect(() => {
-        if (workHoursUpdated) {
-            window.location.reload(false);
-        }
-    }, [workHoursUpdated])
-
 
     useEffect(() => {
         if (from_hour) {
@@ -185,7 +172,6 @@ const WorkHoursCard = (props) => {
             setCloseHour(moment(to_hour, "HH:mm").toDate())
         }
     }, [workHours])
-
 
     function onChange(event) {
         const { name, value, type, checked } = event.target

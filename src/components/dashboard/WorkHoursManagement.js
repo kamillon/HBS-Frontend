@@ -26,9 +26,7 @@ const WorkHoursManagement = (props) => {
     };
 
     const [workHours, setWorkHours] = useState([initialState]);
-
-    // const [openingHour, setOpeningHour] = useState(null);
-    // const [closeHour, setCloseHour] = useState(null);
+    const [workHoursUpdated, setWorkHoursUpdated] = useState(false);
 
     const { from_hour, to_hour, is_day_off } = workHours
 
@@ -41,11 +39,9 @@ const WorkHoursManagement = (props) => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${props.uid}/`, config);
                 setWorkHours(res.data)
-                // console.log(res.data)
             } catch (err) {
                 setWorkHours(null)
                 console.log(err)
@@ -56,11 +52,10 @@ const WorkHoursManagement = (props) => {
         }
     };
 
-
     useEffect(() => {
         getWorkHours()
-    }, [access])
-
+        setWorkHoursUpdated(false)
+    }, [access, workHoursUpdated])
 
     return (
         <div className='container'>
@@ -81,6 +76,7 @@ const WorkHoursManagement = (props) => {
                             is_day_off={item.is_day_off}
                             employeeId={item.employeeId}
                             sId={props.salon}
+                            setWorkHoursUpdated={setWorkHoursUpdated}
                         />
                     ))}
                 </div>
