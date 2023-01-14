@@ -436,7 +436,7 @@ const EditSalon = () => {
                                             type='submit'
                                             disabled={isSubmitting}
                                         >
-                                            Edytuj
+                                            Zapisz
                                         </button>
                                         {isSubmitting ?
                                             <LoadingSpinner text={''} />
