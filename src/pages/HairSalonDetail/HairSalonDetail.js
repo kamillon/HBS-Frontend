@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../../context/AuthContext"
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import ListServices from '../components/ListServices';
-import hair_salon from '../images/hair_salon.png';
+import ListServices from '../../components/ListServices';
+import hair_salon from '../../images/hair_salon.png';
 import SalonContact from './SalonContact';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const HairSalonDetail = (props) => {
     const { access } = useAuth()

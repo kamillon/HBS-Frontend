@@ -3,7 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const ResetPasswordConfirm = () => {
     const { logoutUser } = useAuth()

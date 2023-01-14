@@ -4,8 +4,8 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './SignUp.css';
-import { useAuth } from "../context/AuthContext"
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useAuth } from "../../context/AuthContext"
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const Signup = () => {
     const { isAuthenticated } = useAuth()

@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext, useAuth } from "../context/AuthContext"
-import barber from '../images/barber.svg';
-import searchSalon from '../images/searchSalon.svg';
-import chooseService from '../images/chooseService.svg';
-import schedule from '../images/schedule.svg';
+import { AuthContext, useAuth } from "../../context/AuthContext"
+import barber from '../../images/barber.svg';
+import searchSalon from '../../images/searchSalon.svg';
+import chooseService from '../../images/chooseService.svg';
+import schedule from '../../images/schedule.svg';
 
 
 const Home = () => {

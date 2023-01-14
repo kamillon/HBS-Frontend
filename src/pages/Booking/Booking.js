@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './Booking.css';
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../../context/AuthContext"
 // import ListServices from '../components/ListServices';
 // import { format } from 'date-fns'
 import { subDays, addDays, setHours, setMinutes } from 'date-fns';
@@ -15,10 +15,10 @@ import 'moment/locale/pl';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
-import LoadingSpinner from '../components/LoadingSpinner';
-import BookingSummaryModal from '../components/Booking/BookingSummaryModal';
-import SuccessModal from '../components/Booking/SuccessModal';
-import ErrorModal from '../components/Booking/ErrorModal';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import BookingSummaryModal from '../../components/Booking/BookingSummaryModal';
+import SuccessModal from '../../components/Booking/SuccessModal';
+import ErrorModal from '../../components/Booking/ErrorModal';
 registerLocale("pl", pl);
 
 const Booking = () => {

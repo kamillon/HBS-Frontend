@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../../context/AuthContext"
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import './HairSalon.css';
-import CardComponent from '../components/CardComponent';
-import LoadingSpinner from '../components/LoadingSpinner';
+import CardComponent from '../../components/CardComponent';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const HairSalon = () => {
     const { access } = useAuth()
