@@ -16,6 +16,10 @@ const HairSalonDetail = (props) => {
     const [search, setSearch] = useState('')
     const [selectedType, setSelectedType] = useState('')
     const [isLoading, setIsLoading] = useState(true)
+    const [errors, setErrors] = useState({
+        services: false,
+        employees: false,
+    });
 
 
     const getServices = async () => {
@@ -31,13 +35,21 @@ const HairSalonDetail = (props) => {
             const res = await axios.get(`http://127.0.0.1:8000/list-of-salon-services/${salonId}/`, config);
             setServices(res.data)
             setIsLoading(false)
-
         } catch (err) {
             setServices(null)
             console.log(err)
             setIsLoading(false)
+            if (err.response.status === 404) {
+                setErrors((prevErrors) => {
+                    return {
+                        ...prevErrors,
+                        services: true,
+                    }
+                });
+            }
         }
     };
+
 
     const getEmployee = async () => {
         setIsLoading(true)
@@ -47,7 +59,6 @@ const HairSalonDetail = (props) => {
                 'Accept': 'application/json'
             }
         };
-
         try {
             const url = `http://127.0.0.1:8000/list-of-salon-employees/${salonId}/`
             const res = await axios.get(url, config);
@@ -58,8 +69,15 @@ const HairSalonDetail = (props) => {
             setEmployee(null)
             console.log(err)
             setIsLoading(false)
+            if (err.response.status === 404) {
+                setErrors((prevErrors) => {
+                    return {
+                        ...prevErrors,
+                        employees: true,
+                    }
+                });
+            }
         }
-
     };
 
     const getSalons = async () => {
@@ -70,7 +88,6 @@ const HairSalonDetail = (props) => {
                 'Accept': 'application/json'
             }
         };
-
         try {
             const res = await axios.get('http://127.0.0.1:8000/salon/', config);
             setSalonData(res.data.filter(i => i.id == salonId))
@@ -89,13 +106,22 @@ const HairSalonDetail = (props) => {
         getSalons()
 
     }, [salonId])
-    
 
-    const searchFilteredServices = services.filter(item => (
-        search === ''
-            ? item
-            : item.name.toLowerCase().includes(search)
-    ))
+
+    let searchFilteredServices = ''
+
+
+    if (errors.services) {
+        searchFilteredServices = null
+    }
+    else {
+        searchFilteredServices = services.filter(item => (
+            search === ''
+                ? item
+                : item.name.toLowerCase().includes(search)
+        ))
+    }
+
 
 
     function handleTypeChange(event) {
@@ -109,10 +135,8 @@ const HairSalonDetail = (props) => {
         return searchFilteredServices.filter((item) => item.service_type === selectedType);
     }
 
-
     const filteredList = useMemo(getFilteredList, [selectedType, searchFilteredServices]);
 
-    console.log(salonData)
 
     return (
         <div>
@@ -187,7 +211,7 @@ const HairSalonDetail = (props) => {
                                     </div>
                                 </div>
 
-                                {filteredList.length
+                                {!errors.services
                                     ? filteredList.map((item) => (
                                         <ListServices
                                             key={item.id}
@@ -207,7 +231,7 @@ const HairSalonDetail = (props) => {
                             <div className="col-lg-4 bg-light">
                                 <div className='contact-container mt-4'>
                                     <h6>KONTAKT I GODZINY OTWARCIA</h6>
-                                    {employee.length > 0 ?
+                                    {salonData ?
                                         salonData.map((salon) => (
                                             <div key={salon.id} className="p-2 mb-5 mt-4">
                                                 <i className="bi bi-phone me-2"></i>
@@ -230,7 +254,7 @@ const HairSalonDetail = (props) => {
                                     </table>
                                 </div>
 
-                                {employee.length > 0 ?
+                                {!errors.employees ?
                                     <div className='employee-container mt-4'>
                                         <h6>
                                             PRACOWNICY
