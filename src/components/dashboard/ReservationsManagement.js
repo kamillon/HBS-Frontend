@@ -216,9 +216,8 @@ const ReservationsManagement = () => {
 
                     <div className='mb-3'>
                         <div className="row">
-
-                            <div className="col-md-6">
-                                {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                            {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                                <div className="col-md-6">
                                     <div>
                                         <label
                                             htmlFor="chooseSalon"
@@ -241,8 +240,8 @@ const ReservationsManagement = () => {
                                             ))}
                                         </select>
                                     </div>
-                                }
-                            </div>
+                                </div>
+                            }
                             <div className='col-md-6'>
                                 <div>
                                     <label

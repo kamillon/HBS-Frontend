@@ -26,9 +26,7 @@ const Booking = () => {
     const navigate = useNavigate()
     const location = useLocation();
     const props = location.state
-
     const { salonId } = useParams()
-    // const [data, setData] = useState([]);
     const [workHours, setWorkHours] = useState([]);
     const [openingHours, setOpeningHours] = useState([]);
     const [reservations, setReservations] = useState([]);
@@ -73,9 +71,6 @@ const Booking = () => {
 
 
     const { serviceId, employeeId, is_active, phone, email, price } = formik.values;
-
-    // const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value ?? e.target.checked });
-
 
     const [show1, setShow1] = useState(false)
     const handleShow1 = () => setShow1(true)
@@ -264,7 +259,6 @@ const Booking = () => {
             }
         };
 
-
         if (employeeId) {
             listWorkHours(employeeId)
         }
@@ -297,32 +291,11 @@ const Booking = () => {
             reservationEmployeeId: item.employeeId,
         })));
 
-
-        // setChooseDate(moment(selectedDate).format("YYYY-MM-DD"))
-        // setChooseStartTime(moment(selectedDate).format("HH:mm:ss"))
-        // setChooseEndTime(moment(selectedDate).add(props.time, 'minutes').format("HH:mm:ss"))
         setChooseDate(moment(selectedDate).format("YYYY-MM-DD"))
         setChooseStartTime(moment(selectedTime).format("HH:mm:ss"))
         setChooseEndTime(moment(selectedTime).add(props.time, 'minutes').format("HH:mm:ss"))
 
     }, [workHours, reservations, selectedDate, selectedTime]);
-
-
-    // let minTime = setHours(setMinutes(new Date(),
-    //     moment(rowData[0]?.from_hour, 'HH:mm').minute()),
-    //     moment(rowData[0]?.from_hour, 'HH:mm').hour()
-    // )
-
-    // let maxTime = setHours(setMinutes(new Date(),
-    //     moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').minute()),
-    //     moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').hour()
-    // )
-
-
-    // const currentTime = setHours(setMinutes(new Date(),
-    //     moment(new Date(), 'HH:mm').minute()),
-    //     moment(new Date(), 'HH:mm').hour()
-    // )
 
     const currentTime = setHours(setMinutes(new Date(),
         moment(new Date(), 'HH:mm').minute()),
@@ -346,7 +319,6 @@ const Booking = () => {
     console.log(minTime)
 
 
-    // if (moment(selectedDate).day() === moment(new Date()).day()) {
     if (moment(selectedDate).format("LL") === moment(new Date()).format("LL")) {
         if (minTime < currentTime && currentTime < maxTime) {
             minTime = currentTime;
@@ -368,8 +340,7 @@ const Booking = () => {
                         afterTime = moment(e.end);
                     if (
                         x.isBetween(beforeTime, afterTime) ||
-                        x.isSame(moment(beforeTime)) ||
-                        x.isSame(moment(afterTime))
+                        x.isSame(moment(beforeTime))
                     ) {
                         return false;
                     }
@@ -412,42 +383,18 @@ const Booking = () => {
                                                 ))}
                                             </select>
                                         </div>
-                                        {/* <div className='mb-3'>
-                                    // <DatePicker
-                                    //     className='mt-3'
-                                    //     // withPortal
-                                    //     inline
-                                    //     selected={selectedDate}
-                                    //     onChange={date => setSelectedDate(date)}
-                                    //     calendarStartDay={1}
-                                    //     dateFormat='yyyy/MM/dd'
-                                    //     minDate={new Date()}
-                                    //     maxDate={addDays(new Date(), 14)}
-                                    //     // excludeDates={holidays}
-                                    //     // includeDates={data}
-                                    //     filterDate={isWeekday}
-                                    //     showTimeSelect
-                                    //     timeFormat='HH:mm'
-                                    //     timeIntervals={30}
-                                    //     minTime={minTime}
-                                    //     maxTime={maxTime}
-                                    // // excludeTimes={selectedDate.getDate() == new Date().getDate() ? timeOff : timeOff2}
-                                    //     filterTime={filterPassedTime}
-                                    // /> */}
-
                                         <div className='mb-3 d-flex flex-row'>
                                             <div>
                                                 <DatePicker
                                                     locale="pl"
                                                     className='mt-3'
-                                                    // withPortal
                                                     inline
                                                     selected={selectedDate}
                                                     onChange={date => { setSelectedDate(date); setSelectedTime(date) }}
                                                     calendarStartDay={1}
                                                     dateFormat='yyyy/MM/dd'
                                                     minDate={new Date()}
-                                                    maxDate={addDays(new Date(), 14)}
+                                                    maxDate={addDays(new Date(), 28)}
                                                     filterDate={isWeekday}
                                                 />
                                             </div>
