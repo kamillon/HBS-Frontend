@@ -20,6 +20,12 @@ const SalonOwnerDashboard = () => {
                         <DashboardCard
                             path={"employee/"}
                             text={"Pracownicy"}
+                            className={"bi bi-people-fill fs-1"}
+                        />
+
+                        <DashboardCard
+                            path={"customers/"}
+                            text={"Klienci"}
                             className={"bi bi-people fs-1"}
                         />
 

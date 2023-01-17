@@ -22,6 +22,12 @@ const EmployeeDashboard = () => {
                             text={"Rezerwacje"}
                             className={"bi bi-calendar-check-fill fs-1"}
                         />
+
+                        <DashboardCard
+                            path={"customers/"}
+                            text={"Klienci"}
+                            className={"bi bi-people fs-1"}
+                        />
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from "../../context/AuthContext"
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ListServices from '../../components/ListServices';
 import hair_salon from '../../images/hair_salon.png';
@@ -8,6 +8,7 @@ import SalonContact from './SalonContact';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 const HairSalonDetail = (props) => {
+    const navigate = useNavigate()
     const { access } = useAuth()
     const { salonId } = useParams()
     const [services, setServices] = useState([])
@@ -46,6 +47,7 @@ const HairSalonDetail = (props) => {
                         services: true,
                     }
                 });
+                navigate(-1)
             }
         }
     };

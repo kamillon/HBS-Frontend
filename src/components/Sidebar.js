@@ -94,6 +94,15 @@ const Sidebar = (props) => {
                         </li>
 
                         <li className="nav-item mb-2">
+                            <Link to={`/${userRole}/customers/`} className="nav-link text-secondary">
+                                <i className="bi bi-people"></i>
+                                <span className="ms-3">
+                                    Klienci
+                                </span>
+                            </Link>
+                        </li>
+                        
+                        <li className="nav-item mb-2">
                             <Link to={`/${userRole}/salons/`} className="nav-link text-secondary">
                                 <i className="bi bi-building"></i>
                                 <span className="ms-3">
@@ -149,6 +158,14 @@ const Sidebar = (props) => {
                                 <i className="bi bi-house-door-fill"></i>
                                 <span className="ms-3">
                                     Dashboard
+                                </span>
+                            </Link>
+                        </li>
+                        <li className="nav-item mb-2">
+                            <Link to={`/${userRole}/customers/`} className="nav-link text-secondary">
+                                <i className="bi bi-people"></i>
+                                <span className="ms-3">
+                                    Klienci
                                 </span>
                             </Link>
                         </li>
