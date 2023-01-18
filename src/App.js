@@ -39,6 +39,7 @@ import AddEmployee from './components/dashboard/AddEmployee';
 import EditEmployee from './components/dashboard/EditEmployee';
 import Customers from './components/dashboard/Customers';
 import CustomerDetails from './components/dashboard/CustomerDetails';
+import AddReservation from './components/dashboard/AddReservation';
 
 const ROLES = {
   "customer": "customer",
@@ -95,6 +96,7 @@ function App() {
               <Route path='/employee/customers/' element={<Customers />} />
               <Route path='/employee/customers/details/:uid' element={<CustomerDetails />} />
               <Route path='/employee/reservations/' element={<Reservations />} />
+              <Route path='/employee/reservations/add/' element={<AddReservation />} />
               {/* <Route path='/employee/work-hours/' element={<WorkHours />} /> */}
               <Route path='/employee/account-settings/' element={<AccountSettings />} />
             </Route>
@@ -111,6 +113,7 @@ function App() {
               {/* <Route path='/salon_owner/salons/add/' element={<AddSalon/>} /> */}
               <Route path='/salon_owner/salons/edit/:uid' element={<EditSalon />} />
               <Route path='/salon_owner/reservations/' element={<Reservations />} />
+              <Route path='/salon_owner/reservations/add/' element={<AddReservation />} />
               <Route path='/salon_owner/services/' element={<Services />} />
               <Route path='/salon_owner/services/add/' element={<AddService />} />
               <Route path='/salon_owner/services/edit/:uid' element={<EditService />} />

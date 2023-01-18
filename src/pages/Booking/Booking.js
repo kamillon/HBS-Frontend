@@ -43,6 +43,7 @@ const Booking = () => {
 
     const [isTime, setIsTime] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    
 
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
 
@@ -51,8 +52,8 @@ const Booking = () => {
             serviceId: props.serviceId,
             employeeId: props.employee[0].user.id,
             is_active: false,
-            phone: currentUser?.phone,
-            email: currentUser?.email,
+            phone: props.customer ? props.customer.phone : currentUser?.phone,
+            email: props.customer ? props.customer.email : currentUser?.email,
             price: props.price,
         },
         validationSchema: Yup.object({
@@ -108,7 +109,7 @@ const Booking = () => {
             };
 
             const body = JSON.stringify({
-                customerId: currentUser.id,
+                customerId: props.customer ? props.customer.id : currentUser.id,
                 serviceId: serviceId,
                 salonId: salonId,
                 employeeId: employeeId,
@@ -478,7 +479,8 @@ const Booking = () => {
 
                                     {employeeId && selectedDate && isTime ?
                                         access ?
-                                            userRole === "customer" ?
+                                            userRole === "customer" ||
+                                            ((userRole === "salon_owner" || userRole === "employee") && props.customer)?
                                                 <button
                                                     type="button"
                                                     className="btn btn-primary w-100 mt-4"

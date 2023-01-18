@@ -209,6 +209,17 @@ const ReservationsManagement = () => {
                                             onChange={(e) => setSearch(e.target.value.toLowerCase())}
                                         />
                                     </div>
+                                    {(currentUser.role === 'salon_owner' || currentUser.role === 'employee') &&
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => navigate(`/${userRole}/reservations/add/`)}
+                                                type='button'
+                                                className='btn btn-primary'
+                                            >
+                                                DODAJ REZERWACJĘ
+                                            </button>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -216,8 +227,9 @@ const ReservationsManagement = () => {
 
                     <div className='mb-3'>
                         <div className="row">
-                            {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
-                                <div className="col-md-6">
+
+                            <div className="col-md-6">
+                                {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
                                     <div>
                                         <label
                                             htmlFor="chooseSalon"
@@ -240,8 +252,8 @@ const ReservationsManagement = () => {
                                             ))}
                                         </select>
                                     </div>
-                                </div>
-                            }
+                                }
+                            </div>
                             <div className='col-md-6'>
                                 <div>
                                     <label
