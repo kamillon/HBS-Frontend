@@ -3,9 +3,6 @@ import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import wykrzyknik from '../../images/wykrzyknik.png';
 import LoadingSpinner from '../LoadingSpinner';
 
 const CustomerManagement = () => {
@@ -13,16 +10,11 @@ const CustomerManagement = () => {
     const { access, userRole, currentUser } = useAuth()
     const [data, setData] = useState([]);
     const [salonData, setSalonData] = useState([]);
-    const [removed, setRemoved] = useState(false);
-    const [show, setShow] = useState(false)
-    const handleShow = () => setShow(true)
-    const handleClose = () => setShow(false)
-    const [userData, setUserData] = useState({})
     const [selectedSalon, setSelectedSalon] = useState('');
-    const [currentSalon, setCurrentSalon] = useState([]);
     const [employeeSalon, setEmployeeSalon] = useState('');
     const [isLoading, setIsLoading] = useState(true)
     const [search, setSearch] = useState('')
+    const [error, setError] = useState(null);
 
     const listCustomers = async (salon) => {
         setIsLoading(true)
@@ -39,11 +31,15 @@ const CustomerManagement = () => {
                 const res = await axios.get(url, config);
                 setData(res.data)
                 setIsLoading(false)
+                setError(null)
 
             } catch (err) {
                 setData(null)
                 console.log(err)
                 setIsLoading(false)
+                if (err.response.status == 404) {
+                    setError('Brak klientów do wyświetlenia');
+                }
             }
         } else {
             setData(null)
@@ -96,7 +92,6 @@ const CustomerManagement = () => {
             setEmployeeSalon(null)
             console.log(err)
         }
-
     };
 
     useEffect(() => {
@@ -124,12 +119,6 @@ const CustomerManagement = () => {
     }, [selectedSalon, employeeSalon])
 
 
-    useEffect(() => {
-        if (removed) {
-            window.location.reload(false);
-        }
-    }, [removed])
-
     let salonDataFiltered = ''
     if (userRole === "salon_owner") {
         salonDataFiltered = salonData.filter(i => i.owner == currentUser.id)
@@ -139,13 +128,18 @@ const CustomerManagement = () => {
     }
 
     const searchFilter = (data) => {
-        return data.filter(item => (
-            search === ''
-                ? item
-                : item.customerId.user.first_name.toLowerCase().includes(search) ||
-                item.customerId.user.last_name.toLowerCase().includes(search) ||
-                item.customerId.user.email.toLowerCase().includes(search)
-        ))
+        if (data) {
+            return data.filter(item => (
+                search === ''
+                    ? item
+                    : item.customerId.user.first_name.toLowerCase().includes(search) ||
+                    item.customerId.user.last_name.toLowerCase().includes(search) ||
+                    item.customerId.user.email.toLowerCase().includes(search)
+            ))
+        }
+        else {
+            return null
+        }
     }
 
     function getFilteredList() {
@@ -181,25 +175,6 @@ const CustomerManagement = () => {
                                             onChange={(e) => setSearch(e.target.value.toLowerCase())}
                                         />
                                     </div>
-                                    {/* <div className="p-2">
-                                        {salonDataFiltered.length > 0 ?
-                                            <button
-                                                onClick={() => navigate(`/${userRole}/employee/add/`)}
-                                                type='button'
-                                                className='btn btn-primary'
-                                            >
-                                                DODAJ KLIENTA
-                                            </button>
-                                            :
-                                            <button
-                                                type='button'
-                                                disabled
-                                                className='btn btn-primary'
-                                            >
-                                                DODAJ KLIENTA
-                                            </button>
-                                        }
-                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -236,11 +211,14 @@ const CustomerManagement = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div className='row'>
+                                <div className="col-12 mt-3">
+                                    {error && error}
+                                </div>
+                            </div>
                         </div>
                     }
-
-
-                    {filteredList.length > 0 ?
+                    {data && filteredList.length > 0 ?
                         <div className="table-responsive" style={{ maxHeight: '430px' }}>
                             <table className="table table-hover">
                                 <thead>
@@ -294,5 +272,3 @@ const CustomerManagement = () => {
 };
 
 export default CustomerManagement;
-
-

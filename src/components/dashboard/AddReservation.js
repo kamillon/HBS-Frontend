@@ -331,11 +331,20 @@ const AddReservation = () => {
 
     return (
         <div className='container mt-5'>
+            <div className='row'>
+                <div className='col-12 mb-4'>
+                    <button
+                        className='btn btn-secondary me-1'
+                        onClick={() => navigate(`/${userRole}/reservations/`)}>
+                        Powrót
+                    </button>
+                </div>
+            </div>
             {isLoading ?
                 <LoadingSpinner text={"Loading..."} />
                 :
                 <>
-                    <div className='mt-5'>
+                    <div className='container mt-3 d-flex align-items-center justify-content-center'>
                         <div className='row p-4 p-sm-4 shadow p-3 mb-5 bg-white rounded'>
                             <div className='col-12'>
                                 <h1 className='mb-5'>Dodawanie rezerwacji</h1>
@@ -552,5 +561,3 @@ const AddReservation = () => {
 };
 
 export default AddReservation;
-
-
