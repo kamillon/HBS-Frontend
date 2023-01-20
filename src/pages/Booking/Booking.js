@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './Booking.css';
 import { useAuth } from "../../context/AuthContext"
-// import ListServices from '../components/ListServices';
-// import { format } from 'date-fns'
 import { subDays, addDays, setHours, setMinutes } from 'date-fns';
-// import { Modal, Button, Col, Row, Container } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import moment from 'moment';
@@ -15,10 +11,11 @@ import 'moment/locale/pl';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
+import { format } from 'date-fns'
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BookingSummaryModal from '../../components/Booking/BookingSummaryModal';
-import SuccessModal from '../../components/Booking/SuccessModal';
-import ErrorModal from '../../components/Booking/ErrorModal';
+import SuccessModal from '../../components/SuccessModal';
+import ErrorModal from '../../components/ErrorModal';
 registerLocale("pl", pl);
 
 const Booking = () => {
@@ -43,7 +40,7 @@ const Booking = () => {
 
     const [isTime, setIsTime] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
-    
+
 
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
 
@@ -480,7 +477,7 @@ const Booking = () => {
                                     {employeeId && selectedDate && isTime ?
                                         access ?
                                             userRole === "customer" ||
-                                            ((userRole === "salon_owner" || userRole === "employee") && props.customer)?
+                                                ((userRole === "salon_owner" || userRole === "employee") && props.customer) ?
                                                 <button
                                                     type="button"
                                                     className="btn btn-primary w-100 mt-4"
@@ -527,17 +524,40 @@ const Booking = () => {
                     />
 
                     <SuccessModal
-                        show2={show2}
-                        handleClose2={handleClose2}
-                        selectedDate={selectedDate}
-                        chooseStartTime={chooseStartTime}
-                        chooseEndTime={chooseEndTime}
-                    />
+                        show={show2}
+                        handleClose={handleClose2}
+                        title={"Wizyta potwierdzona"}
+                        onClick={(e) => {
+                            handleClose2()
+                            navigate(`/`)
+                        }}
+                    >
+                        <h5 className='text-center'>
+                            {selectedDate &&
+                                format(new Date(selectedDate), 'EEEE, dd MMMM yyyy', {
+                                    locale: pl,
+                                })}
+                        </h5>
+                        <div className='text-center'>
+                            {moment(chooseStartTime, 'HH:mm:ss').format('HH:mm') + " - " +
+                                moment(chooseEndTime, 'HH:mm:ss').format('HH:mm')}
+                        </div>
+                    </SuccessModal>
 
                     <ErrorModal
-                        show3={show3}
-                        handleClose3={handleClose3}
-                    />
+                        show={show3}
+                        handleClose={handleClose3}
+                        title={"Oops! Coś poszło nie tak"}
+                        onClick={(e) => {
+                            handleClose3()
+                            window.location.reload(false);
+                        }}
+                    >
+                        <div className='text-center mt-2'>
+                            Prawdopodonie wybrany termin został już zarezerwowany.
+                            Prosimy spróbować jeszcze raz
+                        </div>
+                    </ErrorModal>
                 </>
             }
         </div>

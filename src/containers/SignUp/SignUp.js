@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './SignUp.css';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../../components/LoadingSpinner';
+import SuccessModal from '../../components/SuccessModal';
+import ErrorModal from '../../components/ErrorModal';
 
 const Signup = () => {
     const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+
+    const [show1, setShow1] = useState(false)
+    const handleShow1 = () => setShow1(true)
+    const handleClose1 = () => setShow1(false)
+
+    const [show2, setShow2] = useState(false)
+    const handleShow2 = () => setShow2(true)
+    const handleClose2 = () => setShow2(false)
+
 
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
     const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
@@ -83,6 +95,7 @@ const Signup = () => {
             catch (error) {
                 console.log(error)
                 setIsLoading(false)
+                handleShow2()
             }
             setAccountCreated(true);
             setIsLoading(false)
@@ -91,10 +104,10 @@ const Signup = () => {
 
 
     if (isAuthenticated) {
-        return <Navigate to='/' />
+        navigate(`/`)
     }
     if (accountCreated) {
-        return <Navigate to='/login' />
+        handleShow1()
     }
 
     return (
@@ -264,6 +277,35 @@ const Signup = () => {
                     </form>
                 </>
             }
+
+            <SuccessModal
+                show={show1}
+                handleClose={handleClose1}
+                title={"Twoje konto zostało utworzone!"}
+                onClick={(e) => {
+                    handleClose1()
+                    navigate(`/login`)
+                }}
+            >
+                <div className='text-center'>
+                    Na podany adres e-mail wysłaliśmy link do aktywacji konta.
+                </div>
+            </SuccessModal>
+
+            <ErrorModal
+                show={show2}
+                handleClose={handleClose2}
+                title={"Wystąpił błąd"}
+                onClick={(e) => {
+                    handleClose2()
+                    window.location.reload(false);
+                }}
+            >
+                <div className='text-center mt-2'>
+                    Spróbuj ponownie.
+                </div>
+            </ErrorModal>
+
         </div>
     );
 };
