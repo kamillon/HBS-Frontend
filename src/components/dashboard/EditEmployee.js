@@ -382,7 +382,7 @@ const EditEmployee = () => {
                         }
                     </div>
                 </Tab>
-                <Tab eventKey="assignSalon" title="Przypisz salon">
+                <Tab eventKey="assignedSalon" title="Przypisany salon">
                     <div className="row">
                         {isLoading ?
                             <LoadingSpinner text={"Loading..."} />
@@ -438,7 +438,7 @@ const EditEmployee = () => {
                         }
                     </div>
                 </Tab>
-                <Tab eventKey="workHours" title="Godziny pracy">
+                <Tab eventKey="workSchedule" title="Grafik pracy">
                     <WorkHoursManagement uid={uid} salon={salon} />
                 </Tab>
             </Tabs>

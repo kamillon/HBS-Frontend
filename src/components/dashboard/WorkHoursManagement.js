@@ -60,7 +60,7 @@ const WorkHoursManagement = (props) => {
         <div className='container'>
             <div className='row mb-5'>
                 <div className='col-12 text-center'>
-                    <h1>Godziny pracy</h1>
+                    <h1>Grafik pracy</h1>
                 </div>
             </div>
             <div className='row'>
