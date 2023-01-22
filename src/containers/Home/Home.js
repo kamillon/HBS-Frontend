@@ -22,15 +22,15 @@ const Home = () => {
                 <div className='container'>
                     <div className='d-sm-flex align-items-center justify-content-between'>
                         <div className='px-5'>
-                            <h1>Umów się<br />
-                                na nowy look</h1>
-                            <span>Odkryj najlepsze salony w okolicy i umów się na wizytę</span>
+                                <h1>Odważ się na zmianę<br/>
+                                i umów wizytę już dziś!</h1>
+                            <span>Zarezerwuj wizytę online w najlepszych salonach w Twojej okolicy!</span>
                             <form className='search-bar' onSubmit={onSubmit}>
                                 <div className="input-group mt-5">
                                     <input
                                         type="search"
                                         className="form-control"
-                                        placeholder="Wyszukaj miasto"
+                                        placeholder="Lokalizacja"
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
                                     />
