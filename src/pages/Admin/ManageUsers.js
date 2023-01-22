@@ -5,7 +5,6 @@ import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import wykrzyknik from '../../images/wykrzyknik.png';
 import Sidebar from '../../components/Sidebar';
 import UserManagement from '../../components/UserManagement';
 import './admin.css';
@@ -190,7 +189,6 @@ const ManageUsers = () => {
     //                 </Modal.Header>
     //                 <Modal.Body>
     //                     <div className='text-center'>
-    //                         <img src={wykrzyknik} style={{width: "15%"}} alt="" />
     //                         <h4>Jesteś pewny?</h4>
     //                         <p>Czy na pewno chcesz usunąć użytkownika {userData.first_name} {userData.last_name}?</p>
     //                     </div>

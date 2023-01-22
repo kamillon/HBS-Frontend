@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import wykrzyknik from '../../images/wykrzyknik.png';
 import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

@@ -5,7 +5,6 @@ import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import wykrzyknik from '../../images/wykrzyknik.png';
 import LoadingSpinner from '../LoadingSpinner';
 import SearchBar from '../SearchBar';
 
@@ -293,7 +292,7 @@ const ServiceManagement = () => {
                         </Modal.Header>
                         <Modal.Body>
                             <div className='text-center'>
-                                <img src={wykrzyknik} style={{ width: "15%" }} alt="wykrzyknik" />
+                                <i className="bi bi-exclamation-circle" style={{ fontSize: "7rem", color: "red" }}></i>
                                 <h4>Jesteś pewny?</h4>
                                 <p>Czy na pewno chcesz usunąć usługę {servicesData.name}?</p>
                             </div>

@@ -5,7 +5,6 @@ import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import wykrzyknik from '../../images/wykrzyknik.png';
 import LoadingSpinner from '../LoadingSpinner';
 
 const ReservationsManagement = () => {
@@ -228,8 +227,8 @@ const ReservationsManagement = () => {
                     <div className='mb-3'>
                         <div className="row">
 
-                            <div className="col-md-6">
-                                {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                            {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
+                                <div className="col-md-6">
                                     <div>
                                         <label
                                             htmlFor="chooseSalon"
@@ -252,8 +251,8 @@ const ReservationsManagement = () => {
                                             ))}
                                         </select>
                                     </div>
-                                }
-                            </div>
+                                </div>
+                            }
                             <div className='col-md-6'>
                                 <div>
                                     <label
@@ -343,7 +342,7 @@ const ReservationsManagement = () => {
                         </Modal.Header>
                         <Modal.Body>
                             <div className='text-center'>
-                                <img src={wykrzyknik} style={{ width: "15%" }} alt="" />
+                                <i className="bi bi-exclamation-circle" style={{ fontSize: "7rem", color: "red" }}></i>
                                 <h4>Jesteś pewny?</h4>
                                 <p>Czy na pewno chcesz anulować rezerwację o id: {reservationData.id}?</p>
                             </div>

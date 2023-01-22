@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
-import wykrzyknik from '../images/wykrzyknik.png';
 import UsersTable from './UsersTable';
 import LoadingSpinner from './LoadingSpinner';
 

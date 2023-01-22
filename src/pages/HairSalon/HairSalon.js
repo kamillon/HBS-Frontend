@@ -5,6 +5,7 @@ import axios from 'axios';
 import './HairSalon.css';
 import CardComponent from '../../components/CardComponent';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import SearchBar from '../../components/SearchBar';
 
 const HairSalon = () => {
     const { access } = useAuth()
@@ -15,6 +16,7 @@ const HairSalon = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [searchParams, setSearchParams] = useSearchParams();
     const city = searchParams.get('city')
+    const [searchByName, setSearchByName] = useState('')
 
     useEffect(() => {
         const listSalons = async () => {
@@ -34,6 +36,7 @@ const HairSalon = () => {
                 }
                 const res = await axios.get(url, config);
                 setData(res.data)
+                setSearchByName(res.data)
                 setIsLoading(false)
 
             } catch (err) {
@@ -44,6 +47,11 @@ const HairSalon = () => {
         };
         listSalons()
     }, [city])
+
+    useEffect(() => {
+        setSearchByName(data)
+    }, [data])
+
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -87,7 +95,7 @@ const HairSalon = () => {
                                             <input
                                                 type="search"
                                                 className="form-control p-2"
-                                                placeholder="Wyszukaj salon"
+                                                placeholder="Lokalizacja"
                                                 value={search}
                                                 onChange={handleChange}
                                             />
@@ -103,9 +111,24 @@ const HairSalon = () => {
                             </div>
                         </div>
                     </section>
+                    <section className='container'>
+                        <div className='row'>
+                            <div className="col-12 col-md-4 p-4">
+                                <div className=''>
+                                <SearchBar
+                                    keys={['name', 'street']}
+                                    data={data}
+                                    placeholder={"Wyszukaj po nazwie"}
+                                    setSearch={setSearchByName}
+                                />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                     <div className='container'>
-                        {data.length <= 0 ?
+
+                        {searchByName.length <= 0 ?
                             <div className='row text-center'>
                                 <h4 className='p-5'>
                                     Nie znaleziono salonów
@@ -113,8 +136,8 @@ const HairSalon = () => {
                             </div>
                             :
                             <div className='row'>
-                                {data.length
-                                    ? data.map((item) => (
+                                {searchByName.length
+                                    ? searchByName.map((item) => (
                                         <div
                                             className='col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch'
                                             key={item.id}

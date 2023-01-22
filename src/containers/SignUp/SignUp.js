@@ -91,13 +91,13 @@ const Signup = () => {
             try {
                 const res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
                 setIsLoading(false)
+                setAccountCreated(true);
             }
             catch (error) {
                 console.log(error)
                 setIsLoading(false)
                 handleShow2()
             }
-            setAccountCreated(true);
             setIsLoading(false)
         }
     };
@@ -108,6 +108,7 @@ const Signup = () => {
     }
     if (accountCreated) {
         handleShow1()
+        setAccountCreated(false);
     }
 
     return (

@@ -5,7 +5,6 @@ import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import wykrzyknik from '../../images/wykrzyknik.png';
 import Sidebar from '../Sidebar';
 import UserManagement from '../UserManagement';
 import '../../pages/Admin/admin.css';

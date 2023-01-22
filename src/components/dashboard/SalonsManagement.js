@@ -5,7 +5,6 @@ import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import wykrzyknik from '../../images/wykrzyknik.png';
 import Sidebar from '../Sidebar';
 import LoadingSpinner from '../LoadingSpinner';
 import SearchBar from '../SearchBar';
@@ -231,7 +230,7 @@ const SalonsManagement = () => {
                         </Modal.Header>
                         <Modal.Body>
                             <div className='text-center'>
-                                <img src={wykrzyknik} style={{ width: "15%" }} alt="" />
+                                <i className="bi bi-exclamation-circle" style={{ fontSize: "7rem", color: "red" }}></i>
                                 <h4>Jesteś pewny?</h4>
                                 <p>Czy na pewno chcesz usunąć salon {salonData.name}?</p>
                             </div>
@@ -347,7 +346,6 @@ export default SalonsManagement;
 //                 </Modal.Header>
 //                 <Modal.Body>
 //                     <div className='text-center'>
-//                         <img src={wykrzyknik} style={{width: "15%"}} alt="" />
 //                         <h4>Jesteś pewny?</h4>
 //                         <p>Czy na pewno chcesz usunąć salon {salonData.nazwa}?</p>
 //                     </div>
