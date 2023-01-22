@@ -54,14 +54,6 @@ const Sidebar = (props) => {
                             </Link>
                         </li>
 
-                        <li className="nav-item mb-2">
-                            <Link to={`/${userRole}/statistics/`} className="nav-link text-secondary">
-                                <i className="bi bi-graph-up"></i>
-                                <span className="ms-3">
-                                    Statystyki
-                                </span>
-                            </Link>
-                        </li>
                         <hr />
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
@@ -125,15 +117,6 @@ const Sidebar = (props) => {
                                 <i className="bi bi-calendar-check-fill"></i>
                                 <span className="ms-3">
                                     Rezerwacje
-                                </span>
-                            </Link>
-                        </li>
-
-                        <li className="nav-item mb-2">
-                            <Link to={`/${userRole}/statistics/`} className="nav-link text-secondary">
-                                <i className="bi bi-graph-up"></i>
-                                <span className="ms-3">
-                                    Statystyki
                                 </span>
                             </Link>
                         </li>
@@ -285,14 +268,6 @@ const Sidebar = (props) => {
                     </Link>
                 </li>
 
-                <li className="nav-item mb-2">
-                    <Link to={`/${userRole}/statistics/`} className="nav-link text-secondary">
-                        <i className="bi bi-graph-up"></i>
-                        <span className="ms-3">
-                            Statystyki
-                        </span>
-                    </Link>
-                </li> */}
 
 
 
