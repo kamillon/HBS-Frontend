@@ -47,7 +47,7 @@ const HairSalonDetail = (props) => {
                         services: true,
                     }
                 });
-                navigate(-1)
+                navigate(`/hairsalon`)
             }
         }
     };
@@ -78,6 +78,7 @@ const HairSalonDetail = (props) => {
                         employees: true,
                     }
                 });
+                navigate(`/hairsalon`)
             }
         }
     };
