@@ -7,7 +7,6 @@ import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
 
 const AddSalon = () => {
-
     const navigate = useNavigate()
     const { access, userRole } = useAuth()
     const [salonCreated, setSalonCreated] = useState(false);
@@ -76,7 +75,6 @@ const AddSalon = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/salon-owner/`, config);
                 setData(res.data)

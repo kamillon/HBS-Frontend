@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -8,7 +8,6 @@ import { useAuth } from "../../context/AuthContext"
 const ChangeEmailConfirm = () => {
     const { uid, token } = useParams()
     const { logoutUser } = useAuth()
-    const navigate = useNavigate()
     const [requestSent, setRequestSent] = useState(false);
     const [error, setError] = useState(null);
 

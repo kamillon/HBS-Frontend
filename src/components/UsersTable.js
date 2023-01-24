@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 
 const UsersTable = (props) => {
-
     const navigate = useNavigate()
     const { access, userRole } = useAuth()
     const [removed, setRemoved] = useState(false);
@@ -26,10 +25,8 @@ const UsersTable = (props) => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
-                console.log(res.data)
                 setRemoved(true)
 
             } catch (err) {
@@ -51,7 +48,7 @@ const UsersTable = (props) => {
         <>
             {data && search.length > 0
                 ?
-                <div className="table-responsive" style={{maxHeight: '430px'}}>
+                <div className="table-responsive" style={{ maxHeight: '430px' }}>
                     <table className="table table-hover">
                         <thead>
                             <tr>
@@ -104,7 +101,6 @@ const UsersTable = (props) => {
                 :
                 <p>Brak wyników</p>
             }
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Potwierdzenie usuwania</Modal.Title>

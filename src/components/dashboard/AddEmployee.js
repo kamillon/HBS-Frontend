@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import LoadingSpinner from '../LoadingSpinner';
 
 const AddEmployee = () => {
-
     const navigate = useNavigate()
     const { access, userRole, currentUser } = useAuth()
     const [accountCreated, setAccountCreated] = useState(false);
     const [salonData, setSalonData] = useState([]);
-    const [selectedSalon, setSelectedSalon] = useState();
     const [isLoading, setIsLoading] = useState(true)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [errors, setErrors] = useState({
         username: '',
         email: '',
     });
-
 
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
 
@@ -63,7 +58,6 @@ const AddEmployee = () => {
 
         onSubmit: (values, { resetForm }) => {
             onSubmit(values)
-            // resetForm();
         },
     });
 
@@ -141,7 +135,6 @@ const AddEmployee = () => {
                 }
             }
         }
-
     };
 
     useEffect(() => {

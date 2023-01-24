@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import LoadingSpinner from '../LoadingSpinner';
 
 const AddUser = () => {
@@ -300,7 +298,6 @@ const AddUser = () => {
                                 </label>
                                 <select
                                     id='inputSalon'
-                                    // disabled={formik.values.role !== "employee"}
                                     className={`form-select ${formik.touched.salon && formik.errors.salon && 'is-invalid'}`}
                                     name='salon'
                                     value={formik.values.salon}

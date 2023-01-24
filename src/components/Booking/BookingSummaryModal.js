@@ -21,7 +21,7 @@ const BookingSummaryModal = (props) => {
                 </h5>
                 <div className='text-center'>
                     {moment(props.chooseStartTime, 'HH:mm:ss').format('HH:mm') + " - " +
-                    moment(props.chooseEndTime, 'HH:mm:ss').format('HH:mm')}
+                        moment(props.chooseEndTime, 'HH:mm:ss').format('HH:mm')}
                 </div>
                 <div className='text-center text-muted'>
                     {props.salonData[0]?.name}

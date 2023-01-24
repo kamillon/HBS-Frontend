@@ -1,11 +1,12 @@
 import React from 'react';
 
 const Unauthorized = () => {
-    return(
+    return (
         <div className='unauthorizedPage'>
             <h1>401</h1>
             <p>Brak dostępu</p>
         </div>
-)};
+    )
+};
 
 export default Unauthorized;

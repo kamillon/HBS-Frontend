@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from "../../context/AuthContext"
 import moment from 'moment';
 
 const SalonContact = (props) => {
@@ -11,27 +10,23 @@ const SalonContact = (props) => {
     const [openingHours, setOpeningHours] = useState([]);
     const { from_hour, to_hour, is_closed } = openingHours
 
+    const getOpeningHours = async () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+        try {
+            const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
+            setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
+        } catch (err) {
+            setOpeningHours(null)
+            console.log(err)
+        }
+    };
 
     useEffect(() => {
-        const getOpeningHours = async () => {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
-                setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
-                // console.log(res.data)
-            } catch (err) {
-                setOpeningHours(null)
-                console.log(err)
-            }
-
-        };
-
         if (salonId) {
             getOpeningHours()
         }

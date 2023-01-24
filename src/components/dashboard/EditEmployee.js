@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
-import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
 import WorkHoursManagement from './WorkHoursManagement';
 import LoadingSpinner from '../LoadingSpinner';
 
@@ -77,10 +77,8 @@ const EditEmployee = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const url = `http://127.0.0.1:8000/employee/${uid}/`
-
                 const res = await axios.get(url, config);
                 setFormData(res.data)
                 setIsLoading(false)

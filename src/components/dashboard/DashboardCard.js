@@ -13,9 +13,6 @@ const DashboardCard = (props) => {
                         <h3 className='p-4'>
                             {props.text}
                         </h3>
-                        {/* <p className='fs-5'>
-                            {props.text}
-                        </p> */}
                     </div>
                     <i className={props.className}></i>
                 </div>

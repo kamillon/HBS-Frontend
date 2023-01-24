@@ -47,31 +47,30 @@ const EditAccount = () => {
         },
     });
 
-    useEffect(() => {
-        const getUser = async () => {
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/auth/users/me/`, config);
-                    setData(res.data)
-
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
+    const getUser = async () => {
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
                 }
-            } else {
-                setData(null)
-                console.log("Blad")
-            }
-        };
+            };
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/auth/users/me/`, config);
+                setData(res.data)
 
+            } catch (err) {
+                setData(null)
+                console.log(err)
+            }
+        } else {
+            setData(null)
+            console.log("Blad")
+        }
+    };
+
+    useEffect(() => {
         getUser()
     }, [access, userRole])
 
@@ -92,7 +91,6 @@ const EditAccount = () => {
             username, first_name, last_name, is_staff, is_superuser,
             email, phone, role
         });
-
         try {
             const res = await axios.put(`http://127.0.0.1:8000/users/me/`, body, config);
             setAccountUpdated(true);
@@ -203,10 +201,6 @@ const EditAccount = () => {
                         ) : null}
                     </span>
                 </div>
-                {/* <button
-                    className='btn btn-primary me-1'
-                    type='submit'>Zapisz</button> */}
-
                 <div className="d-flex align-items-center">
                     <button
                         className='btn btn-primary me-1'

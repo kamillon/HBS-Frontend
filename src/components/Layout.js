@@ -1,10 +1,10 @@
-import React, {useEffect} from "react";
-import { Container } from 'react-bootstrap';
+import React from "react";
 
 export const Layout = (props) => {
 
-return (
-    <div id="layout" className="d-flex flex-column min-vh-100">
-        {props.children}
-    </div>
-)};
+    return (
+        <div id="layout" className="d-flex flex-column min-vh-100">
+            {props.children}
+        </div>
+    )
+};

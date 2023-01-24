@@ -125,8 +125,6 @@ const AddReservation = () => {
         }
     };
 
-
-
     const listCustomers = async (salon) => {
         setIsLoading(true)
         if (access) {
@@ -385,8 +383,6 @@ const AddReservation = () => {
                                             </div>
                                         </div>
                                     }
-
-
                                     <div className='mb-3'>
                                         <div className="row">
                                             <div className="col-10 col-lg-8">
@@ -546,7 +542,6 @@ const AddReservation = () => {
                             </div>
                         </div>
                     </div>
-
                     <AddCustomerModal
                         show1={show1}
                         handleClose1={handleClose1}

@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { subDays, addDays, setHours, setMinutes } from 'date-fns';
+import { setHours, setMinutes } from 'date-fns';
 import moment from 'moment';
 
 const WorkHoursCard = (props) => {
-    const { access, userRole, currentUser } = useAuth()
-    const navigate = useNavigate()
+    const { access } = useAuth()
     const weekday = props.weekday
     const sId = props.sId
     const employeeId = props.employeeId
@@ -55,7 +52,6 @@ const WorkHoursCard = (props) => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/employee/${employeeId}/`, config);
                 setEmployee(res.data)
@@ -78,7 +74,6 @@ const WorkHoursCard = (props) => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
                 setSalonOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
@@ -103,7 +98,6 @@ const WorkHoursCard = (props) => {
         if (employee.salon) {
             setSalonId(employee.salon)
         }
-
         if (salonId) {
             getSalonOpeningHours()
         }

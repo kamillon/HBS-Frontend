@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -61,11 +61,9 @@ const AddService = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
                 setData(res.data)
-                console.log(res.data)
                 setIsLoading(false)
 
             } catch (err) {

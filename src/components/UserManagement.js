@@ -7,7 +7,6 @@ import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
 import UsersTable from './UsersTable';
 import LoadingSpinner from './LoadingSpinner';
 
-
 const UserManagement = () => {
 
     const navigate = useNavigate()
@@ -16,8 +15,6 @@ const UserManagement = () => {
     const [key, setKey] = useState('all');
     const [search, setSearch] = useState('')
     const [isLoading, setIsLoading] = useState(true)
-
-
 
     const listUsers = async () => {
         setIsLoading(true)
@@ -29,14 +26,11 @@ const UserManagement = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const url = `http://127.0.0.1:8000/auth/users/`
                 const res = await axios.get(url, config);
                 setData(res.data)
-                console.log(res.data)
                 setIsLoading(false)
-
             } catch (err) {
                 setData(null)
                 console.log(err)

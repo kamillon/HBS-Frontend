@@ -8,7 +8,6 @@ import Modal from 'react-bootstrap/Modal';
 import LoadingSpinner from '../LoadingSpinner';
 
 const ReservationsManagement = () => {
-
     const navigate = useNavigate()
     const { access, userRole, currentUser } = useAuth()
     const [data, setData] = useState([]);
@@ -35,11 +34,9 @@ const ReservationsManagement = () => {
                         'Accept': 'application/json'
                     }
                 };
-
                 try {
                     const res = await axios.get(`http://127.0.0.1:8000/reservation-all/`, config);
                     setData(res.data)
-                    console.log(res.data)
                     setIsLoading(false)
                 } catch (err) {
                     setData(null)
@@ -66,7 +63,6 @@ const ReservationsManagement = () => {
                 try {
                     const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
                     setSalonData(res.data)
-                    console.log(res.data)
                     setIsLoading(false)
 
                 } catch (err) {
@@ -100,7 +96,6 @@ const ReservationsManagement = () => {
 
             try {
                 const res = await axios.delete(`http://127.0.0.1:8000/reservation/${id}/`, config);
-                console.log(res.data)
                 setRemoved(true)
 
             } catch (err) {
@@ -192,7 +187,6 @@ const ReservationsManagement = () => {
                 <LoadingSpinner text={"Loading..."} />
                 :
                 <>
-
                     <div className='p-3 mb-3 bg-dark text-white'>
                         <div className="row align-items-end">
                             <div className="col-md-6">
@@ -223,10 +217,8 @@ const ReservationsManagement = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className='mb-3'>
                         <div className="row">
-
                             {(currentUser.role === 'salon_owner' || currentUser.role === 'admin') &&
                                 <div className="col-md-6">
                                     <div>
@@ -335,7 +327,6 @@ const ReservationsManagement = () => {
                         :
                         <p>Brak rezerwacji do wyświetlenia</p>
                     }
-
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
                             <Modal.Title>Potwierdzenie anulowania rezerwacji</Modal.Title>
@@ -353,7 +344,6 @@ const ReservationsManagement = () => {
                             </Button>
                             <Button variant="danger"
                                 onClick={() => {
-                                    // onDelete(selectedItem);
                                     onDelete(reservationData.id)
                                     setReservationData({})
                                     handleClose()

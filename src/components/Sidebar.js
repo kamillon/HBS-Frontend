@@ -26,7 +26,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/salons/`} className="nav-link text-secondary">
                                 <i className="bi bi-building"></i>
@@ -35,7 +34,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/services/`} className="nav-link text-secondary">
                                 <i className="bi bi-scissors"></i>
@@ -44,7 +42,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/reservations/`} className="nav-link text-secondary">
                                 <i className="bi bi-calendar-check-fill"></i>
@@ -53,7 +50,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <hr />
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
@@ -84,7 +80,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/customers/`} className="nav-link text-secondary">
                                 <i className="bi bi-people"></i>
@@ -93,7 +88,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-                        
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/salons/`} className="nav-link text-secondary">
                                 <i className="bi bi-building"></i>
@@ -102,7 +96,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/services/`} className="nav-link text-secondary">
                                 <i className="bi bi-scissors"></i>
@@ -111,7 +104,6 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/reservations/`} className="nav-link text-secondary">
                                 <i className="bi bi-calendar-check-fill"></i>
@@ -120,9 +112,7 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <hr />
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
                                 <i className="bi bi-gear-fill"></i>
@@ -161,7 +151,6 @@ const Sidebar = (props) => {
                             </Link>
                         </li>
                         <hr />
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
                                 <i className="bi bi-gear-fill"></i>
@@ -191,9 +180,7 @@ const Sidebar = (props) => {
                                 </span>
                             </Link>
                         </li>
-
                         <hr />
-
                         <li className="nav-item mb-2">
                             <Link to={`/${userRole}/account-settings/`} className="nav-link text-secondary">
                                 <i className="bi bi-gear-fill"></i>
@@ -221,64 +208,6 @@ const Sidebar = (props) => {
                 <hr />
 
                 {functionWithSwitch()}
-
-                {/* <li className="nav-item mb-2">
-                    <Link to={`/${userRole}/`} className="nav-link text-secondary">
-                        <i className="bi bi-house-door-fill"></i>
-                        <span className="ms-3">
-                            Dashboard
-                        </span>
-                    </Link>
-                </li>
-
-
-                <li className="nav-item mb-2">
-                    <Link to={`/${userRole}/users/`} className="nav-link text-secondary">
-                        <i className="bi bi-people-fill"></i>
-                        <span className="ms-3">
-                            Użytkownicy
-                        </span>
-                    </Link>
-                </li>
-
-                <li className="nav-item mb-2">
-                    <Link to={`/${userRole}/salons/`} className="nav-link text-secondary">
-                        <i className="bi bi-building"></i>
-                        <span className="ms-3">
-                            Salony
-                        </span>
-                    </Link>
-                </li>
-
-                <li className="nav-item mb-2">
-                    <Link to={`/${userRole}/services/`} className="nav-link text-secondary">
-                        <i className="bi bi-scissors"></i>
-                        <span className="ms-3">
-                            Usługi
-                        </span>
-                    </Link>
-                </li>
-
-                <li className="nav-item mb-2">
-                    <Link to={`/${userRole}/reservations/`} className="nav-link text-secondary">
-                        <i className="bi bi-calendar-check-fill"></i>
-                        <span className="ms-3">
-                            Rezerwacje
-                        </span>
-                    </Link>
-                </li>
-
-
-
-
-
-
-
-                {/* <li className="nav-item mb-2"><a className="nav-link text-secondary" href="#"><i className="bi bi-building"></i><span className="ms-3">Salony</span></a></li>
-                <li className="nav-item mb-2"><a className="nav-link text-secondary" href="#"><i className="bi bi-scissors"></i><span className="ms-3">Usługi</span></a></li>
-                <li className="nav-item mb-2"><a className="nav-link text-secondary" href="#"><i className="bi bi-calendar-check-fill"></i> <span className="ms-3">Rezerwacje</span></a></li>
-                <li className="nav-item mb-2"><a className="nav-link text-secondary" href="#"><i className="bi bi-graph-up"></i> <span className="ms-3">Statystyki</span></a></li>
-                <li className="nav-item mb-2"><a className="nav-link text-secondary" href="#">Wyloguj</a></li> */}
             </ul>
         </div>
     )

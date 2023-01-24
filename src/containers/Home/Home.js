@@ -1,11 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext, useAuth } from "../../context/AuthContext"
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import barber from '../../images/barber.svg';
 import searchSalon from '../../images/searchSalon.svg';
 import chooseService from '../../images/chooseService.svg';
 import schedule from '../../images/schedule.svg';
-
 
 const Home = () => {
     const navigate = useNavigate()
@@ -22,7 +20,7 @@ const Home = () => {
                 <div className='container'>
                     <div className='d-sm-flex align-items-center justify-content-between'>
                         <div className='px-5'>
-                                <h1>Odważ się na zmianę<br/>
+                            <h1>Odważ się na zmianę<br />
                                 i umów wizytę już dziś!</h1>
                             <span>Zarezerwuj wizytę online w najlepszych salonach w Twojej okolicy!</span>
                             <form className='search-bar' onSubmit={onSubmit}>
@@ -47,9 +45,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-
-
             <section className='py-4'>
                 <div className='container'>
                     <div className='row'>
@@ -89,9 +84,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-
-            <section className='py-5' style={{backgroundColor: "#fbe2b1"}}>
+            <section className='py-5' style={{ backgroundColor: "#fbe2b1" }}>
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-12 text-center'>
@@ -102,9 +95,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-
-
             <section className="p-5">
                 <div className='container py-5'>
                     <div className='row'>
@@ -112,7 +102,6 @@ const Home = () => {
                             <h2 className='mb-5'>Znajdź salon</h2>
                             <p>
                                 Wpisz w wyszukiwarkę nazwę miejscowości, w której chcesz znaleźć salon fryzjerski.
-                                {/* Możesz rówież wybrać z menu zakładkę "Fryzjer". System przekieruje Cię na stronę ze wszystkimi dostępnymi salonami fryzjerskimi. */}
                             </p>
                             <p>
                                 Możesz rówież wybrać z menu zakładkę "Fryzjer". System przekieruje Cię na stronę ze wszystkimi dostępnymi salonami fryzjerskimi.
@@ -124,7 +113,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
             <section className="p-5">
                 <div className='container py-5'>
                     <div className='row'>
@@ -140,8 +128,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-
             <section className="p-5">
                 <div className='container py-5'>
                     <div className='row'>
@@ -149,7 +135,6 @@ const Home = () => {
                             <h2 className='mb-5'>Rezerwuj wizytę</h2>
                             <p>
                                 Wybierz pracownika, do którego chcesz się zapisać. Następnie z kalendarza wybierz dzień oraz godzinę.
-                                {/* Zarezerwuj termin i poczekaj już tylko na potwierdzenie rezerwacji, które przyjdzie do Ciebie mailem. */}
                             </p>
                             <p>
                                 To wszystko. Poczekaj na potwierdzenie rezerwacji, które przyjdzie do Ciebie mailem.
@@ -161,9 +146,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-
-
         </div>
     )
 };

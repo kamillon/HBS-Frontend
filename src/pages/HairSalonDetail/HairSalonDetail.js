@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useAuth } from "../../context/AuthContext"
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ListServices from '../../components/ListServices';
@@ -7,9 +6,8 @@ import hair_salon from '../../images/hair_salon.png';
 import SalonContact from './SalonContact';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
-const HairSalonDetail = (props) => {
+const HairSalonDetail = () => {
     const navigate = useNavigate()
-    const { access } = useAuth()
     const { salonId } = useParams()
     const [services, setServices] = useState([])
     const [employee, setEmployee] = useState([])
@@ -31,7 +29,6 @@ const HairSalonDetail = (props) => {
                 'Accept': 'application/json'
             }
         };
-
         try {
             const res = await axios.get(`http://127.0.0.1:8000/list-of-salon-services/${salonId}/`, config);
             setServices(res.data)
@@ -125,8 +122,6 @@ const HairSalonDetail = (props) => {
         ))
     }
 
-
-
     function handleTypeChange(event) {
         setSelectedType(event.target.value);
     }
@@ -199,10 +194,7 @@ const HairSalonDetail = (props) => {
                                             </select>
                                         </div>
                                     </div>
-
-
                                     <div className='col-12 col-lg-6 mb-4 float-end'>
-
                                         <div className='search-bar'>
                                             <input
                                                 type="text"
@@ -213,7 +205,6 @@ const HairSalonDetail = (props) => {
                                         </div>
                                     </div>
                                 </div>
-
                                 {!errors.services
                                     ? filteredList.map((item) => (
                                         <ListServices
@@ -229,7 +220,6 @@ const HairSalonDetail = (props) => {
                                     :
                                     <p className='ms-4 mb-3'>Nie znaleziono usług</p>
                                 }
-
                             </div>
                             <div className="col-lg-4 bg-light">
                                 <div className='contact-container mt-4'>
@@ -256,7 +246,6 @@ const HairSalonDetail = (props) => {
                                         </tbody>
                                     </table>
                                 </div>
-
                                 {!errors.employees ?
                                     <div className='employee-container mt-4'>
                                         <h6>
@@ -276,7 +265,6 @@ const HairSalonDetail = (props) => {
                                     :
                                     <></>
                                 }
-
                             </div>
                         </div>
                     </div>

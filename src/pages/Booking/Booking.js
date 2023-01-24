@@ -120,9 +120,7 @@ const Booking = () => {
             });
 
             try {
-
                 const res = await axios.post(`http://127.0.0.1:8000/reservation/`, body, config);
-                console.log(res.data)
                 setIsLoading(false)
                 handleShow2()
             }
@@ -134,54 +132,94 @@ const Booking = () => {
         }
     };
 
+    const getReservation = async () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+        try {
+            const res = await axios.get('http://127.0.0.1:8000/reservation/', config);
+            setReservations(res.data)
+
+        } catch (err) {
+            setReservations(null)
+            console.log(err)
+        }
+    };
+
+    const getSalon = async () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+        try {
+            const res = await axios.get(`http://127.0.0.1:8000/salon/${salonId}/`, config);
+            setSalonData(res.data)
+
+        } catch (err) {
+            setSalonData(null)
+            console.log(err)
+        }
+    };
+
+    const listWorkHours = async (employeeID) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        try {
+            const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${employeeID}/`, config);
+            setWorkHours(res.data)
+            console.log(res.data)
+        } catch (err) {
+            setWorkHours(null)
+            console.log(err)
+        }
+
+    };
+
+    const listOpeningHours = async () => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+        try {
+            const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
+            setOpeningHours(res.data)
+        } catch (err) {
+            setOpeningHours(null)
+            console.log(err)
+        }
+    };
+
     useEffect(() => {
-        const getReservation = async () => {
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get('http://127.0.0.1:8000/reservation/', config);
-
-                setReservations(res.data)
-                console.log(res.data)
-
-            } catch (err) {
-                setReservations(null)
-                console.log(err)
-            }
-        };
-
-        const getSalon = async () => {
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/${salonId}/`, config);
-
-                setSalonData(res.data)
-                console.log(res.data)
-
-            } catch (err) {
-                setSalonData(null)
-                console.log(err)
-            }
-        };
-
         getReservation()
         getSalon()
     }, [])
 
-    console.log(salonData)
+
+    useEffect(() => {
+        if (employeeId) {
+            listWorkHours(employeeId)
+        }
+        if (salonId) {
+            listOpeningHours()
+        }
+
+        setSelectedEmployee(employee.filter(i => i.user.id == employeeId))
+        setSelectedDate(null)
+        setSelectedTime(null)
+
+    }, [employeeId])
 
     const employeeDaysOff = [];
 
@@ -215,61 +253,6 @@ const Booking = () => {
         }
         return x
     };
-
-
-    useEffect(() => {
-        const listWorkHours = async (employeeID) => {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${employeeID}/`, config);
-                setWorkHours(res.data)
-                console.log(res.data)
-            } catch (err) {
-                setWorkHours(null)
-                console.log(err)
-            }
-
-        };
-
-        const listOpeningHours = async () => {
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            };
-
-            try {
-                const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
-                setOpeningHours(res.data)
-                console.log(res.data)
-
-            } catch (err) {
-                setOpeningHours(null)
-                console.log(err)
-            }
-        };
-
-        if (employeeId) {
-            listWorkHours(employeeId)
-        }
-        if (salonId) {
-            listOpeningHours()
-        }
-
-        setSelectedEmployee(employee.filter(i => i.user.id == employeeId))
-        setSelectedDate(null)
-        setSelectedTime(null)
-
-    }, [employeeId])
-
 
 
     useEffect(() => {
@@ -314,8 +297,6 @@ const Booking = () => {
             moment(rowData[0]?.to_hour, 'HH:mm').subtract(props.time, 'minutes').hour()
         )
     }
-    console.log(minTime)
-
 
     if (moment(selectedDate).format("LL") === moment(new Date()).format("LL")) {
         if (minTime < currentTime && currentTime < maxTime) {

@@ -1,5 +1,4 @@
 .color-overlay2 {
-    /* position: relative; */
     margin-top: 5rem;
     background-color: white;
     height: 100%;
@@ -9,6 +8,5 @@
 
 .signup-form {
     background-color: white;
-    /* box-shadow: 5px 5px 5px rgba(0,0,0,0.2); */
     width: 40rem;
 }

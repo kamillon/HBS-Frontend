@@ -1,5 +1,4 @@
 .color-overlay {
-    /* position: relative; */
     background-color: white;
     height: 100%;
     width: 100%;
@@ -8,6 +7,5 @@
 
 .login-form {
     background-color: white;
-    /* box-shadow: 5px 5px 5px rgba(0,0,0,0.2); */
     width: 25rem;
 }

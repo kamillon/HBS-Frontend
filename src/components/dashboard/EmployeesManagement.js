@@ -8,7 +8,6 @@ import Modal from 'react-bootstrap/Modal';
 import LoadingSpinner from '../LoadingSpinner';
 
 const EmployeesManagement = () => {
-
     const navigate = useNavigate()
     const { access, userRole, currentUser } = useAuth()
     const [data, setData] = useState([]);
@@ -95,7 +94,6 @@ const EmployeesManagement = () => {
             try {
                 const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
                 setRemoved(true)
-
             } catch (err) {
                 console.log(err)
             }

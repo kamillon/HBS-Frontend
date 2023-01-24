@@ -1,9 +1,8 @@
-import React, { Fragment, useState, useContext } from 'react';
-import { Link, Navigate, NavLink } from 'react-router-dom';
-import { AuthContext, useAuth } from "../context/AuthContext"
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext"
 
 const Navbar = () => {
-    const { contextState, setContextState } = useContext(AuthContext);
     const { isAuthenticated, logoutUser, userRole } = useAuth()
 
     const guestLinks = () => (
@@ -20,7 +19,7 @@ const Navbar = () => {
         <Fragment>
             <ul className="navbar-nav navbar-right">
                 <li className='nav-item'>
-                    <Link className='nav-link' to={`/${userRole}/`}>{userRole === "customer" ? "Profil" : "Dashboard" }</Link>
+                    <Link className='nav-link' to={`/${userRole}/`}>{userRole === "customer" ? "Profil" : "Dashboard"}</Link>
                 </li>
                 <li className='nav-item'>
                     <a className='nav-link' href='/' onClick={logoutUser}>Wyloguj</a>

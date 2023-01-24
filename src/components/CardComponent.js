@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from "../context/AuthContext"
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import hair_salon from '../images/hair_salon.png';
-
 
 const CardComponent = (props) => {
     const navigate = useNavigate()
@@ -38,7 +34,6 @@ const CardComponent = (props) => {
             </div>
         </>
     )
-
 };
 
 export default CardComponent;

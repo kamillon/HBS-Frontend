@@ -152,7 +152,6 @@ const CustomerManagement = () => {
     }
 
     const filteredList = useMemo(getFilteredList, [selectedSalon, salonDataFiltered, data]);
-    console.log(filteredList)
 
     return (
         <div className='container'>

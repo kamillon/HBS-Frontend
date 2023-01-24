@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -26,7 +26,6 @@ const ResetPasswordConfirm = () => {
                 .required("Pole jest wymagane")
                 .oneOf([Yup.ref('new_password'), null], 'Hasła nie są identyczne'),
         }),
-
         onSubmit: (values, { resetForm }) => {
             onSubmit(values)
         },

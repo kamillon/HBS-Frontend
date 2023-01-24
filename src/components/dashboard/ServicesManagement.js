@@ -9,7 +9,6 @@ import LoadingSpinner from '../LoadingSpinner';
 import SearchBar from '../SearchBar';
 
 const ServiceManagement = () => {
-
     const navigate = useNavigate()
     const { access, userRole, currentUser } = useAuth()
     const [data, setData] = useState([]);
@@ -20,11 +19,8 @@ const ServiceManagement = () => {
     const handleClose = () => setShow(false)
     const [servicesData, setServicesData] = useState({})
     const [selectedSalon, setSelectedSalon] = useState('');
-    const [ownerSalons, setOwnerSalons] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const [search, setSearch] = useState('')
-
-
 
     const convertMinsToTime = (mins) => {
         let hours = Math.floor(mins / 60);
@@ -32,65 +28,61 @@ const ServiceManagement = () => {
         let minutesResult = minutes < 10 ? '0' + minutes : minutes;
         return `${hours ? `${hours}g ` : ''} ${minutes ? `${minutesResult}min ` : ''}`
     }
+    const getServices = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/service/`, config);
+                setData(res.data)
+                setSearch(res.data)
+                setIsLoading(false)
+            } catch (err) {
+                setData(null)
+                console.log(err)
+                setIsLoading(false)
+            }
+        } else {
+            setData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
+
+    const getSalons = async () => {
+        setIsLoading(true)
+        if (access) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `JWT ${access}`,
+                    'Accept': 'application/json'
+                }
+            };
+            try {
+                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                setSalonData(res.data)
+                setIsLoading(false)
+
+            } catch (err) {
+                setSalonData(null)
+                console.log(err)
+                setIsLoading(false)
+            }
+        } else {
+            setSalonData(null)
+            console.log("Blad")
+            setIsLoading(false)
+        }
+    };
 
     useEffect(() => {
-        const getServices = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/service/`, config);
-                    setData(res.data)
-                    setSearch(res.data)
-                    console.log(res.data)
-                    setIsLoading(false)
-                } catch (err) {
-                    setData(null)
-                    console.log(err)
-                    setIsLoading(false)
-                }
-            } else {
-                setData(null)
-                console.log("Blad")
-                setIsLoading(false)
-            }
-        };
-
-        const getSalons = async () => {
-            setIsLoading(true)
-            if (access) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `JWT ${access}`,
-                        'Accept': 'application/json'
-                    }
-                };
-                try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
-                    setSalonData(res.data)
-                    console.log(res.data)
-                    setIsLoading(false)
-
-                } catch (err) {
-                    setSalonData(null)
-                    console.log(err)
-                    setIsLoading(false)
-                }
-            } else {
-                setSalonData(null)
-                console.log("Blad")
-                setIsLoading(false)
-            }
-        };
-
         getServices()
         getSalons()
     }, [access])
@@ -105,10 +97,8 @@ const ServiceManagement = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.delete(`http://127.0.0.1:8000/service/${id}/`, config);
-                console.log(res.data)
                 setRemoved(true)
 
             } catch (err) {
@@ -231,14 +221,13 @@ const ServiceManagement = () => {
                     </div>
 
                     {search.length > 0 ?
-                        <div className="table-responsive" style={{maxHeight: '430px'}}>
+                        <div className="table-responsive" style={{ maxHeight: '430px' }}>
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Id</th>
                                         <th scope="col">Nazwa usługi</th>
                                         <th scope="col">Typ</th>
-                                        {/* <th scope="col">Opis</th> */}
                                         <th scope="col">Czas trwania</th>
                                         <th scope="col">Cena</th>
                                         <th scope="col">SalonID</th>
@@ -251,7 +240,6 @@ const ServiceManagement = () => {
                                             <th scope="row">{item.id}</th>
                                             <td>{item.name}</td>
                                             <td>{item.service_type === "men's" ? "męskie" : "damskie"}</td>
-                                            {/* <td>{item.describe.substring(0, 20)} ...</td> */}
                                             <td>{convertMinsToTime(item.time)}</td>
                                             <td>{item.price} zł</td>
                                             <td>{item.salonID}</td>
@@ -318,5 +306,3 @@ const ServiceManagement = () => {
 };
 
 export default ServiceManagement;
-
-

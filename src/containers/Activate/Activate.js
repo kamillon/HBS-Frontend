@@ -17,14 +17,10 @@ const Activate = () => {
 
         try {
             const res = await axios.post(`http://127.0.0.1:8000/auth/users/activation/`, body, config);
-
-            console.log(res.data)
-
         }
         catch (error) {
             console.log(error)
         }
-
         setVerified(true);
     };
 

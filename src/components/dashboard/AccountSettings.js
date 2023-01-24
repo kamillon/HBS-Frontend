@@ -2,23 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../Sidebar';
 import '../../pages/Admin/admin.css';
 import { useAuth } from "../../context/AuthContext"
-import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import EditAccount from './EditAccount';
 import ChangePassword from './ChangePassword';
 import ChangeEmail from './ChangeEmail';
 import LoadingSpinner from '../LoadingSpinner';
 
-
 const AccountSettings = () => {
-    const { access, userRole, currentUser } = useAuth()
-
-
+    const { access, userRole } = useAuth()
     const [data, setData] = useState([]);
-    const [accountUpdated, setAccountUpdated] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
-
-    const { email } = data;
 
     useEffect(() => {
         const getUser = async () => {
@@ -35,7 +28,6 @@ const AccountSettings = () => {
                 try {
                     const res = await axios.get(`http://127.0.0.1:8000/auth/users/me/`, config);
                     setData(res.data)
-                    console.log(res.data)
                     setIsLoading(false)
 
                 } catch (err) {

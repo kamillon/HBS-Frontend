@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
-import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
-import WorkHoursManagement from './WorkHoursManagement';
+import { Tab, Tabs } from 'react-bootstrap';
 import LoadingSpinner from '../LoadingSpinner';
 
 const CustomerDetails = () => {
     const navigate = useNavigate()
     const { state } = useLocation();
     const salon = state && state.salon
-    const { access, userRole, currentUser } = useAuth()
+    const { access, userRole } = useAuth()
     const { uid } = useParams()
     const [key, setKey] = useState('general');
     const [customerData, setCustomerData] = useState([]);
@@ -55,7 +52,6 @@ const CustomerDetails = () => {
         try {
             const res = await axios.get(`http://127.0.0.1:8000/list-of-salon-reservations/${salon}/`, config);
             setReservations(res.data.filter(i => i.customerId.user.id === parseInt(uid)))
-            console.log(res.data)
             setIsLoading(false)
         } catch (err) {
             setReservations(null)
@@ -66,7 +62,7 @@ const CustomerDetails = () => {
 
 
     useEffect(() => {
-        if(!salon){
+        if (!salon) {
             navigate(-1)
         }
         if (uid) {

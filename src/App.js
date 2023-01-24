@@ -67,7 +67,6 @@ function App() {
             <Route path='hairsalon/:salonId/booking' element={<Booking />} />
             <Route exact path='/unauthorized' element={<Unauthorized />} />
             <Route exact path='/email/reset/confirm/:uid/:token' element={<ChangeEmailConfirm />} />
-            {/* <Route exact path='/admin/dashboard' element={<RequireAuth><AdminDashboard/></RequireAuth>} /> */}
 
             <Route element={<RequireAuth allowedRole={ROLES.customer} />}>
               <Route exact path='/customer/' element={<CustomerDashboard />} />
@@ -88,7 +87,6 @@ function App() {
               <Route path='/admin/services/add/' element={<AddService />} />
               <Route path='/admin/services/edit/:uid' element={<EditService />} />
               <Route path='/admin/account-settings/' element={<AccountSettings />} />
-
             </Route>
 
             <Route element={<RequireAuth allowedRole={ROLES.employee} />}>
@@ -97,20 +95,17 @@ function App() {
               <Route path='/employee/customers/details/:uid' element={<CustomerDetails />} />
               <Route path='/employee/reservations/' element={<Reservations />} />
               <Route path='/employee/reservations/add/' element={<AddReservation />} />
-              {/* <Route path='/employee/work-hours/' element={<WorkHours />} /> */}
               <Route path='/employee/account-settings/' element={<AccountSettings />} />
             </Route>
 
             <Route element={<RequireAuth allowedRole={ROLES.salon_owner} />}>
               <Route exact path='/salon_owner/' element={<SalonOwnerDashboard />} />
               <Route path='/salon_owner/employee/' element={<ManageEmployee />} />
-              {/* <Route path='/salon_owner/users/add/' element={<AddUser/>} /> */}
               <Route path='/salon_owner/employee/add/' element={<AddEmployee />} />
               <Route path='/salon_owner/employee/edit/:uid' element={<EditEmployee />} />
               <Route path='/salon_owner/customers/' element={<Customers />} />
               <Route path='/salon_owner/customers/details/:uid' element={<CustomerDetails />} />
               <Route path='/salon_owner/salons/' element={<Salons />} />
-              {/* <Route path='/salon_owner/salons/add/' element={<AddSalon/>} /> */}
               <Route path='/salon_owner/salons/edit/:uid' element={<EditSalon />} />
               <Route path='/salon_owner/reservations/' element={<Reservations />} />
               <Route path='/salon_owner/reservations/add/' element={<AddReservation />} />
@@ -120,9 +115,6 @@ function App() {
               <Route path='/salon_owner/account-settings/' element={<AccountSettings />} />
             </Route>
 
-            {/* <Route element={<RequireAuth/>}>
-                <Route exact path='/admin/dashboard' element={<AdminDashboard/>} />
-              </Route> */}
             <Route path='*' element={<ErrorPage />} />
           </Routes>
           <Footer />

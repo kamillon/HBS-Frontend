@@ -95,7 +95,6 @@ const EditService = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
                 setSalonData(res.data)
@@ -123,7 +122,6 @@ const EditService = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
                 setOwnerSalons(res.data)
@@ -139,7 +137,6 @@ const EditService = () => {
             setIsLoading(false)
         }
     };
-
 
     useEffect(() => {
         if (uid) {

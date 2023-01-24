@@ -2,19 +2,11 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
-import { useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { subDays, addDays, setHours, setMinutes } from 'date-fns';
-import moment from 'moment';
 import WorkHoursCard from './WorkHoursCard';
 
 const WorkHoursManagement = (props) => {
-    const { access, userRole, currentUser } = useAuth()
-    const navigate = useNavigate()
+    const { access } = useAuth()
 
     const initialState = {
         id: '',

@@ -1,13 +1,10 @@
 import React from 'react';
 import { useAuth } from "../../context/AuthContext"
-import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import '../../pages/Admin/admin.css';
 import CustomerManagement from './CustomerManagement';
 
 const Customers = () => {
-
-    const navigate = useNavigate()
     const { userRole } = useAuth()
 
     return (

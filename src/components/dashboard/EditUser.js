@@ -29,8 +29,6 @@ const EditUser = () => {
     };
 
     const [data, setData] = useState(initialState);
-
-    console.log(data)
     const phoneRegExp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-8]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/
 
     const formik = useFormik({
@@ -68,7 +66,6 @@ const EditUser = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const url = `http://127.0.0.1:8000/auth/users/${uid}/`
                 const res = await axios.get(url, config);

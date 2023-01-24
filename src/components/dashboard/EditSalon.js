@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import OpeningHours from './OpeningHours';
-import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
 import LoadingSpinner from '../LoadingSpinner';
-
 
 const EditSalon = () => {
     const { access, userRole } = useAuth()
@@ -85,7 +84,6 @@ const EditSalon = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/salon-owner/`, config);
                 setDataOwners(res.data)
@@ -113,7 +111,6 @@ const EditSalon = () => {
                     'Accept': 'application/json'
                 }
             };
-
             try {
                 const res = await axios.get(`http://127.0.0.1:8000/salon/${uid}/`, config);
                 setData(res.data)
@@ -473,7 +470,6 @@ const EditSalon = () => {
                 </Tab>
             </Tabs>
         </div>
-        // </div>
     );
 };
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, Navigate, NavLink } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import './admin.css';
 import { useAuth } from "../../context/AuthContext"
@@ -12,7 +11,6 @@ const AdminDashboard = () => {
     <div className="content-wrap container-fluid" id="main">
       <div className="main-content row row-offcanvas row-offcanvas-left full-screen">
         <Sidebar role={userRole} />
-
         <div className="col-auto col-md-9 col-lg-10 main p-5">
           <div className='row'>
             <h2>Dashboard</h2>
@@ -24,13 +22,11 @@ const AdminDashboard = () => {
               text={"Użytkownicy"}
               className={"bi bi-people fs-1"}
             />
-
             <DashboardCard
               path={"salons/"}
               text={"Salony"}
               className={"bi bi-building fs-1"}
             />
-
             <DashboardCard
               path={"services/"}
               text={"Usługi"}
