@@ -1,10 +1,11 @@
 import React from 'react';
-import { useAuth } from "../../context/AuthContext"
-import Sidebar from '../../components/Sidebar';
-import '../Admin/admin.css';
-import EmployeesManagement from '../../components/dashboard/Employee/EmployeesManagement';
+import { useAuth } from "../../../context/AuthContext"
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../Sidebar';
+import '../../../pages/Admin/admin.css';
+import SalonsManagement from './SalonsManagement';
 
-const ManageEmployee = () => {
+const Salons = () => {
     const { userRole } = useAuth()
 
     return (
@@ -13,7 +14,7 @@ const ManageEmployee = () => {
                 <Sidebar role={userRole} />
                 <div className="col-auto col-md-9 col-lg-10 main p-5">
                     <div>
-                        <EmployeesManagement />
+                        <SalonsManagement />
                     </div>
                 </div>
             </div>
@@ -21,5 +22,4 @@ const ManageEmployee = () => {
     )
 };
 
-
-export default ManageEmployee;
+export default Salons;

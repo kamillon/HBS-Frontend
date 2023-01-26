@@ -1,10 +1,10 @@
 import React from 'react';
-import { useAuth } from "../../context/AuthContext"
-import Sidebar from '../../components/Sidebar';
-import '../Admin/admin.css';
-import EmployeesManagement from '../../components/dashboard/Employee/EmployeesManagement';
+import { useAuth } from "../../../context/AuthContext"
+import Sidebar from '../../Sidebar';
+import '../../../pages/Admin/admin.css';
+import ServicesManagement from './ServicesManagement';
 
-const ManageEmployee = () => {
+const Services = () => {
     const { userRole } = useAuth()
 
     return (
@@ -13,7 +13,9 @@ const ManageEmployee = () => {
                 <Sidebar role={userRole} />
                 <div className="col-auto col-md-9 col-lg-10 main p-5">
                     <div>
-                        <EmployeesManagement />
+                    </div>
+                    <div>
+                        <ServicesManagement />
                     </div>
                 </div>
             </div>
@@ -21,5 +23,4 @@ const ManageEmployee = () => {
     )
 };
 
-
-export default ManageEmployee;
+export default Services;

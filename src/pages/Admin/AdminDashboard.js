@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import './admin.css';
 import { useAuth } from "../../context/AuthContext"
-import DashboardCard from '../../components/dashboard/DashboardCard';
+import DashboardCard from '../../components/DashboardCard';
 
 const AdminDashboard = () => {
   const { userRole, currentUser } = useAuth()
