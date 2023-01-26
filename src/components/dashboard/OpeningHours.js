@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { subDays, addDays, setHours, setMinutes } from 'date-fns';
 import moment from 'moment';
+import { API } from '../../App';
 
 const OpeningHours = (props) => {
     const { uid } = useParams()
@@ -41,7 +42,7 @@ const OpeningHours = (props) => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${uid}/`, config);
+                const res = await axios.get(`${API}/list-opening-hours/${uid}/`, config);
                 setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
             } catch (err) {
                 setOpeningHours(null)
@@ -100,7 +101,7 @@ const OpeningHours = (props) => {
         });
 
         try {
-            const res = await axios.patch(`http://127.0.0.1:8000/opening-hours/${openingHours.id}/`, body, config)
+            const res = await axios.patch(`${API}/opening-hours/${openingHours.id}/`, body, config)
             setOpeningHoursUpdated(true);
 
         }

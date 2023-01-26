@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const AddUser = () => {
     const navigate = useNavigate()
@@ -82,7 +83,7 @@ const AddUser = () => {
                 }
             };
 
-            let url = `http://127.0.0.1:8000/auth/users/`
+            let url = `${API}/auth/users/`
 
             let body = JSON.stringify({
                 username, first_name, last_name,
@@ -93,7 +94,7 @@ const AddUser = () => {
             let is_staff = true
 
             if (role === "employee") {
-                url = `http://127.0.0.1:8000/employee/`
+                url = `${API}/employee/`
                 body = JSON.stringify({
                     "salon": salon,
                     "user": {
@@ -161,7 +162,7 @@ const AddUser = () => {
                     }
                 };
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                    const res = await axios.get(`${API}/salon/`, config);
                     setSalonData(res.data)
                     setIsLoading(false)
                 } catch (err) {

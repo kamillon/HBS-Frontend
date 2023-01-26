@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import LoadingSpinner from '../LoadingSpinner';
 import SearchBar from '../SearchBar';
+import { API } from '../../App';
 
 const ServiceManagement = () => {
     const navigate = useNavigate()
@@ -39,7 +40,7 @@ const ServiceManagement = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/service/`, config);
+                const res = await axios.get(`${API}/service/`, config);
                 setData(res.data)
                 setSearch(res.data)
                 setIsLoading(false)
@@ -66,7 +67,7 @@ const ServiceManagement = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setSalonData(res.data)
                 setIsLoading(false)
 
@@ -98,7 +99,7 @@ const ServiceManagement = () => {
                 }
             };
             try {
-                const res = await axios.delete(`http://127.0.0.1:8000/service/${id}/`, config);
+                const res = await axios.delete(`${API}/service/${id}/`, config);
                 setRemoved(true)
 
             } catch (err) {

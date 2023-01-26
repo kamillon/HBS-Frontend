@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { setHours, setMinutes } from 'date-fns';
 import moment from 'moment';
+import { API } from '../../App';
 
 const WorkHoursCard = (props) => {
     const { access } = useAuth()
@@ -53,7 +54,7 @@ const WorkHoursCard = (props) => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/employee/${employeeId}/`, config);
+                const res = await axios.get(`${API}/employee/${employeeId}/`, config);
                 setEmployee(res.data)
             } catch (err) {
                 setEmployee(null)
@@ -75,7 +76,7 @@ const WorkHoursCard = (props) => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
+                const res = await axios.get(`${API}/list-opening-hours/${salonId}/`, config);
                 setSalonOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
             } catch (err) {
                 setSalonOpeningHours(null)
@@ -149,7 +150,7 @@ const WorkHoursCard = (props) => {
             is_day_off: is_day_off
         });
         try {
-            const res = await axios.patch(`http://127.0.0.1:8000/work-hours/${props.id}/`, body, config)
+            const res = await axios.patch(`${API}/work-hours/${props.id}/`, body, config)
             props.setWorkHoursUpdated(true)
         }
         catch (error) {

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const ReservationsManagement = () => {
     const navigate = useNavigate()
@@ -35,7 +36,7 @@ const ReservationsManagement = () => {
                     }
                 };
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/reservation-all/`, config);
+                    const res = await axios.get(`${API}/reservation-all/`, config);
                     setData(res.data)
                     setIsLoading(false)
                 } catch (err) {
@@ -61,7 +62,7 @@ const ReservationsManagement = () => {
                     }
                 };
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                    const res = await axios.get(`${API}/salon/`, config);
                     setSalonData(res.data)
                     setIsLoading(false)
 
@@ -95,7 +96,7 @@ const ReservationsManagement = () => {
             };
 
             try {
-                const res = await axios.delete(`http://127.0.0.1:8000/reservation/${id}/`, config);
+                const res = await axios.delete(`${API}/reservation/${id}/`, config);
                 setRemoved(true)
 
             } catch (err) {

@@ -48,6 +48,7 @@ const ROLES = {
   "salon_owner": "salon_owner"
 }
 
+export const API = `http://127.0.0.1:8000`;
 
 function App() {
   return (

@@ -7,6 +7,7 @@ import EditAccount from './EditAccount';
 import ChangePassword from './ChangePassword';
 import ChangeEmail from './ChangeEmail';
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const AccountSettings = () => {
     const { access, userRole } = useAuth()
@@ -26,7 +27,7 @@ const AccountSettings = () => {
                 };
 
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/auth/users/me/`, config);
+                    const res = await axios.get(`${API}/auth/users/me/`, config);
                     setData(res.data)
                     setIsLoading(false)
 

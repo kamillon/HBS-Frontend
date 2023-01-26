@@ -8,6 +8,7 @@ import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SuccessModal from '../../components/SuccessModal';
 import ErrorModal from '../../components/ErrorModal';
+import { API } from '../../App';
 
 const Signup = () => {
     const { isAuthenticated } = useAuth()
@@ -89,7 +90,7 @@ const Signup = () => {
             });
 
             try {
-                const res = await axios.post(`http://127.0.0.1:8000/auth/users/`, body, config);
+                const res = await axios.post(`${API}/auth/users/`, body, config);
                 setIsLoading(false)
                 setAccountCreated(true);
             }

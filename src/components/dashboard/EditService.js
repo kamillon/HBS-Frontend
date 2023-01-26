@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const EditService = () => {
     const { access, userRole, currentUser } = useAuth()
@@ -69,7 +70,7 @@ const EditService = () => {
             };
 
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/service/${uid}/`, config);
+                const res = await axios.get(`${API}/service/${uid}/`, config);
                 setData(res.data)
                 setIsLoading(false)
 
@@ -96,7 +97,7 @@ const EditService = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setSalonData(res.data)
                 setIsLoading(false)
 
@@ -123,7 +124,7 @@ const EditService = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
+                const res = await axios.get(`${API}/list-of-owners-salons/${currentUser.id}/`, config);
                 setOwnerSalons(res.data)
                 setIsLoading(false)
             } catch (err) {
@@ -163,7 +164,7 @@ const EditService = () => {
         const body = JSON.stringify({ name, service_type, describe, time, price, salonID });
 
         try {
-            const res = await axios.put(`http://127.0.0.1:8000/service/${uid}/`, body, config);
+            const res = await axios.put(`${API}/service/${uid}/`, body, config);
             setServiceUpdated(true);
             setIsSubmitting(false)
         }

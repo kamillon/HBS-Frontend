@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { API } from '../../App';
 
 const Activate = () => {
     const [verified, setVerified] = useState(false);
@@ -16,7 +17,7 @@ const Activate = () => {
         const body = JSON.stringify({ uid, token });
 
         try {
-            const res = await axios.post(`http://127.0.0.1:8000/auth/users/activation/`, body, config);
+            const res = await axios.post(`${API}/auth/users/activation/`, body, config);
         }
         catch (error) {
             console.log(error)

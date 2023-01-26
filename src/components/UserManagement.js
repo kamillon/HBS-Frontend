@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
 import UsersTable from './UsersTable';
 import LoadingSpinner from './LoadingSpinner';
+import { API } from '../App';
 
 const UserManagement = () => {
 
@@ -27,7 +28,7 @@ const UserManagement = () => {
                 }
             };
             try {
-                const url = `http://127.0.0.1:8000/auth/users/`
+                const url = `${API}/auth/users/`
                 const res = await axios.get(url, config);
                 setData(res.data)
                 setIsLoading(false)

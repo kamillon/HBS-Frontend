@@ -1,6 +1,7 @@
 import React, { useState, createContext, useContext, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { API } from '../App';
 
 export const AuthContext = createContext(null)
 
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
         const body = JSON.stringify(credentials);
         try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/jwt/create/', body, config)
+            const res = await axios.post(`${API}/auth/jwt/create/`, body, config)
             if (res.status === 200) {
                 setAccess(res.data.access)
                 setRefresh(res.data.refresh)
@@ -68,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
         const body = JSON.stringify({ 'refresh': refresh });
         try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/jwt/refresh/', body, config)
+            const res = await axios.post(`${API}/auth/jwt/refresh/`, body, config)
             if (res.status === 200) {
                 setAccess(res.data.access)
                 localStorage.setItem('access', JSON.stringify(res.data.access))
@@ -97,7 +98,7 @@ export const AuthProvider = ({ children }) => {
         const body = JSON.stringify({ token: access });
 
         try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/jwt/verify/', body, config)
+            const res = await axios.post(`${API}/auth/jwt/verify/`, body, config)
 
             if (res.data.code !== 'token_not_valid') {
                 setIsAuthenticated(true)
@@ -121,7 +122,7 @@ export const AuthProvider = ({ children }) => {
             };
 
             try {
-                const res = await axios.get('http://127.0.0.1:8000/auth/users/me/', config);
+                const res = await axios.get(`${API}/auth/users/me/`, config);
                 setCurrentUser(res.data)
                 setUserRole(res.data.role)
             } catch (err) {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
+import { API } from '../App';
 
 const UsersTable = (props) => {
     const navigate = useNavigate()
@@ -26,7 +27,7 @@ const UsersTable = (props) => {
                 }
             };
             try {
-                const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
+                const res = await axios.delete(`${API}/auth/users/${id}/`, config);
                 setRemoved(true)
 
             } catch (err) {

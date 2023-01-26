@@ -5,6 +5,7 @@ import ListServices from '../../components/ListServices';
 import hair_salon from '../../images/hair_salon.png';
 import SalonContact from './SalonContact';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { API } from '../../App';
 
 const HairSalonDetail = () => {
     const navigate = useNavigate()
@@ -30,7 +31,7 @@ const HairSalonDetail = () => {
             }
         };
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/list-of-salon-services/${salonId}/`, config);
+            const res = await axios.get(`${API}/list-of-salon-services/${salonId}/`, config);
             setServices(res.data)
             setIsLoading(false)
         } catch (err) {
@@ -59,7 +60,7 @@ const HairSalonDetail = () => {
             }
         };
         try {
-            const url = `http://127.0.0.1:8000/list-of-salon-employees/${salonId}/`
+            const url = `${API}/list-of-salon-employees/${salonId}/`
             const res = await axios.get(url, config);
             setEmployee(res.data)
             setIsLoading(false)
@@ -89,7 +90,7 @@ const HairSalonDetail = () => {
             }
         };
         try {
-            const res = await axios.get('http://127.0.0.1:8000/salon/', config);
+            const res = await axios.get(`${API}/salon/`, config);
             setSalonData(res.data.filter(i => i.id == salonId))
             setIsLoading(false)
 

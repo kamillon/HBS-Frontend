@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import { API } from '../../App';
 
 const SalonContact = (props) => {
     const dayName = props.day
@@ -18,7 +19,7 @@ const SalonContact = (props) => {
             }
         };
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
+            const res = await axios.get(`${API}/list-opening-hours/${salonId}/`, config);
             setOpeningHours(res.data.filter(i => i.weekday === weekday)[0])
         } catch (err) {
             setOpeningHours(null)

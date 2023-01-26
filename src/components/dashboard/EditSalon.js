@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext"
 import OpeningHours from './OpeningHours';
 import { Tab, Tabs } from 'react-bootstrap';
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const EditSalon = () => {
     const { access, userRole } = useAuth()
@@ -85,7 +86,7 @@ const EditSalon = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon-owner/`, config);
+                const res = await axios.get(`${API}/salon-owner/`, config);
                 setDataOwners(res.data)
                 setIsLoading(false)
 
@@ -112,7 +113,7 @@ const EditSalon = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/${uid}/`, config);
+                const res = await axios.get(`${API}/salon/${uid}/`, config);
                 setData(res.data)
                 setIsLoading(false)
 
@@ -149,7 +150,7 @@ const EditSalon = () => {
         const body = JSON.stringify({ name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner });
 
         try {
-            const res = await axios.put(`http://127.0.0.1:8000/salon/${uid}/`, body, config);
+            const res = await axios.put(`${API}/salon/${uid}/`, body, config);
             setSalonUpdated(true);
             setIsSubmitting(false)
 

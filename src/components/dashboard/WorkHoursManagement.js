@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import "react-datepicker/dist/react-datepicker.css";
 import WorkHoursCard from './WorkHoursCard';
+import { API } from '../../App';
 
 const WorkHoursManagement = (props) => {
     const { access } = useAuth()
@@ -31,7 +32,7 @@ const WorkHoursManagement = (props) => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${props.uid}/`, config);
+                const res = await axios.get(`${API}/employee-work-hours/${props.uid}/`, config);
                 setWorkHours(res.data)
             } catch (err) {
                 setWorkHours(null)

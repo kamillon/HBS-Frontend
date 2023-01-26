@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const AddService = () => {
     const navigate = useNavigate()
@@ -62,7 +63,7 @@ const AddService = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setData(res.data)
                 setIsLoading(false)
 
@@ -90,7 +91,7 @@ const AddService = () => {
             };
 
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/list-of-owners-salons/${currentUser.id}/`, config);
+                const res = await axios.get(`${API}/list-of-owners-salons/${currentUser.id}/`, config);
                 setOwnerSalons(res.data)
                 setIsLoading(false)
             } catch (err) {
@@ -129,7 +130,7 @@ const AddService = () => {
         const body = JSON.stringify({ name, service_type, describe, time, price, salonID });
 
         try {
-            const res = await axios.post(`http://127.0.0.1:8000/service/`, body, config);
+            const res = await axios.post(`${API}/service/`, body, config);
             setServiceCreated(true);
             setIsSubmitting(false)
         }

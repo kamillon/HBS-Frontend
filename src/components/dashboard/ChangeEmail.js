@@ -3,6 +3,7 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useAuth } from "../../context/AuthContext"
+import { API } from '../../App';
 
 const ChangeEmail = ({ dataUser }) => {
     const { access } = useAuth()
@@ -28,7 +29,7 @@ const ChangeEmail = ({ dataUser }) => {
         const body = JSON.stringify({ email });
 
         try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/users/reset_email/', body, config)
+            const res = await axios.post(`${API}/auth/users/reset_email/`, body, config)
         }
         catch (error) {
             console.log(error)

@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const EditAccount = () => {
     const { access, userRole } = useAuth()
@@ -57,7 +58,7 @@ const EditAccount = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/auth/users/me/`, config);
+                const res = await axios.get(`${API}/auth/users/me/`, config);
                 setData(res.data)
 
             } catch (err) {
@@ -92,7 +93,7 @@ const EditAccount = () => {
             email, phone, role
         });
         try {
-            const res = await axios.put(`http://127.0.0.1:8000/users/me/`, body, config);
+            const res = await axios.put(`${API}/users/me/`, body, config);
             setAccountUpdated(true);
             setIsSubmitting(false)
         }

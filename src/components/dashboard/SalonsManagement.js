@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import LoadingSpinner from '../LoadingSpinner';
 import SearchBar from '../SearchBar';
+import { API } from '../../App';
 
 const SalonsManagement = () => {
     const navigate = useNavigate()
@@ -34,7 +35,7 @@ const SalonsManagement = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setData(res.data)
                 setSearch(res.data)
                 setIsLoading(false)
@@ -66,7 +67,7 @@ const SalonsManagement = () => {
                 }
             };
             try {
-                const res = await axios.delete(`http://127.0.0.1:8000/salon/${id}/`, config);
+                const res = await axios.delete(`${API}/salon/${id}/`, config);
                 setRemoved(true)
 
             } catch (err) {

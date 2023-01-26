@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const AddSalon = () => {
     const navigate = useNavigate()
@@ -76,7 +77,7 @@ const AddSalon = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon-owner/`, config);
+                const res = await axios.get(`${API}/salon-owner/`, config);
                 setData(res.data)
                 setIsLoading(false)
 
@@ -109,7 +110,7 @@ const AddSalon = () => {
         const body = JSON.stringify({ name, street, house_number, city, post_code, postal_code_locality, phone_number, email, owner });
 
         try {
-            const res = await axios.post(`http://127.0.0.1:8000/salon/`, body, config);
+            const res = await axios.post(`${API}/salon/`, body, config);
             setSalonCreated(true);
             setIsSubmitting(false)
         }

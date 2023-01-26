@@ -6,6 +6,7 @@ import './HairSalon.css';
 import CardComponent from '../../components/CardComponent';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import SearchBar from '../../components/SearchBar';
+import { API } from '../../App';
 
 const HairSalon = () => {
     const { access } = useAuth()
@@ -29,10 +30,10 @@ const HairSalon = () => {
             };
 
             try {
-                let url = `http://127.0.0.1:8000/salon/`
+                let url = `${API}/salon/`
 
                 if (city) {
-                    url = `http://127.0.0.1:8000/salon/?city=${city}`
+                    url = `${API}/salon/?city=${city}`
                 }
                 const res = await axios.get(url, config);
                 setData(res.data)

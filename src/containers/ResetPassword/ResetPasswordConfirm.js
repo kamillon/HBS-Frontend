@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext";
+import { API } from '../../App';
 
 const ResetPasswordConfirm = () => {
     const { logoutUser } = useAuth()
@@ -45,7 +46,7 @@ const ResetPasswordConfirm = () => {
         const body = JSON.stringify({ uid, token, new_password, re_new_password });
 
         try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/users/reset_password_confirm/', body, config)
+            const res = await axios.post(`${API}/auth/users/reset_password_confirm/`, body, config)
             setRequestSent(true);
         }
         catch (error) {

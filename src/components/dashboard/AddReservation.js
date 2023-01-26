@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner';
 import AddCustomerModal from '../AddCustomerModal';
+import { API } from '../../App';
 
 const AddReservation = () => {
     const navigate = useNavigate()
@@ -82,7 +83,7 @@ const AddReservation = () => {
                 }
             };
 
-            let url = `http://127.0.0.1:8000/auth/users/`
+            let url = `${API}/auth/users/`
 
             let body = JSON.stringify({
                 username, first_name, last_name,
@@ -136,7 +137,7 @@ const AddReservation = () => {
                 }
             };
             try {
-                const url = `http://127.0.0.1:8000/list-of-salon-customers/${salon}/`
+                const url = `${API}/list-of-salon-customers/${salon}/`
                 const res = await axios.get(url, config);
                 setData(res.data)
                 setIsLoading(false)
@@ -164,7 +165,7 @@ const AddReservation = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setSalonData(res.data)
                 setIsLoading(false)
 
@@ -189,7 +190,7 @@ const AddReservation = () => {
             }
         };
         try {
-            const url = `http://127.0.0.1:8000/employee/${currentUser.id}/`
+            const url = `${API}/employee/${currentUser.id}/`
             const res = await axios.get(url, config);
             setEmployeeSalon(res.data.salon)
 
@@ -209,7 +210,7 @@ const AddReservation = () => {
             }
         };
         try {
-            const url = `http://127.0.0.1:8000/list-of-salon-employees/${salon}/`
+            const url = `${API}/list-of-salon-employees/${salon}/`
             const res = await axios.get(url, config);
             setEmployee(res.data)
 
@@ -229,7 +230,7 @@ const AddReservation = () => {
             }
         };
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/list-of-salon-services/${salon}/`, config);
+            const res = await axios.get(`${API}/list-of-salon-services/${salon}/`, config);
             setServices(res.data)
             setIsLoading(false)
 

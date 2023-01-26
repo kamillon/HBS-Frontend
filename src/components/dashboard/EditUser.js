@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const EditUser = () => {
     const { access, userRole } = useAuth()
@@ -67,7 +68,7 @@ const EditUser = () => {
                 }
             };
             try {
-                const url = `http://127.0.0.1:8000/auth/users/${uid}/`
+                const url = `${API}/auth/users/${uid}/`
                 const res = await axios.get(url, config);
                 setData(res.data)
                 setIsLoading(false)
@@ -127,7 +128,7 @@ const EditUser = () => {
         });
 
         try {
-            const url = `http://127.0.0.1:8000/auth/users/${uid}/`
+            const url = `${API}/auth/users/${uid}/`
             const res = await axios.put(url, body, config);
             setAccountUpdated(true);
             setIsSubmitting(false)

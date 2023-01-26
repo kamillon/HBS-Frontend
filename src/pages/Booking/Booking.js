@@ -16,6 +16,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import BookingSummaryModal from '../../components/Booking/BookingSummaryModal';
 import SuccessModal from '../../components/SuccessModal';
 import ErrorModal from '../../components/ErrorModal';
+import { API } from '../../App';
 registerLocale("pl", pl);
 
 const Booking = () => {
@@ -120,7 +121,7 @@ const Booking = () => {
             });
 
             try {
-                const res = await axios.post(`http://127.0.0.1:8000/reservation/`, body, config);
+                const res = await axios.post(`${API}/reservation/`, body, config);
                 setIsLoading(false)
                 handleShow2()
             }
@@ -140,7 +141,7 @@ const Booking = () => {
             }
         };
         try {
-            const res = await axios.get('http://127.0.0.1:8000/reservation/', config);
+            const res = await axios.get(`${API}/reservation/`, config);
             setReservations(res.data)
 
         } catch (err) {
@@ -157,7 +158,7 @@ const Booking = () => {
             }
         };
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/salon/${salonId}/`, config);
+            const res = await axios.get(`${API}/salon/${salonId}/`, config);
             setSalonData(res.data)
 
         } catch (err) {
@@ -175,7 +176,7 @@ const Booking = () => {
         };
 
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/employee-work-hours/${employeeID}/`, config);
+            const res = await axios.get(`${API}/employee-work-hours/${employeeID}/`, config);
             setWorkHours(res.data)
             console.log(res.data)
         } catch (err) {
@@ -193,7 +194,7 @@ const Booking = () => {
             }
         };
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/list-opening-hours/${salonId}/`, config);
+            const res = await axios.get(`${API}/list-opening-hours/${salonId}/`, config);
             setOpeningHours(res.data)
         } catch (err) {
             setOpeningHours(null)

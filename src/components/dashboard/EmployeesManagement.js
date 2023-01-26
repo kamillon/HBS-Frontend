@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const EmployeesManagement = () => {
     const navigate = useNavigate()
@@ -32,7 +33,7 @@ const EmployeesManagement = () => {
                 }
             };
             try {
-                const url = `http://127.0.0.1:8000/employee/`
+                const url = `${API}/employee/`
                 const res = await axios.get(url, config);
                 setData(res.data)
                 setIsLoading(false)
@@ -60,7 +61,7 @@ const EmployeesManagement = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setSalonData(res.data)
                 setIsLoading(false)
 
@@ -92,7 +93,7 @@ const EmployeesManagement = () => {
                 }
             };
             try {
-                const res = await axios.delete(`http://127.0.0.1:8000/auth/users/${id}/`, config);
+                const res = await axios.delete(`${API}/auth/users/${id}/`, config);
                 setRemoved(true)
             } catch (err) {
                 console.log(err)

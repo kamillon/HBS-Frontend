@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
+import { API } from '../../App';
 
 const ChangeEmailConfirm = () => {
     const { uid, token } = useParams()
@@ -37,7 +38,7 @@ const ChangeEmailConfirm = () => {
         const body = JSON.stringify({ uid, token, new_email });
 
         try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/users/reset_email_confirm/', body, config)
+            const res = await axios.post(`${API}/auth/users/reset_email_confirm/`, body, config)
             setRequestSent(true)
         }
         catch (error) {

@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from "../../context/AuthContext"
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const AddEmployee = () => {
     const navigate = useNavigate()
@@ -73,7 +74,7 @@ const AddEmployee = () => {
                     }
                 };
                 try {
-                    const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                    const res = await axios.get(`${API}/salon/`, config);
                     setSalonData(res.data.filter(i => i.owner == currentUser.id))
                     setIsLoading(false)
                 } catch (err) {
@@ -105,7 +106,7 @@ const AddEmployee = () => {
         const body = JSON.stringify({ salon, user });
 
         try {
-            const url = `http://127.0.0.1:8000/employee/`
+            const url = `${API}/employee/`
             const res = await axios.post(url, body, config);
             setAccountCreated(true);
             setIsSubmitting(false)

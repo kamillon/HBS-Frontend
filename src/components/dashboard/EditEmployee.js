@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext"
 import { Tab, Tabs } from 'react-bootstrap';
 import WorkHoursManagement from './WorkHoursManagement';
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const EditEmployee = () => {
     const navigate = useNavigate()
@@ -78,7 +79,7 @@ const EditEmployee = () => {
                 }
             };
             try {
-                const url = `http://127.0.0.1:8000/employee/${uid}/`
+                const url = `${API}/employee/${uid}/`
                 const res = await axios.get(url, config);
                 setFormData(res.data)
                 setIsLoading(false)
@@ -105,7 +106,7 @@ const EditEmployee = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setSalonData(res.data.filter(i => i.owner == currentUser.id))
                 setIsLoading(false)
             } catch (err) {
@@ -152,7 +153,7 @@ const EditEmployee = () => {
         });
 
         try {
-            const url = `http://127.0.0.1:8000/auth/users/${uid}/`
+            const url = `${API}/auth/users/${uid}/`
             const res = await axios.put(url, body, config);
             setAccountUpdated(true);
             setIsSubmitting(false)
@@ -198,7 +199,7 @@ const EditEmployee = () => {
         const body = JSON.stringify({ salon });
 
         try {
-            const url = `http://127.0.0.1:8000/employee/${uid}/`
+            const url = `${API}/employee/${uid}/`
             const res = await axios.patch(url, body, config);
             setSalonUpdated(true);
             setIsSubmitting2(false)

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import { Tab, Tabs } from 'react-bootstrap';
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const CustomerDetails = () => {
     const navigate = useNavigate()
@@ -29,7 +30,7 @@ const CustomerDetails = () => {
             }
         };
         try {
-            const url = `http://127.0.0.1:8000/customer/${uid}/`
+            const url = `${API}/customer/${uid}/`
             const res = await axios.get(url, config);
             setCustomerData(res.data.user)
             setIsLoading(false)
@@ -50,7 +51,7 @@ const CustomerDetails = () => {
             }
         };
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/list-of-salon-reservations/${salon}/`, config);
+            const res = await axios.get(`${API}/list-of-salon-reservations/${salon}/`, config);
             setReservations(res.data.filter(i => i.customerId.user.id === parseInt(uid)))
             setIsLoading(false)
         } catch (err) {

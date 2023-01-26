@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner';
+import { API } from '../../App';
 
 const CustomerManagement = () => {
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ const CustomerManagement = () => {
                 }
             };
             try {
-                const url = `http://127.0.0.1:8000/list-of-salon-customers/${salon}/`
+                const url = `${API}/list-of-salon-customers/${salon}/`
                 const res = await axios.get(url, config);
                 setData(res.data)
                 setIsLoading(false)
@@ -59,7 +60,7 @@ const CustomerManagement = () => {
                 }
             };
             try {
-                const res = await axios.get(`http://127.0.0.1:8000/salon/`, config);
+                const res = await axios.get(`${API}/salon/`, config);
                 setSalonData(res.data)
                 setIsLoading(false)
 
@@ -84,7 +85,7 @@ const CustomerManagement = () => {
             }
         };
         try {
-            const url = `http://127.0.0.1:8000/employee/${currentUser.id}/`
+            const url = `${API}/employee/${currentUser.id}/`
             const res = await axios.get(url, config);
             setEmployeeSalon(res.data.salon)
 

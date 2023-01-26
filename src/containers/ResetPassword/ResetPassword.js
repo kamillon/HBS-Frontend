@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { API } from '../../App';
 
 const ResetPassword = () => {
     const [requestSent, setRequestSent] = useState(false);
@@ -35,7 +36,7 @@ const ResetPassword = () => {
         const body = JSON.stringify({ email });
 
         try {
-            const res = await axios.post('http://127.0.0.1:8000/auth/users/reset_password/', body, config)
+            const res = await axios.post(`${API}/auth/users/reset_password/`, body, config)
             setRequestSent(true);
         }
         catch (error) {
