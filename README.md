@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# System rezerwacji dla salonów fryzjerskich
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## O projekcie
 
-## Available Scripts
+Aplikacja webowa, która umożliwia rezerwację wizyt online do salonu fryzjerskiego. Klient ma możliwość wyboru salonu fryzjerskiego, zapoznania się z oferowanymi przez salon usługami oraz ich ceną i czasem trwania. Rezerwacja odbywa się poprzez naciśnięcie przycisku „umów” znajdującego się przy konkretnej usłudze. Następnie klient musi uzupełnić niezbędne dane w formularzu, m.in. musi wybrać fryzjera, rodzaj usługi, datę oraz godzinę. System wprowadza ograniczenie rezerwacji na konkretny termin, blokując wybór daty i godziny, która została już zarezerwowana przez innego użytkownika.
 
-In the project directory, you can run:
+Do implementacji systemu wykorzystano nowoczesne technologie. Back-end aplikacji został stworzony za pomocą frameworka Django, napisanym w języku Python, z wykorzystaniem Django REST framework. Natomiast do napisania front-endu posłużył język JavaScript z wykorzystaniem biblioteki React.js. Na relacyjną bazę danych wybrano PostgreSQL.
 
-### `npm start`
+## Screenshots
+![Strona glowna](screenshots/strona_glowna.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![Strona salonu](screenshots/strona_salonu.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Strona fryzjer](screenshots/strona_fryzjer.png)
 
-### `npm test`
+![Ekran rezerwacji](screenshots/ekran_rezerwacji.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Panel pracownika](screenshots/panel_pracownika_rezerwacje.png)
 
-### `npm run build`
+![Panel administratora](screenshots/panel_administratora_uzytkownicy.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Funkcjonalności
+- logowanie i rejestracja w systemie nowych użytkowników,
+- możliwość rezerwacji wizyty poprzez stronę internetową,
+- możliwość tworzenia nowych rezerwacji bez konieczności użycia aplikacji przez klienta,
+- wyświetlenie listy salonów fryzjerskich wraz z listą oferowanych usług,
+- możliwość filtrowania listy salonów fryzjerskich po miejscowości oraz rodzaju usługi,
+- możliwość  dokonania  rezerwacji  wizyty  w  wybranym  terminie, pod warunkiem że jest on wtedy dostępny,
+- zarządzanie rezerwacjami (CRUD),
+- podgląd historii wizyt przez klienta oraz możliwość anulowania wizyty,
+- wysyłanie użytkownikom wiadomości e-mail z potwierdzeniem rezerwacji,
+- zarządzanie użytkownikami (CRUD),
+- zarządzanie pracownikami (CRUD),
+- zarządzanie salonami fryzjerskimi (CRUD),
+- zarządzanie usługami (CRUD),
+- edycja danych konta użytkownika,
+- walidacja poprawności wprowadzonych danych
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Część serwerowa
+https://github.com/kamillon/HairdresserBookingSystem-Backend
